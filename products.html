@@ -3,80 +3,81 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Restaurants · Culturei</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <title>Culturei – Menu</title>
     <link rel="stylesheet" href="style.css" />
-    <style>
-        .products-hero {
-            text-align: center;
-            padding: 3rem 5% 1rem;
-        }
-        .products-hero h1 { font-size: 3rem; font-weight: 800; }
-        .products-hero h1 span { color: var(--accent-orange); }
-        .products-hero p { color: var(--text-muted); max-width: 500px; margin: 0.5rem auto 0; }
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 2rem;
-            padding: 2rem 5% 4rem;
-        }
-        .product-item {
-            background: var(--secondary-black);
-            border-radius: 1.5rem;
-            padding: 2rem 1.5rem;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            transition: var(--transition);
-            cursor: pointer;
-        }
-        .product-item:hover {
-            transform: translateY(-6px);
-            border-color: var(--accent-orange);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-        }
-        .product-item .icon { font-size: 3rem; color: var(--accent-orange); margin-bottom: 0.5rem; }
-        .product-item h3 { font-size: 1.2rem; font-weight: 600; }
-        .product-item .price { color: var(--accent-orange); font-weight: 700; font-size: 1.1rem; margin-top: 0.3rem; }
-        .product-item .btn-small { margin-top: 0.8rem; }
-    </style>
 </head>
 <body>
-    <header>
-        <div class="logo">Culture<span>i</span><span class="tagline">Delivery · Across Mzansi</span></div>
-        <nav>
-            <ul>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">🍜 Culturei</a>
+            <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="products.html" class="active">Restaurants</a></li>
-                <li><a href="index.html#parcels">Parcels</a></li>
-                <li><a href="driver.html">Drivers</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="products.html" class="active">Menu</a></li>
+                <li><a href="text.html">About</a></li>
+                <li>
+                    <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
+                        🌙
+                    </button>
+                </li>
+                <li>
+                    <a href="#" class="cart-icon" id="cartToggle">
+                        🛒 <span class="cart-count" id="cartCount">0</span>
+                    </a>
+                </li>
             </ul>
-        </nav>
-        <div class="header-actions">
-            <button class="btn-outline-light" onclick="openLogin()">Sign In</button>
-            <div class="cart-icon" onclick="toggleCart()">
-                <i class="fas fa-shopping-bag"></i>
-                <span class="cart-count" id="cartCount">0</span>
+        </div>
+    </nav>
+
+    <!-- Menu Section with Search -->
+    <section class="menu-section">
+        <h2>Our Cultural Menu</h2>
+        <p class="menu-subtitle">Each dish comes with a story from its homeland.</p>
+        
+        <!-- Search & Filter Bar -->
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="🔍 Search by dish, origin, or cuisine..." />
+                <button id="clearSearch" class="clear-search">✕</button>
+            </div>
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All</button>
+                <button class="filter-tab" data-filter="favorites">⭐ Favorites</button>
             </div>
         </div>
-    </header>
 
-    <section class="products-hero">
-        <h1>Our <span>Restaurants</span></h1>
-        <p>Order from 12,000+ restaurants across South Africa</p>
+        <div class="menu-grid" id="menuGrid">
+            <!-- Items will be injected by JavaScript -->
+        </div>
     </section>
 
-    <div class="products-grid">
-        <div class="product-item" onclick="addToCart('Hello Tomato', 85)">
-            <div class="icon"><i class="fas fa-pizza-slice"></i></div>
-            <h3>Hello Tomato</h3>
-            <p style="color:var(--text-muted);font-size:0.9rem;">Pizza & Pasta</p>
-            <div class="price">From R85</div>
-            <button class="btn-small" onclick="event.stopPropagation();addToCart('Hello Tomato', 85)">Add to Cart</button>
+    <!-- Order History Section -->
+    <section class="order-history-section" id="orderHistorySection">
+        <h2>📜 Your Order History</h2>
+        <div id="orderHistoryList">
+            <p class="empty-orders">No orders yet. Start exploring!</p>
         </div>
-        <div class="product-item" onclick="addToCart('Bento', 95)">
-            <div class="icon"><i class="fas fa-fish"></i></div>
-            <h3>Bento</h3>
-            <p style="color:var(--text-muted);font-size:0.9rem;">Asian Fusion</p>
-            <div class="price">From R95</div>
-            <button class="btn-small" onclick="event.stopPropagation
+    </section>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2>🛒 Your Cart</h2>
+            <button class="cart-close" id="cartClose">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p class="empty-cart">Your cart is empty. Start exploring!</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">$0.00</span>
+            </div>
+            <button class="btn-checkout" id="checkoutBtn">Checkout</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
