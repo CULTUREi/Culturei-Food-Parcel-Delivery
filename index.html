@@ -3,137 +3,103 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Culturei · Food & Parcel Delivery</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <title>Culturei – Discover Cultural Cuisine</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="logo">
-            Culture<span>i</span>
-            <span class="tagline">Delivery · Across Mzansi</span>
-        </div>
-        <nav>
-            <ul>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">🍜 Culturei</a>
+            <ul class="nav-links">
                 <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="products.html">Restaurants</a></li>
-                <li><a href="#parcels">Parcels</a></li>
-                <li><a href="driver.html">Drivers</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="products.html">Menu</a></li>
+                <li><a href="text.html">About</a></li>
+                <li>
+                    <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
+                        🌙
+                    </button>
+                </li>
+                <li>
+                    <a href="#" class="cart-icon" id="cartToggle">
+                        🛒 <span class="cart-count" id="cartCount">0</span>
+                    </a>
+                </li>
             </ul>
-        </nav>
-        <div class="header-actions">
-            <button class="btn-outline-light" onclick="openLogin()">Sign In</button>
-            <div class="cart-icon" onclick="toggleCart()">
-                <i class="fas fa-shopping-bag"></i>
-                <span class="cart-count" id="cartCount">0</span>
-            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Discover the World <br />Through Food</h1>
+            <p>Authentic cultural cuisine, delivered to your door. <br />Every dish tells a story.</p>
+            <a href="products.html" class="btn-primary">Explore Menu →</a>
         </div>
     </header>
 
-    <!-- Hero -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Food &amp; Parcel <span>Delivery</span> Across Mzansi</h1>
-            <p>Order from your favourite local restaurants, send small parcels anywhere in South Africa, and track your delivery in real-time — all with Culturei.</p>
-            <div class="hero-buttons">
-                <button class="btn-primary" onclick="openOrder()">Order Now</button>
-                <button class="btn-secondary" onclick="window.location.href='driver.html'">Become a Driver</button>
-            </div>
-            <div class="hero-stats">
-                <div class="stat"><span class="number">12,000+</span><span class="label">Restaurants</span></div>
-                <div class="stat"><span class="number">500+</span><span class="label">Drivers</span></div>
-                <div class="stat"><span class="number">60 min</span><span class="label">Average Delivery</span></div>
-            </div>
-        </div>
-        <div class="hero-image">
-            <img src="assets/images/hero-delivery.png" alt="Culturei Delivery" />
+    <!-- Featured Chef of the Week -->
+    <section class="featured-chef">
+        <h2>👨‍🍳 Featured Chef of the Week</h2>
+        <div class="chef-card" id="featuredChef">
+            <!-- Dynamically loaded by JavaScript -->
         </div>
     </section>
 
     <!-- Features -->
-    <section class="features-section">
-        <h2 class="section-title">Why <span>Culturei</span>?</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="icon"><i class="fas fa-utensils"></i></div>
-                <h3>12,000+ Restaurants</h3>
-                <p>From local favourites to national chains, discover the best food in your area.</p>
+    <section class="features">
+        <div class="feature-card">
+            <span class="feature-icon">🌍</span>
+            <h3>Global Cuisines</h3>
+            <p>From Ethiopian to Japanese, explore authentic flavors from around the world.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">👨‍🍳</span>
+            <h3>Chef Stories</h3>
+            <p>Every dish comes with the story behind it—culture, tradition, and love.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">🏆</span>
+            <h3>Culture Pass</h3>
+            <p>Earn rewards as you explore new cuisines and support local chefs.</p>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="stats-container">
+            <div class="stat-item">
+                <span class="stat-number" id="favoriteCount">0</span>
+                <span class="stat-label">⭐ Favorites</span>
             </div>
-            <div class="feature-card">
-                <div class="icon"><i class="fas fa-box"></i></div>
-                <h3>Parcel Delivery</h3>
-                <p>Send small parcels anywhere in South Africa with real-time tracking.</p>
+            <div class="stat-item">
+                <span class="stat-number" id="orderCount">0</span>
+                <span class="stat-label">📦 Orders</span>
             </div>
-            <div class="feature-card">
-                <div class="icon"><i class="fas fa-motorcycle"></i></div>
-                <h3>Dedicated Drivers</h3>
-                <p>Your order is delivered one at a time — no stops, no delays.</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon"><i class="fas fa-map-marked-alt"></i></div>
-                <h3>Live Tracking</h3>
-                <p>Track your order in real-time and message your driver directly.</p>
+            <div class="stat-item">
+                <span class="stat-number" id="reviewCount">0</span>
+                <span class="stat-label">💬 Reviews</span>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <h3>Culture<span>i</span></h3>
-        <p style="color: var(--text-muted);">Food &amp; Parcel Delivery · Across Mzansi</p>
-        <div class="social-links">
-            <a href="#"><i class="fab fa-facebook"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-linkedin"></i></a>
-        </div>
-        <p>Email: hello@culturei.co.za | Phone: +27 67 910 0022</p>
-        <p>&copy; 2026 Culturei. All rights reserved.</p>
-    </footer>
-
-    <!-- Cart & Checkout -->
-    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cartOverlay"></div>
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
-            <h3><i class="fas fa-shopping-bag"></i> Your Cart</h3>
-            <span class="close-cart" onclick="toggleCart()">&times;</span>
+            <h2>🛒 Your Cart</h2>
+            <button class="cart-close" id="cartClose">✕</button>
         </div>
         <div class="cart-items" id="cartItems">
-            <p style="text-align: center; color: var(--text-muted); margin-top: 2rem;">Your cart is empty.</p>
+            <p class="empty-cart">Your cart is empty. Start exploring!</p>
         </div>
         <div class="cart-footer">
             <div class="cart-total">
                 <span>Total:</span>
-                <span id="cartTotal">R 0.00</span>
+                <span id="cartTotal">$0.00</span>
             </div>
-            <button class="btn-checkout" onclick="openCheckout()">Proceed to Checkout</button>
+            <button class="btn-checkout" id="checkoutBtn">Checkout</button>
         </div>
-    </div>
-
-    <div class="overlay" id="checkoutOverlay" onclick="closeCheckout()"></div>
-    <div class="checkout-modal" id="checkoutModal">
-        <span class="close-modal" onclick="closeCheckout()">&times;</span>
-        <h2><i class="fas fa-lock" style="margin-right: 10px;"></i>Checkout</h2>
-        <form id="checkoutForm" onsubmit="processPayment(event)">
-            <div class="form-group"><label>Full Name</label><input type="text" required placeholder="John Doe" /></div>
-            <div class="form-group"><label>Email Address</label><input type="email" required placeholder="john@example.com" /></div>
-            <div class="form-group"><label>Delivery Address</label><input type="text" required placeholder="123 Main St, City" /></div>
-            <div class="form-group"><label>Card Number</label><input type="text" required placeholder="0000 0000 0000 0000" maxlength="19" /></div>
-            <div class="form-row">
-                <div class="form-group"><label>Expiry</label><input type="text" required placeholder="MM/YY" maxlength="5" /></div>
-                <div class="form-group"><label>CVC</label><input type="text" required placeholder="123" maxlength="3" /></div>
-            </div>
-            <div class="cart-total" style="margin-top: 1rem;">
-                <span>Amount to Pay:</span>
-                <span id="checkoutTotal">R 0.00</span>
-            </div>
-            <button type="submit" class="btn-pay" id="payButton">
-                <span class="spinner" id="spinner"></span>
-                <span id="payText">Pay Now</span>
-            </button>
-        </form>
     </div>
 
     <script src="script.js"></script>
