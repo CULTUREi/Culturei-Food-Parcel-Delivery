@@ -100,15 +100,26 @@
         </div>
     </section>
 
-    <!-- ====== MAP SECTION ====== -->
-    <section class="map-section">
-        <div class="container">
-            <h2 class="section-title">Track Your <span>Delivery</span></h2>
-            <p class="map-subtitle">See where your order is in real-time across South Africa.</p>
+  <!-- ====== MAP SECTION ====== -->
+<section class="map-section">
+    <div class="container">
+        <h2 class="section-title">Track Your <span>Delivery</span></h2>
+        <p class="map-subtitle">See where your order is in real-time across South Africa.</p>
+        <div id="map-container">
             <div id="map"></div>
+            <div id="map-fallback" style="display: none; text-align: center; padding: 3rem; background: var(--bg-card); border-radius: 1.5rem; border: 1px solid var(--border-color);">
+                <i class="fas fa-map-marked-alt" style="font-size: 4rem; color: var(--accent-orange); margin-bottom: 1rem;"></i>
+                <h3 style="margin-bottom: 0.5rem;">📍 Delivery Tracking</h3>
+                <p style="color: var(--text-muted);">Enter your delivery code to track your order in real-time.</p>
+                <div style="display: flex; gap: 0.5rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap;">
+                    <input type="text" id="trackingCode" placeholder="Enter tracking code" style="padding: 0.7rem 1.2rem; border-radius: 30px; border: 2px solid var(--border-color); background: var(--bg-primary); color: var(--text-primary); min-width: 200px;">
+                    <button onclick="trackOrder()" class="btn-primary" style="padding: 0.7rem 2rem;">Track</button>
+                </div>
+                <div id="tracking-result" style="margin-top: 1rem;"></div>
+            </div>
         </div>
-    </section>
-
+    </div>
+</section>
     <!-- ====== DRIVER CTA SECTION ====== -->
     <section class="driver-cta-section">
         <div class="container">
