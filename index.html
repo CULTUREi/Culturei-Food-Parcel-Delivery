@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Culturei · Food & Parcel Delivery | South Africa</title>
+    <title>Culturei Delivery · Food & Parcel Delivery | South Africa</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-    <div class="container">
-
-        <!-- ====== HEADER ====== -->
-        <header>
+    <!-- ====== HEADER ====== -->
+    <header>
+        <div class="container header-container">
             <div class="logo">
                 Culture<span>i</span>
                 <span class="tagline">Delivery · Across Mzansi</span>
@@ -20,23 +19,27 @@
             <nav>
                 <ul>
                     <li><a href="index.html" class="active">Home</a></li>
-                    <li><a href="products.html">Restaurants</a></li>
-                    <li><a href="text.html">About</a></li>
-                    <li><a href="#drivers">Drivers</a></li>
+                    <li><a href="restaurants.html">Restaurants</a></li>
+                    <li><a href="drivers.html">Drivers</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
             <div class="header-actions">
                 <button class="btn-outline-light" onclick="openLogin()">Sign In</button>
+                <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
                 <div class="cart-icon" onclick="toggleCart()">
                     <i class="fas fa-shopping-bag"></i>
                     <span class="cart-count" id="cartCount">0</span>
                 </div>
             </div>
-        </header>
+        </div>
+    </header>
 
-        <!-- ====== HERO SECTION ====== -->
-        <section class="hero">
+    <!-- ====== HERO SECTION ====== -->
+    <section class="hero">
+        <div class="container hero-container">
             <div class="hero-content">
                 <h1>Food &amp; Parcel <span>Delivery</span> Across Mzansi</h1>
                 <p>
@@ -44,8 +47,8 @@
                     and track your delivery in real-time — all with Culturei.
                 </p>
                 <div class="hero-buttons">
-                    <button class="btn-primary" onclick="openOrder()">Order Now</button>
-                    <button class="btn-secondary" onclick="openDriver()">Become a Driver</button>
+                    <button class="btn-primary" onclick="window.location.href='restaurants.html'">Order Food</button>
+                    <button class="btn-secondary" onclick="window.location.href='drivers.html'">Become a Driver</button>
                 </div>
                 <div class="hero-stats">
                     <div class="stat">
@@ -65,10 +68,12 @@
             <div class="hero-image">
                 <img src="https://placehold.co/500x450/1a1a1a/e87a20?text=Culturei+Delivery" alt="Culturei Delivery" />
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- ====== FEATURES SECTION ====== -->
-        <section class="features-section">
+    <!-- ====== FEATURES SECTION ====== -->
+    <section class="features-section">
+        <div class="container">
             <h2 class="section-title">Why <span>Culturei</span>?</h2>
             <div class="features-grid">
                 <div class="feature-card">
@@ -92,68 +97,68 @@
                     <p>Track your order in real-time and message your driver directly.</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- ====== RESTAURANTS SECTION ====== -->
-        <section class="restaurants-section" id="restaurants">
-            <h2 class="section-title">Popular <span>Restaurants</span></h2>
-            <div class="restaurant-grid" id="restaurantGrid">
-                <!-- Dynamically loaded by JavaScript -->
-            </div>
-        </section>
+    <!-- ====== MAP SECTION ====== -->
+    <section class="map-section">
+        <div class="container">
+            <h2 class="section-title">Track Your <span>Delivery</span></h2>
+            <p class="map-subtitle">See where your order is in real-time across South Africa.</p>
+            <div id="map"></div>
+        </div>
+    </section>
 
-        <!-- ====== DELIVERY OPTIONS (Food + Parcels) ====== -->
-        <section class="delivery-options" id="parcels">
-            <div class="delivery-card">
-                <div class="icon"><i class="fas fa-utensils"></i></div>
-                <h3>Food Delivery</h3>
-                <p>Order from your favourite restaurants and get delicious meals delivered in 60 minutes.</p>
-                <span class="badge">R50 OFF your first order</span>
-                <div style="margin-top: 1.2rem;">
-                    <button class="btn-small" onclick="window.location.href='products.html'">Order Food</button>
+    <!-- ====== DRIVER CTA SECTION ====== -->
+    <section class="driver-cta-section">
+        <div class="container">
+            <div class="driver-cta">
+                <div class="driver-cta-content">
+                    <h2>Become a <span>Culturei Driver</span></h2>
+                    <p>Choose your hours — full or flexible — and keep every Rand of your tips. Join our growing fleet of drivers across South Africa.</p>
+                    <button class="btn-primary" onclick="window.location.href='drivers.html'">Apply Now</button>
+                </div>
+                <div class="driver-cta-image">
+                    <i class="fas fa-motorcycle"></i>
                 </div>
             </div>
-            <div class="delivery-card">
-                <div class="icon"><i class="fas fa-shipping-fast"></i></div>
-                <h3>Parcel Delivery</h3>
-                <p>Send small parcels across South Africa with our reliable courier service. Track in real-time.</p>
-                <span class="badge">Nationwide Coverage</span>
-                <div style="margin-top: 1.2rem;">
-                    <button class="btn-small" onclick="openParcel()">Send a Parcel</button>
+        </div>
+    </section>
+
+    <!-- ====== FOOTER ====== -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>Culture<span>i</span></h3>
+                    <p>Food &amp; Parcel Delivery · Across Mzansi</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="restaurants.html">Restaurants</a></li>
+                        <li><a href="drivers.html">Drivers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact Us</h4>
+                    <p><i class="fas fa-envelope"></i> hello@culturei.co.za</p>
+                    <p><i class="fas fa-phone"></i> +27 67 910 0022</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Cape Town, South Africa</p>
                 </div>
             </div>
-        </section>
-
-        <!-- ====== DRIVER / CAREERS SECTION ====== -->
-        <section class="driver-section" id="drivers">
-            <div class="driver-card">
-                <div class="icon"><i class="fas fa-motorcycle"></i></div>
-                <h3>Become a Culturei Driver</h3>
-                <p>Choose your hours — full or flexible — and keep every Rand of your tips. Join our growing fleet of drivers across South Africa.</p>
-                <button class="btn-small" onclick="openDriver()">Apply Now</button>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Culturei. All rights reserved.</p>
             </div>
-            <div class="driver-card">
-                <div class="icon"><i class="fas fa-store"></i></div>
-                <h3>List Your Business</h3>
-                <p>Access more customers, increase sales, and make your business a local legend. Partner with Culturei today.</p>
-                <button class="btn-small" onclick="openPartner()">Get Started</button>
-            </div>
-        </section>
-
-        <!-- ====== FOOTER ====== -->
-        <footer id="contact">
-            <h3>Culture<span>i</span></h3>
-            <p style="color: var(--text-muted);">Food &amp; Parcel Delivery · Across Mzansi</p>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-            </div>
-            <p>Email: hello@culturei.co.za | Phone: +27 67 910 0022</p>
-            <p>&copy; 2026 Culturei. All rights reserved.</p>
-        </footer>
-    </div>
+        </div>
+    </footer>
 
     <!-- ====== CART SIDEBAR ====== -->
     <div class="overlay" id="overlay" onclick="toggleCart()"></div>
@@ -163,7 +168,7 @@
             <span class="close-cart" onclick="toggleCart()">&times;</span>
         </div>
         <div class="cart-items" id="cartItems">
-            <p style="text-align: center; color: var(--text-muted); margin-top: 2rem;">Your cart is empty.</p>
+            <p class="empty-cart">Your cart is empty.</p>
         </div>
         <div class="cart-footer">
             <div class="cart-total">
@@ -178,7 +183,7 @@
     <div class="overlay" id="checkoutOverlay" onclick="closeCheckout()"></div>
     <div class="checkout-modal" id="checkoutModal">
         <span class="close-modal" onclick="closeCheckout()">&times;</span>
-        <h2><i class="fas fa-lock" style="margin-right: 10px;"></i>Checkout</h2>
+        <h2><i class="fas fa-lock"></i> Checkout</h2>
         <form id="checkoutForm" onsubmit="processCheckout(event)">
             <div class="form-group">
                 <label>Full Name</label>
@@ -218,5 +223,6 @@
     </div>
 
     <script src="script.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script>
 </body>
 </html>
