@@ -15,16 +15,6 @@
                 <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="products.html">Menu</a></li>
                 <li><a href="text.html">About</a></li>
-                <li>
-                    <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
-                        🌙
-                    </button>
-                </li>
-                <li>
-                    <a href="#" class="cart-icon" id="cartToggle">
-                        🛒 <span class="cart-count" id="cartCount">0</span>
-                    </a>
-                </li>
             </ul>
         </div>
     </nav>
@@ -37,14 +27,6 @@
             <a href="products.html" class="btn-primary">Explore Menu →</a>
         </div>
     </header>
-
-    <!-- Featured Chef of the Week -->
-    <section class="featured-chef">
-        <h2>👨‍🍳 Featured Chef of the Week</h2>
-        <div class="chef-card" id="featuredChef">
-            <!-- Dynamically loaded by JavaScript -->
-        </div>
-    </section>
 
     <!-- Features -->
     <section class="features">
@@ -64,43 +46,6 @@
             <p>Earn rewards as you explore new cuisines and support local chefs.</p>
         </div>
     </section>
-
-    <!-- Stats Section -->
-    <section class="stats-section">
-        <div class="stats-container">
-            <div class="stat-item">
-                <span class="stat-number" id="favoriteCount">0</span>
-                <span class="stat-label">⭐ Favorites</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number" id="orderCount">0</span>
-                <span class="stat-label">📦 Orders</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number" id="reviewCount">0</span>
-                <span class="stat-label">💬 Reviews</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Cart Sidebar -->
-    <div class="cart-overlay" id="cartOverlay"></div>
-    <div class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h2>🛒 Your Cart</h2>
-            <button class="cart-close" id="cartClose">✕</button>
-        </div>
-        <div class="cart-items" id="cartItems">
-            <p class="empty-cart">Your cart is empty. Start exploring!</p>
-        </div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <span>Total:</span>
-                <span id="cartTotal">$0.00</span>
-            </div>
-            <button class="btn-checkout" id="checkoutBtn">Checkout</button>
-        </div>
-    </div>
 
     <script src="script.js"></script>
 </body>
