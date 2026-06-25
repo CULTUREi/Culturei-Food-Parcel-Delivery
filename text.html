@@ -1,12 +1,99 @@
-culturei-delivery/
-├── index.html          (Homepage)
-├── products.html       (Products/Restaurants page)
-├── about.html          (About page)
-├── contact.html        (Contact page)
-├── blog.html           (Blog page)
-├── driver.html         (Driver application page)
-├── style.css           (All styles)
-├── script.js           (All JavaScript)
-└── assets/
-    ├── images/         (Logo, product images)
-    └── icons/          (Favicon, etc.)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Culturei – About</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">🍜 Culturei</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Menu</a></li>
+                <li><a href="text.html" class="active">About</a></li>
+                <li>
+                    <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
+                        🌙
+                    </button>
+                </li>
+                <li>
+                    <a href="#" class="cart-icon" id="cartToggle">
+                        🛒 <span class="cart-count" id="cartCount">0</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- About Content -->
+    <section class="about-section">
+        <h2>Our Story</h2>
+        <div class="about-content">
+            <p>
+                <strong>Culturei</strong> was born from a simple idea: <br />
+                <em>Food is the universal language of culture.</em>
+            </p>
+            <p>
+                We connect you with authentic, home-style meals from immigrant chefs 
+                who pour their heritage into every dish. When you order with Culturei, 
+                you're not just eating—you're experiencing a story.
+            </p>
+            
+            <!-- Featured Chef Spotlight -->
+            <div class="chef-spotlight">
+                <h3>🌟 Chef Spotlight</h3>
+                <div id="aboutChef" class="about-chef-card">
+                    <!-- Loaded by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Quick Stats -->
+            <div class="quick-stats">
+                <div class="quick-stat">
+                    <span class="quick-number" id="aboutFavorites">0</span>
+                    <span class="quick-label">⭐ Favorites Saved</span>
+                </div>
+                <div class="quick-stat">
+                    <span class="quick-number" id="aboutOrders">0</span>
+                    <span class="quick-label">📦 Orders Placed</span>
+                </div>
+                <div class="quick-stat">
+                    <span class="quick-number" id="aboutReviews">0</span>
+                    <span class="quick-label">💬 Reviews Written</span>
+                </div>
+            </div>
+
+            <div class="contact-info">
+                <h3>📬 Get in Touch</h3>
+                <p>Email: hello@culturei.com</p>
+                <p>Instagram: @culturei_app</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2>🛒 Your Cart</h2>
+            <button class="cart-close" id="cartClose">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p class="empty-cart">Your cart is empty. Start exploring!</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">$0.00</span>
+            </div>
+            <button class="btn-checkout" id="checkoutBtn">Checkout</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
