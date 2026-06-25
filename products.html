@@ -3,79 +3,169 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Culturei – Menu</title>
+    <title>Culturei · Restaurants</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">🍜 Culturei</a>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="products.html" class="active">Menu</a></li>
-                <li><a href="text.html">About</a></li>
-                <li>
-                    <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
-                        🌙
-                    </button>
-                </li>
-                <li>
-                    <a href="#" class="cart-icon" id="cartToggle">
-                        🛒 <span class="cart-count" id="cartCount">0</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
 
-    <!-- Menu Section with Search -->
-    <section class="menu-section">
-        <h2>Our Cultural Menu</h2>
-        <p class="menu-subtitle">Each dish comes with a story from its homeland.</p>
-        
-        <!-- Search & Filter Bar -->
-        <div class="search-container">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="🔍 Search by dish, origin, or cuisine..." />
-                <button id="clearSearch" class="clear-search">✕</button>
+    <!-- ====== HEADER ====== -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                Culture<span>i</span>
+                <span class="tagline">Delivery · Across Mzansi</span>
             </div>
-            <div class="filter-tabs">
-                <button class="filter-tab active" data-filter="all">All</button>
-                <button class="filter-tab" data-filter="favorites">⭐ Favorites</button>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="restaurants.html" class="active">Restaurants</a></li>
+                    <li><a href="drivers.html">Drivers</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button class="btn-outline-light" onclick="openLogin()">Sign In</button>
+                <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="cart-icon" onclick="toggleCart()">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
             </div>
         </div>
+    </header>
 
-        <div class="menu-grid" id="menuGrid">
-            <!-- Items will be injected by JavaScript -->
+    <!-- ====== RESTAURANTS PAGE ====== -->
+    <section class="restaurants-page">
+        <div class="container">
+            <h2 class="section-title">Our <span>Restaurants</span></h2>
+            <p class="menu-subtitle">Discover authentic cultural cuisine from around South Africa.</p>
+            
+            <!-- Search Bar -->
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="🔍 Search restaurants or cuisine..." />
+                    <button id="clearSearch" class="clear-search">✕</button>
+                </div>
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="all">All</button>
+                    <button class="filter-tab" data-filter="favorites">⭐ Favorites</button>
+                </div>
+            </div>
+
+            <div class="restaurant-grid" id="menuGrid">
+                <!-- Dynamically loaded by JavaScript -->
+            </div>
         </div>
     </section>
 
-    <!-- Order History Section -->
-    <section class="order-history-section" id="orderHistorySection">
-        <h2>📜 Your Order History</h2>
-        <div id="orderHistoryList">
-            <p class="empty-orders">No orders yet. Start exploring!</p>
+    <!-- ====== ORDER HISTORY ====== -->
+    <section class="order-history-section">
+        <div class="container">
+            <h2 class="section-title">📜 Your <span>Order History</span></h2>
+            <div id="orderHistoryList">
+                <p class="empty-orders">No orders yet. Start exploring!</p>
+            </div>
         </div>
     </section>
 
-    <!-- Cart Sidebar -->
-    <div class="cart-overlay" id="cartOverlay"></div>
+    <!-- ====== FOOTER ====== -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>Culture<span>i</span></h3>
+                    <p>Food &amp; Parcel Delivery · Across Mzansi</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="restaurants.html">Restaurants</a></li>
+                        <li><a href="drivers.html">Drivers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact Us</h4>
+                    <p><i class="fas fa-envelope"></i> hello@culturei.co.za</p>
+                    <p><i class="fas fa-phone"></i> +27 67 910 0022</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Cape Town, South Africa</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Culturei. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ====== CART SIDEBAR ====== -->
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
-            <h2>🛒 Your Cart</h2>
-            <button class="cart-close" id="cartClose">✕</button>
+            <h3><i class="fas fa-shopping-bag"></i> Your Cart</h3>
+            <span class="close-cart" onclick="toggleCart()">&times;</span>
         </div>
         <div class="cart-items" id="cartItems">
-            <p class="empty-cart">Your cart is empty. Start exploring!</p>
+            <p class="empty-cart">Your cart is empty.</p>
         </div>
         <div class="cart-footer">
             <div class="cart-total">
                 <span>Total:</span>
-                <span id="cartTotal">$0.00</span>
+                <span id="cartTotal">R 0.00</span>
             </div>
-            <button class="btn-checkout" id="checkoutBtn">Checkout</button>
+            <button class="btn-checkout" onclick="openCheckout()">Proceed to Checkout</button>
         </div>
+    </div>
+
+    <!-- ====== CHECKOUT MODAL ====== -->
+    <div class="overlay" id="checkoutOverlay" onclick="closeCheckout()"></div>
+    <div class="checkout-modal" id="checkoutModal">
+        <span class="close-modal" onclick="closeCheckout()">&times;</span>
+        <h2><i class="fas fa-lock"></i> Checkout</h2>
+        <form id="checkoutForm" onsubmit="processCheckout(event)">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="fullName" placeholder="e.g. Thabo Mokoena" required />
+            </div>
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" id="phoneNumber" placeholder="e.g. 082 123 4567" required />
+            </div>
+            <div class="form-group">
+                <label>Delivery Address</label>
+                <input type="text" id="deliveryAddress" placeholder="e.g. 123 Mandela Ave, Johannesburg" required />
+            </div>
+            <div class="form-group">
+                <label>Delivery Type</label>
+                <select id="deliveryType" required>
+                    <option value="">Select delivery type</option>
+                    <option value="food">Food Delivery</option>
+                    <option value="parcel">Parcel Delivery</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>City</label>
+                    <input type="text" id="city" placeholder="e.g. Cape Town" required />
+                </div>
+                <div class="form-group">
+                    <label>Postal Code</label>
+                    <input type="text" id="postalCode" placeholder="e.g. 8001" />
+                </div>
+            </div>
+            <button type="submit" class="btn-pay">
+                <span id="payText">Pay Now</span>
+                <span class="spinner" id="spinner"></span>
+            </button>
+        </form>
     </div>
 
     <script src="script.js"></script>
