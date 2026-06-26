@@ -1,1 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Culturei - Sign In</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        /* ===== SIGN IN PAGE EXTRA STYLES ===== */
+        .auth-section {
+            padding: 4rem 0;
+            max-width: 480px;
+            margin: 0 auto;
+        }
 
+        .auth-card {
+            background: var(--bg-card);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .auth-card .auth-icon {
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-card h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .auth-card h2 span {
+            color: var(--accent-orange);
+        }
+
+        .auth-card .subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-card .form-group {
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+
+        .auth-card .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: var(--text-primary);
+        }
+
+        .auth-card .form-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 60px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color var(--transition);
+        }
+
+        .auth-card .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+        }
+
+        .auth-card .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .auth-card .form-options label {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .auth-card .form-options a {
+            color: var(--accent-orange);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .auth-card .form-options a:hover {
+            text-decoration: underline;
+        }
+
+        .auth-card .btn-primary {
+            width: 100%;
+            font-size: 1.1rem;
+            padding: 0.9rem;
+        }
+
+        .auth-card .auth-divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .auth-card .auth-divider hr {
+            flex: 1;
+            border: none;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .auth-card .social-auth {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .auth-card .social-auth button {
+            flex: 1;
+            padding: 0.7rem;
+            border: 1.5px solid var(--border-color);
+            border-radius: 60px;
+            background: transparent;
+            color: var(--text-primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .auth-card .social-auth button:hover {
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+        }
+
+        .auth-card .signup-link {
+            margin-top: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .auth-card .signup-link a {
+            color: var(--accent-orange);
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .auth-card .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        .auth-card .demo-note {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background: rgba(232, 122, 32, 0.1);
+            border-radius: 60px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .auth-card .demo-note span {
+            color: var(--accent-orange);
+            font-weight: 600;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .auth-card {
+                padding: 1.5rem;
+            }
+
+            .auth-card .form-options {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .auth-card .social-auth {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER (EXACTLY LIKE YOUR SITE) ===== -->
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                Culturei
+                <span class="tagline">Delivery Across Mzansi</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="restaurants.html">Restaurants</a></li>
+                    <li><a href="driver.html">Drivers</a></li>
+                    <li><a href="about.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="signin.html" class="btn-outline-light active">Sign In</a>
+                <button class="dark-mode-toggle" id="darkModeToggle" aria-label="Toggle dark mode">🌙</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================ -->
+    <!-- SIGN IN PAGE                                 -->
+    <!-- ============================================ -->
+    <section class="container auth-section">
+        <div class="auth-card">
+            <div class="auth-icon">🔐</div>
+            <h2>Welcome <span>Back</span></h2>
+            <p class="subtitle">Sign in to your Culturei account</p>
+
+            <form id="signinForm">
+                <div class="form-group">
+                    <label for="signinEmail">Email Address</label>
+                    <input type="email" id="signinEmail" placeholder="e.g. thabo@email.com" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="signinPassword">Password</label>
+                    <input type="password" id="signinPassword" placeholder="Enter your password" required />
+                </div>
+
+                <div class="form-options">
+                    <label>
+                        <input type="checkbox" /> Remember me
+                    </label>
+                    <a href="#">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="btn-primary">Sign In 🚀</button>
+            </form>
+
+            <div class="auth-divider">
+                <hr />
+                <span>or continue with</span>
+                <hr />
+            </div>
+
+            <div class="social-auth">
+                <button onclick="alert('Google sign in coming soon!')">🔵 Google</button>
+                <button onclick="alert('Facebook sign in coming soon!')">📘 Facebook</button>
+            </div>
+
+            <p class="signup-link">
+                Don't have an account? <a href="#">Sign Up</a>
+            </p>
+
+            <div class="demo-note">
+                💡 <span>Demo:</span> Use any email + password to test
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER (EXACTLY LIKE YOUR SITE) ===== -->
+    <footer>
+        <div class="container">
+            <div style="display:grid; grid-template-columns:2fr 1fr 1fr; gap:2rem; margin-bottom:2rem;">
+                <div>
+                    <h3 style="font-size:1.5rem; color:var(--accent-orange);">Culturei</h3>
+                    <p style="color:var(--text-secondary);">Delivery Across Mzansi</p>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:0.5rem;">
+                        Connecting restaurants, drivers, and customers across South Africa.
+                    </p>
+                </div>
+                <div>
+                    <h4 style="color:var(--text-white);">Quick Links</h4>
+                    <ul style="color:var(--text-secondary); list-style:none; padding:0;">
+                        <li><a href="index.html" style="color:var(--text-secondary);">Home</a></li>
+                        <li><a href="restaurants.html" style="color:var(--text-secondary);">Restaurants</a></li>
+                        <li><a href="driver.html" style="color:var(--text-secondary);">Drivers</a></li>
+                        <li><a href="about.html" style="color:var(--text-secondary);">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color:var(--text-white);">Contact</h4>
+                    <p style="color:var(--text-secondary);">📧 info@culturei.co.za</p>
+                    <p style="color:var(--text-secondary);">📞 +27 82 123 4567</p>
+                </div>
+            </div>
+            <hr style="border-color:var(--border-color);" />
+            <p style="text-align:center; color:var(--text-secondary); font-size:0.85rem; padding-top:1.5rem;">
+                &copy; 2026 Culturei. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ===== FIREBASE LIBRARIES ===== -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- ===== FIREBASE CONFIG ===== -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDQMu0hbTP1NFVMK1Z9GZk9JN19XNvqJ3g",
+            authDomain: "culturei-food-parcel-del-6a5cb.firebaseapp.com",
+            projectId: "culturei-food-parcel-del-6a5cb",
+            storageBucket: "culturei-food-parcel-del-6a5cb.firebasestorage.app",
+            messagingSenderId: "1045902648656",
+            appId: "1:1045902648656:web:5c582e4e3831b67e2fb855",
+            measurementId: "G-91BSVDG092"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        // ============================================
+        // SIGN IN - FIREBASE AUTHENTICATION
+        // ============================================
+
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Check if user is already signed in
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in
+                console.log('✅ Signed in as:', user.email);
+                document.querySelector('.auth-card .subtitle').textContent = 
+                    `✅ Signed in as ${user.email}`;
+                document.querySelector('.auth-card .btn-primary').textContent = '✅ Already Signed In';
+                document.querySelector('.auth-card .btn-primary').style.opacity = '0.7';
+            }
+        });
+
+        // Sign In Form
+        document.getElementById('signinForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('signinEmail').value.trim();
+            const password = document.getElementById('signinPassword').value.trim();
+            const btn = this.querySelector('.btn-primary');
+
+            if (!email || !password) {
+                alert('Please fill in all fields! 📝');
+                return;
+            }
+
+            // Show loading
+            btn.textContent = '⏳ Signing in...';
+            btn.disabled = true;
+
+            // Sign in with Firebase
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    alert(`✅ Welcome back, ${user.email}!`);
+
+                    // Save login to Firestore
+                    db.collection('users').doc(user.uid).set({
+                        email: user.email,
+                        lastLogin: new Date(),
+                        name: user.displayName || 'User'
+                    }, { merge: true });
+
+                    btn.textContent = '✅ Signed In!';
+                    btn.disabled = false;
+
+                    // Redirect after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                })
+                .catch((error) => {
+                    let message = '❌ Error: ' + error.message;
+
+                    // Friendly error messages
+                    if (error.code === 'auth/user-not-found') {
+                        message = '❌ No account found with this email. Please sign up first.';
+                    } else if (error.code === 'auth/wrong-password') {
+                        message = '❌ Incorrect password. Please try again.';
+                    } else if (error.code === 'auth/invalid-email') {
+                        message = '❌ Invalid email address. Please check and try again.';
+                    } else if (error.code === 'auth/too-many-requests') {
+                        message = '❌ Too many failed attempts. Please try again later.';
+                    }
+
+                    alert(message);
+                    btn.textContent = 'Sign In 🚀';
+                    btn.disabled = false;
+                });
+        });
+
+        // ===== DARK MODE TOGGLE =====
+        const toggleBtn = document.getElementById('darkModeToggle');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', function() {
+                document.body.classList.toggle('light-mode');
+                this.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
+            });
+        }
+
+        console.log('🔐 Sign In page loaded!');
+    </script>
+
+</body>
+</html>
