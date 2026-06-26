@@ -1,16 +1,4 @@
-// ===== FIREBASE CONFIG =====
-const firebaseConfig = {
-  apiKey: "AIzaSyDQWu0hbTP1NFVMKlZ9GZk9JN19XNvqJ3g",
-  authDomain: "culturei-food-parcel-del-6a5cb.firebaseapp.com",
-  projectId: "culturei-food-parcel-del-6a5cb",
-  storageBucket: "culturei-food-parcel-del-6a5cb.firebasestorage.app",
-  messagingSenderId: "1045902648656",
-  appId: "1:1045902648656:web:5c582e4e3831b67e2fb855",
-  measurementId: "G-91BSVDGQ92"
-};
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+// ===== FIREBASE AUTH =====
 const auth = firebase.auth();
 
 // ===== RESTAURANTS DATA =====
