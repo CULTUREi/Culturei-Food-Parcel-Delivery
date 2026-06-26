@@ -100,26 +100,27 @@
         </div>
     </section>
 
-  <!-- ====== MAP SECTION ====== -->
-<section class="map-section">
-    <div class="container">
-        <h2 class="section-title">Track Your <span>Delivery</span></h2>
-        <p class="map-subtitle">See where your order is in real-time across South Africa.</p>
-        <div id="map-container">
-            <div id="map"></div>
-            <div id="map-fallback" style="display: none; text-align: center; padding: 3rem; background: var(--bg-card); border-radius: 1.5rem; border: 1px solid var(--border-color);">
-                <i class="fas fa-map-marked-alt" style="font-size: 4rem; color: var(--accent-orange); margin-bottom: 1rem;"></i>
-                <h3 style="margin-bottom: 0.5rem;">📍 Delivery Tracking</h3>
-                <p style="color: var(--text-muted);">Enter your delivery code to track your order in real-time.</p>
-                <div style="display: flex; gap: 0.5rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap;">
-                    <input type="text" id="trackingCode" placeholder="Enter tracking code" style="padding: 0.7rem 1.2rem; border-radius: 30px; border: 2px solid var(--border-color); background: var(--bg-primary); color: var(--text-primary); min-width: 200px;">
-                    <button onclick="trackOrder()" class="btn-primary" style="padding: 0.7rem 2rem;">Track</button>
+    <!-- ====== MAP SECTION ====== -->
+    <section class="map-section">
+        <div class="container">
+            <h2 class="section-title">Track Your <span>Delivery</span></h2>
+            <p class="map-subtitle">See where your order is in real-time across South Africa.</p>
+            <div id="map-container">
+                <div id="map"></div>
+                <div id="map-fallback" style="display: none; text-align: center; padding: 3rem; background: var(--bg-card); border-radius: 1.5rem; border: 1px solid var(--border-color);">
+                    <i class="fas fa-map-marked-alt" style="font-size: 4rem; color: var(--accent-orange); margin-bottom: 1rem;"></i>
+                    <h3 style="margin-bottom: 0.5rem;">📍 Delivery Tracking</h3>
+                    <p style="color: var(--text-muted);">Enter your delivery code to track your order in real-time.</p>
+                    <div style="display: flex; gap: 0.5rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap;">
+                        <input type="text" id="trackingCode" placeholder="Enter tracking code" style="padding: 0.7rem 1.2rem; border-radius: 30px; border: 2px solid var(--border-color); background: var(--bg-primary); color: var(--text-primary); min-width: 200px;">
+                        <button onclick="trackOrder()" class="btn-primary" style="padding: 0.7rem 2rem;">Track</button>
+                    </div>
+                    <div id="tracking-result" style="margin-top: 1rem;"></div>
                 </div>
-                <div id="tracking-result" style="margin-top: 1rem;"></div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+
     <!-- ====== DRIVER CTA SECTION ====== -->
     <section class="driver-cta-section">
         <div class="container">
@@ -232,37 +233,33 @@
             </button>
         </form>
     </div>
-</div>
-</div>
-<button type="submit" class="btn-pay">
-<span id="payText">Pay Now</span>
-<span class="spinner" id="spinner"></span>
-</button>
-</form>
-</div>
 
-<!-- ===== FIREBASE LIBRARIES ===== -->
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
+    <!-- ===== FIREBASE LIBRARIES ===== -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
-<!-- ===== FIREBASE CONFIG ===== -->
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyDQMu0hbTP1NFVMK1Z9GZk9JN19XNvqJ3g",
-    authDomain: "culturei-food-parcel-del-6a5cb.firebaseapp.com",
-    projectId: "culturei-food-parcel-del-6a5cb",
-    storageBucket: "culturei-food-parcel-del-6a5cb.firebasestorage.app",
-    messagingSenderId: "1045902648656",
-    appId: "1:1045902648656:web:5c582e4e3831b67e2fb855",
-    measurementId: "G-91BSVDG092"
-  };
-  
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
-</script>
+    <!-- ===== FIREBASE CONFIG ===== -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDQMu0hbTP1NFVMK1Z9GZk9JN19XNvqJ3g",
+            authDomain: "culturei-food-parcel-del-6a5cb.firebaseapp.com",
+            projectId: "culturei-food-parcel-del-6a5cb",
+            storageBucket: "culturei-food-parcel-del-6a5cb.firebasestorage.app",
+            messagingSenderId: "1045902648656",
+            appId: "1:1045902648656:web:5c582e4e3831b67e2fb855",
+            measurementId: "G-91BSVDGQ92"
+        };
 
-<!-- Google Maps temporarily disabled - using fallback instead -->
-<!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async></script> -->
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
+
+    <!-- Google Maps temporarily disabled - using fallback instead -->
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async></script> -->
+
+    <!-- ===== YOUR SCRIPT.JS ===== -->
+    <script src="script.js"></script>
 
 </body>
 </html>
