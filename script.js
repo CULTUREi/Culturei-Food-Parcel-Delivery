@@ -1,3 +1,18 @@
+// ===== FIREBASE CONFIG =====
+const firebaseConfig = {
+  apiKey: "AIzaSyDQWu0hbTP1NFVMKlZ9GZk9JN19XNvqJ3g",
+  authDomain: "culturei-food-parcel-del-6a5cb.firebaseapp.com",
+  projectId: "culturei-food-parcel-del-6a5cb",
+  storageBucket: "culturei-food-parcel-del-6a5cb.firebasestorage.app",
+  messagingSenderId: "1045902648656",
+  appId: "1:1045902648656:web:5c582e4e3831b67e2fb855",
+  measurementId: "G-91BSVDGQ92"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
 // ===== RESTAURANTS DATA =====
 const restaurants = [
     {
@@ -88,11 +103,84 @@ let favorites = JSON.parse(localStorage.getItem('culturei_favorites')) || [];
 let orderHistory = JSON.parse(localStorage.getItem('culturei_orders')) || [];
 let currentFilter = 'all';
 let searchQuery = '';
+let currentUser = null;
 
 // ===== DOM ELEMENTS =====
 const cartCount = document.getElementById('cartCount');
 const cartItems = document.getElementById('cartItems');
 const cartTotal = document.getElementById('cartTotal');
+
+// ===== AUTHENTICATION FUNCTIONS =====
+function openLogin() {
+    // Show a login/signup prompt
+    const email = prompt("Enter your email:");
+    if (!email) return;
+    
+    const password = prompt("Enter your password (min 6 chars):");
+    if (!password) return;
+    
+    const action = confirm("Click OK to Sign Up or Cancel to Sign In");
+    
+    if (action) {
+        // Sign Up
+        auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                currentUser = userCredential.user;
+                showNotification('✅ Account created! Welcome to Culturei! 🎉');
+                updateAuthUI();
+            })
+            .catch((error) => {
+                showNotification(`❌ Sign Up Error: ${error.message}`);
+            });
+    } else {
+        // Sign In
+        auth.signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                currentUser = userCredential.user;
+                showNotification('✅ Welcome back! 👋');
+                updateAuthUI();
+            })
+            .catch((error) => {
+                showNotification(`❌ Sign In Error: ${error.message}`);
+            });
+    }
+}
+
+function signOut() {
+    auth.signOut()
+        .then(() => {
+            currentUser = null;
+            showNotification('👋 Signed out successfully');
+            updateAuthUI();
+        })
+        .catch((error) => {
+            showNotification(`❌ Error: ${error.message}`);
+        });
+}
+
+function updateAuthUI() {
+    const signInBtn = document.querySelector('.btn-outline-light');
+    if (signInBtn) {
+        if (currentUser) {
+            signInBtn.innerHTML = `👤 ${currentUser.email}`;
+            signInBtn.onclick = signOut;
+        } else {
+            signInBtn.innerHTML = 'Sign In';
+            signInBtn.onclick = openLogin;
+        }
+    }
+}
+
+// Listen for auth state changes
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        currentUser = user;
+        showNotification(`👋 Hello ${user.email || 'User'}!`);
+    } else {
+        currentUser = null;
+    }
+    updateAuthUI();
+});
 
 // ===== RENDER RESTAURANTS =====
 function renderRestaurants() {
@@ -495,6 +583,26 @@ function initMap() {
     });
 }
 
+// ===== TRACK ORDER =====
+function trackOrder() {
+    const code = document.getElementById('trackingCode')?.value;
+    const result = document.getElementById('tracking-result');
+    
+    if (!code) {
+        result.innerHTML = '<p style="color: var(--accent-orange);">⚠️ Please enter a tracking code</p>';
+        return;
+    }
+    
+    result.innerHTML = `
+        <div style="margin-top: 1rem; padding: 1rem; background: var(--bg-card); border-radius: 10px; border-left: 4px solid var(--accent-orange);">
+            <p style="font-weight: 600;">📦 Tracking #${code}</p>
+            <p style="color: var(--text-muted);">Status: <span style="color: var(--accent-orange);">In Transit</span></p>
+            <p style="color: var(--text-muted);">Estimated delivery: 30-45 min</p>
+            <p style="color: var(--text-muted); font-size: 0.8rem;">📍 Last update: Cape Town, 10:32 AM</p>
+        </div>
+    `;
+}
+
 // ===== DRIVER APPLICATION =====
 function processDriverApplication(event) {
     event.preventDefault();
@@ -511,10 +619,6 @@ function processDriverApplication(event) {
 }
 
 // ===== OTHER FUNCTIONS =====
-function openLogin() {
-    showNotification('🚀 Sign in feature coming soon!');
-}
-
 function openDriver() {
     window.location.href = 'drivers.html';
 }
@@ -540,6 +644,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupSearch();
     setupFilters();
     setupDarkMode();
+    updateAuthUI();
 
     // Set active nav link
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
@@ -566,3 +671,5 @@ window.openOrder = openOrder;
 window.openParcel = openParcel;
 window.openPartner = openPartner;
 window.initMap = initMap;
+window.trackOrder = trackOrder;
+window.signOut = signOut;
