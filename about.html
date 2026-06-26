@@ -1,1 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Culturei - Contact Us</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        /* ===== CONTACT PAGE EXTRA STYLES ===== */
+        .contact-page {
+            padding: 3rem 0;
+        }
 
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .contact-info-card {
+            background: var(--bg-card);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .contact-info-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-info-card h2 span {
+            color: var(--accent-orange);
+        }
+
+        .contact-info-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .contact-detail:last-child {
+            border-bottom: none;
+        }
+
+        .contact-detail .icon {
+            font-size: 1.8rem;
+            color: var(--accent-orange);
+            width: 3rem;
+            text-align: center;
+        }
+
+        .contact-detail .info h4 {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .contact-detail .info p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .contact-form-card {
+            background: var(--bg-card);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .contact-form-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-orange);
+        }
+
+        .contact-form-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-form-card .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .contact-form-card .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: var(--text-primary);
+        }
+
+        .contact-form-card .form-group input,
+        .contact-form-card .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 60px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color var(--transition);
+            font-family: inherit;
+        }
+
+        .contact-form-card .form-group textarea {
+            border-radius: 1rem;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .contact-form-card .form-group input:focus,
+        .contact-form-card .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+        }
+
+        .contact-form-card .btn-primary {
+            width: 100%;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            font-size: 1.5rem;
+            transition: var(--transition);
+            color: var(--text-primary);
+        }
+
+        .social-links a:hover {
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+            transform: translateY(-3px);
+        }
+
+        /* ===== MAP PLACEHOLDER ===== */
+        .map-placeholder {
+            background: var(--bg-card);
+            border-radius: 1.5rem;
+            padding: 3rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+
+        .map-placeholder .icon {
+            font-size: 4rem;
+            color: var(--accent-orange);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .map-placeholder h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .map-placeholder p {
+            color: var(--text-secondary);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .contact-info-card,
+            .contact-form-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER (EXACTLY LIKE YOUR SITE) ===== -->
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                Culturei
+                <span class="tagline">Delivery Across Mzansi</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="restaurants.html">Restaurants</a></li>
+                    <li><a href="driver.html">Drivers</a></li>
+                    <li><a href="about.html" class="active">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="signin.html" class="btn-outline-light">Sign In</a>
+                <button class="dark-mode-toggle" id="darkModeToggle" aria-label="Toggle dark mode">🌙</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================ -->
+    <!-- CONTACT PAGE                                 -->
+    <!-- ============================================ -->
+    <section class="container contact-page">
+        <div style="text-align:center; margin-bottom:1rem;">
+            <h1 style="font-size:2.8rem; font-weight:800;">
+                Get in <span style="color:var(--accent-orange);">Touch</span>
+            </h1>
+            <p style="color:var(--text-secondary); font-size:1.2rem; max-width:500px; margin:0 auto;">
+                We'd love to hear from you! Reach out anytime.
+            </p>
+        </div>
+
+        <div class="contact-grid">
+            <!-- LEFT: Contact Info -->
+            <div class="contact-info-card">
+                <h2>📞 Contact <span>Info</span></h2>
+                <p>Here's how you can reach us</p>
+
+                <div class="contact-detail">
+                    <div class="icon">📍</div>
+                    <div class="info">
+                        <h4>Address</h4>
+                        <p>123 Main Street, Cape Town, 8001</p>
+                    </div>
+                </div>
+
+                <div class="contact-detail">
+                    <div class="icon">📧</div>
+                    <div class="info">
+                        <h4>Email</h4>
+                        <p>info@culturei.co.za</p>
+                    </div>
+                </div>
+
+                <div class="contact-detail">
+                    <div class="icon">📞</div>
+                    <div class="info">
+                        <h4>Phone</h4>
+                        <p>+27 82 123 4567</p>
+                    </div>
+                </div>
+
+                <div class="contact-detail">
+                    <div class="icon">🕐</div>
+                    <div class="info">
+                        <h4>Working Hours</h4>
+                        <p>Mon - Fri: 8am - 8pm<br />Sat - Sun: 9am - 6pm</p>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <a href="#" title="Facebook">📘</a>
+                    <a href="#" title="Instagram">📸</a>
+                    <a href="#" title="Twitter">🐦</a>
+                    <a href="#" title="WhatsApp">💬</a>
+                </div>
+            </div>
+
+            <!-- RIGHT: Contact Form -->
+            <div class="contact-form-card">
+                <h3>✉️ Send us a <span style="color:var(--accent-orange);">Message</span></h3>
+                <p>We'll get back to you within 24 hours</p>
+
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="contactName">Your Name</label>
+                        <input type="text" id="contactName" placeholder="e.g. Thabo Mokoena" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactEmail">Email Address</label>
+                        <input type="email" id="contactEmail" placeholder="e.g. thabo@email.com" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactSubject">Subject</label>
+                        <input type="text" id="contactSubject" placeholder="e.g. Delivery inquiry" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactMessage">Message</label>
+                        <textarea id="contactMessage" placeholder="Tell us how we can help..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        Send Message ✉️
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Map Placeholder -->
+        <div class="map-placeholder">
+            <span class="icon">🗺️</span>
+            <h3>Find Us Here</h3>
+            <p>123 Main Street, Cape Town, South Africa</p>
+            <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:0.5rem;">
+                🚗 We're right in the city center!
+            </p>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER (EXACTLY LIKE YOUR SITE) ===== -->
+    <footer>
+        <div class="container">
+            <div style="display:grid; grid-template-columns:2fr 1fr 1fr; gap:2rem; margin-bottom:2rem;">
+                <div>
+                    <h3 style="font-size:1.5rem; color:var(--accent-orange);">Culturei</h3>
+                    <p style="color:var(--text-secondary);">Delivery Across Mzansi</p>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:0.5rem;">
+                        Connecting restaurants, drivers, and customers across South Africa.
+                    </p>
+                </div>
+                <div>
+                    <h4 style="color:var(--text-white);">Quick Links</h4>
+                    <ul style="color:var(--text-secondary); list-style:none; padding:0;">
+                        <li><a href="index.html" style="color:var(--text-secondary);">Home</a></li>
+                        <li><a href="restaurants.html" style="color:var(--text-secondary);">Restaurants</a></li>
+                        <li><a href="driver.html" style="color:var(--text-secondary);">Drivers</a></li>
+                        <li><a href="about.html" style="color:var(--text-secondary);">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color:var(--text-white);">Contact</h4>
+                    <p style="color:var(--text-secondary);">📧 info@culturei.co.za</p>
+                    <p style="color:var(--text-secondary);">📞 +27 82 123 4567</p>
+                </div>
+            </div>
+            <hr style="border-color:var(--border-color);" />
+            <p style="text-align:center; color:var(--text-secondary); font-size:0.85rem; padding-top:1.5rem;">
+                &copy; 2026 Culturei. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ===== FIREBASE LIBRARIES ===== -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- ===== FIREBASE CONFIG ===== -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDQMu0hbTP1NFVMK1Z9GZk9JN19XNvqJ3g",
+            authDomain: "culturei-food-parcel-del-6a5cb.firebaseapp.com",
+            projectId: "culturei-food-parcel-del-6a5cb",
+            storageBucket: "culturei-food-parcel-del-6a5cb.firebasestorage.app",
+            messagingSenderId: "1045902648656",
+            appId: "1:1045902648656:web:5c582e4e3831b67e2fb855",
+            measurementId: "G-91BSVDG092"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        // ============================================
+        // CONTACT FORM - SAVES TO FIREBASE!
+        // ============================================
+
+        const db = firebase.firestore();
+
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('contactName').value.trim();
+            const email = document.getElementById('contactEmail').value.trim();
+            const subject = document.getElementById('contactSubject').value.trim();
+            const message = document.getElementById('contactMessage').value.trim();
+
+            if (!name || !email || !message) {
+                alert('Please fill in all required fields! 📝');
+                return;
+            }
+
+            // Save to Firebase
+            db.collection('contactMessages').add({
+                name: name,
+                email: email,
+                subject: subject || 'No subject',
+                message: message,
+                timestamp: new Date()
+            })
+            .then(() => {
+                alert('✅ Message sent! We\'ll get back to you soon.');
+                document.getElementById('contactForm').reset();
+            })
+            .catch((error) => {
+                alert('❌ Error: ' + error.message);
+            });
+        });
+
+        // ===== DARK MODE TOGGLE =====
+        const toggleBtn = document.getElementById('darkModeToggle');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', function() {
+                document.body.classList.toggle('light-mode');
+                this.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
+            });
+        }
+
+        console.log('📞 Contact page loaded!');
+    </script>
+
+</body>
+</html>
