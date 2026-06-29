@@ -241,7 +241,6 @@ function addToCart(restaurantId) {
     }
     
     updateCartUI();
-    updateFloatingCartBadge();
     showNotification(`${restaurant.name} added to cart! 🛒`);
 }
 
@@ -299,7 +298,6 @@ function updateQuantity(restaurantId, change) {
             removeFromCart(restaurantId);
         } else {
             updateCartUI();
-            updateFloatingCartBadge();
         }
     }
 }
@@ -308,7 +306,6 @@ function updateQuantity(restaurantId, change) {
 function removeFromCart(restaurantId) {
     cart = cart.filter(item => item.id !== restaurantId);
     updateCartUI();
-    updateFloatingCartBadge();
     showNotification('Item removed from cart');
 }
 
@@ -366,7 +363,6 @@ function processCheckout(event) {
         
         cart = [];
         updateCartUI();
-        updateFloatingCartBadge();
         renderOrderHistory();
         updateStats();
         
@@ -627,43 +623,6 @@ function openPartner() {
     showNotification('🤝 Partnership opportunities coming soon!');
 }
 
-// ==========================================
-// FLOATING CART BUTTON
-// ==========================================
-
-function createFloatingCart() {
-    // Check if floating cart already exists
-    if (document.querySelector('.floating-cart')) return;
-
-    // Get cart count
-    const count = document.getElementById('cartCount')?.textContent || '0';
-
-    // Create floating cart button
-    const btn = document.createElement('button');
-    btn.className = 'floating-cart pulse';
-    btn.innerHTML = `
-        <i class="fas fa-shopping-bag"></i>
-        Cart
-        <span class="cart-badge">${count}</span>
-    `;
-    btn.onclick = function() {
-        toggleCart();
-    };
-
-    // Add to body
-    document.body.appendChild(btn);
-}
-
-function updateFloatingCartBadge() {
-    const badge = document.querySelector('.floating-cart .cart-badge');
-    const count = document.getElementById('cartCount')?.textContent || '0';
-    if (badge) {
-        badge.textContent = count;
-    }
-}
-
-// ==========================================
-
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', function() {
     renderRestaurants();
@@ -674,7 +633,6 @@ document.addEventListener('DOMContentLoaded', function() {
     setupFilters();
     setupDarkMode();
     updateAuthUI();
-    createFloatingCart();
 
     // Set active nav link
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
@@ -704,5 +662,3 @@ window.openPartner = openPartner;
 window.initMap = initMap;
 window.trackOrder = trackOrder;
 window.signOut = signOut;
-window.createFloatingCart = createFloatingCart;
-window.updateFloatingCartBadge = updateFloatingCartBadge;
