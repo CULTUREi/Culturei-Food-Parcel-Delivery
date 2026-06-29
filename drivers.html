@@ -3,747 +3,187 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Culturei - Drivers Dashboard</title>
-    <link rel="stylesheet" href="style.css" />
-    <style>
-        /* ===== DRIVER PAGE EXTRA STYLES ===== */
-        .driver-login-section {
-            padding: 4rem 0;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .driver-login-card {
-            background: var(--bg-card);
-            border-radius: 1.5rem;
-            padding: 2.5rem;
-            border: 1px solid var(--border-color);
-            text-align: center;
-        }
-
-        .driver-login-card h2 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .driver-login-card h2 span {
-            color: var(--accent-orange);
-        }
-
-        .driver-login-card p {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-        }
-
-        .driver-login-card .form-group {
-            margin-bottom: 1rem;
-            text-align: left;
-        }
-
-        .driver-login-card .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-            color: var(--text-primary);
-        }
-
-        .driver-login-card .form-group input {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: 2px solid var(--border-color);
-            border-radius: 60px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-size: 1rem;
-            transition: border-color var(--transition);
-        }
-
-        .driver-login-card .form-group input:focus {
-            outline: none;
-            border-color: var(--accent-orange);
-        }
-
-        .driver-dashboard {
-            display: none;
-        }
-
-        .driver-dashboard.active {
-            display: block;
-        }
-
-        .driver-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .driver-stat-card {
-            background: var(--bg-card);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            text-align: center;
-            border: 1px solid var(--border-color);
-        }
-
-        .driver-stat-card .number {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--accent-orange);
-            display: block;
-        }
-
-        .driver-stat-card .label {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-
-        .orders-section {
-            margin-bottom: 2.5rem;
-        }
-
-        .orders-section h3 {
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-        }
-
-        .orders-section h3 span {
-            color: var(--accent-orange);
-        }
-
-        .order-card-driver {
-            background: var(--bg-card);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            border: 1px solid var(--border-color);
-            border-left: 4px solid var(--accent-orange);
-            transition: var(--transition);
-        }
-
-        .order-card-driver:hover {
-            border-color: var(--accent-orange);
-        }
-
-        .order-card-driver .order-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 0.5rem;
-        }
-
-        .order-card-driver .order-id {
-            font-weight: 700;
-            color: var(--accent-orange);
-        }
-
-        .order-card-driver .order-time {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-
-        .order-card-driver .order-items {
-            color: var(--text-secondary);
-            margin-bottom: 0.3rem;
-        }
-
-        .order-card-driver .order-total {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: var(--accent-orange);
-            margin-bottom: 0.5rem;
-        }
-
-        .order-card-driver .order-address {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .order-card-driver .order-address i {
-            color: var(--accent-orange);
-        }
-
-        .order-actions {
-            display: flex;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-        }
-
-        .btn-accept {
-            background: var(--accent-orange);
-            color: var(--primary-black);
-            border: none;
-            padding: 0.5rem 1.5rem;
-            border-radius: 60px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .btn-accept:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 20px rgba(232, 122, 32, 0.4);
-        }
-
-        .btn-pickup {
-            background: #2d8a4e;
-            color: white;
-            border: none;
-            padding: 0.5rem 1.5rem;
-            border-radius: 60px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .btn-pickup:hover {
-            transform: scale(1.05);
-        }
-
-        .btn-deliver {
-            background: #1a6fb5;
-            color: white;
-            border: none;
-            padding: 0.5rem 1.5rem;
-            border-radius: 60px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .btn-deliver:hover {
-            transform: scale(1.05);
-        }
-
-        .btn-logout {
-            background: transparent;
-            color: var(--text-secondary);
-            border: 1.5px solid var(--border-color);
-            padding: 0.5rem 1.5rem;
-            border-radius: 60px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .btn-logout:hover {
-            border-color: #e74c3c;
-            color: #e74c3c;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 0.2rem 0.8rem;
-            border-radius: 30px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .status-pending {
-            background: rgba(232, 122, 32, 0.2);
-            color: var(--accent-orange);
-        }
-
-        .status-accepted {
-            background: rgba(45, 138, 78, 0.2);
-            color: #2d8a4e;
-        }
-
-        .status-picked {
-            background: rgba(26, 111, 181, 0.2);
-            color: #1a6fb5;
-        }
-
-        .status-delivered {
-            background: rgba(45, 138, 78, 0.3);
-            color: #1a6b3a;
-        }
-
-        .no-orders {
-            text-align: center;
-            color: var(--text-secondary);
-            padding: 2rem;
-            font-size: 1.1rem;
-        }
-
-        .no-orders .icon {
-            font-size: 3rem;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            .driver-stats {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .order-card-driver .order-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.3rem;
-            }
-
-            .order-actions {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .order-actions button {
-                width: 100%;
-            }
-
-            .driver-login-card {
-                padding: 1.5rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .driver-stats {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <title>Culturei · Restaurants</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
 
-    <!-- ===== HEADER (EXACTLY LIKE YOUR SITE) ===== -->
+    <!-- ====== HEADER ====== -->
     <header>
         <div class="container header-container">
-            <a href="/index.html" class="logo">
-                Culturei
-                <span class="tagline">Delivery Across Mzansi</span>
-            </a>
+            <div class="logo">
+                <a href="/index.html" style="text-decoration:none; color:inherit;">Culture<span>i</span></a>
+                <span class="tagline">Delivery · Across Mzansi</span>
+            </div>
             <nav>
                 <ul>
                     <li><a href="/index.html">Home</a></li>
-                    <li><a href="/restaurants.html">Restaurants</a></li>
-                    <li><a href="/driver.html" class="active">Drivers</a></li>
-                    <li><a href="/about.html">Contact</a></li>
+                    <li><a href="/restaurants.html" class="active">Restaurants</a></li>
+                    <li><a href="/drivers.html">Drivers</a></li>
+                    <li><a href="/#contact">Contact</a></li>
                 </ul>
             </nav>
             <div class="header-actions">
-                <a href="/signin.html" class="btn-outline-light">Sign In</a>
-                <button class="dark-mode-toggle" id="darkModeToggle" aria-label="Toggle dark mode">🌙</button>
+                <button class="btn-outline-light" onclick="openLogin()">Sign In</button>
+                <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
             </div>
         </div>
     </header>
 
-    <!-- ============================================ -->
-    <!-- DRIVER LOGIN SECTION                         -->
-    <!-- ============================================ -->
-    <section class="container driver-login-section" id="loginSection">
-        <div class="driver-login-card">
-            <h2>🚗 Driver <span>Dashboard</span></h2>
-            <p>Sign in to view and accept delivery orders</p>
-            <div class="form-group">
-                <label for="driverName">Your Name</label>
-                <input type="text" id="driverName" placeholder="e.g. Thabo Mokoena" />
-            </div>
-            <button class="btn-primary" onclick="loginDriver()" style="width:100%;">
-                Sign In 🚀
-            </button>
-            <p style="margin-top:1rem; font-size:0.85rem; color:var(--text-secondary);">
-                ⚡ Orders appear in real-time once you're logged in
-            </p>
-        </div>
-    </section>
-
-    <!-- ============================================ -->
-    <!-- DRIVER DASHBOARD (HIDDEN UNTIL LOGIN)       -->
-    <!-- ============================================ -->
-    <section class="container driver-dashboard" id="dashboardSection">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:1.5rem;">
-            <h1 style="font-size:2rem;">
-                🚗 Welcome, <span id="driverNameDisplay" style="color:var(--accent-orange);">Driver</span>
-            </h1>
-            <button class="btn-logout" onclick="logoutDriver()">🚪 Logout</button>
-        </div>
-
-        <!-- Stats -->
-        <div class="driver-stats">
-            <div class="driver-stat-card">
-                <span class="number" id="statAvailable">0</span>
-                <span class="label">📦 Available Orders</span>
-            </div>
-            <div class="driver-stat-card">
-                <span class="number" id="statMyOrders">0</span>
-                <span class="label">🚚 My Deliveries</span>
-            </div>
-            <div class="driver-stat-card">
-                <span class="number" id="statCompleted">0</span>
-                <span class="label">✅ Completed</span>
-            </div>
-            <div class="driver-stat-card">
-                <span class="number" id="statEarnings">R0</span>
-                <span class="label">💰 Today's Earnings</span>
-            </div>
-        </div>
-
-        <!-- Available Orders -->
-        <div class="orders-section">
-            <h3>📦 Available <span>Orders</span></h3>
-            <div id="availableOrders">
-                <div class="no-orders">
-                    <span class="icon">🎯</span>
-                    No orders available right now<br />
-                    <span style="font-size:0.9rem;">Check back in a moment</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- My Deliveries -->
-        <div class="orders-section">
-            <h3>🚚 My <span>Deliveries</span></h3>
-            <div id="myDeliveries">
-                <div class="no-orders">
-                    <span class="icon">🛵</span>
-                    You haven't accepted any deliveries yet
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== FOOTER (EXACTLY LIKE YOUR SITE) ===== -->
-    <footer>
+    <!-- ====== RESTAURANTS PAGE ====== -->
+    <section class="restaurants-page">
         <div class="container">
-            <div class="footer-grid" style="display:grid; grid-template-columns:2fr 1fr 1fr; gap:2rem; margin-bottom:2rem;">
-                <div>
-                    <h3 style="font-size:1.5rem; color:var(--accent-orange);">Culturei</h3>
-                    <p style="color:var(--text-secondary);">Delivery Across Mzansi</p>
-                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:0.5rem;">
-                        Connecting restaurants, drivers, and customers across South Africa.
-                    </p>
+            <h2 class="section-title">Our <span>Restaurants</span></h2>
+            <p class="menu-subtitle">Discover authentic cultural cuisine from around South Africa.</p>
+            
+            <!-- Search Bar -->
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="🔍 Search restaurants or cuisine..." />
+                    <button id="clearSearch" class="clear-search">✕</button>
                 </div>
-                <div>
-                    <h4 style="color:var(--text-white);">Quick Links</h4>
-                    <ul style="color:var(--text-secondary);">
-                        <li><a href="/index.html" style="color:var(--text-secondary);">Home</a></li>
-                        <li><a href="/restaurants.html" style="color:var(--text-secondary);">Restaurants</a></li>
-                        <li><a href="/driver.html" style="color:var(--text-secondary);">Drivers</a></li>
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="all">All</button>
+                    <button class="filter-tab" data-filter="favorites">⭐ Favorites</button>
+                </div>
+            </div>
+
+            <div class="restaurant-grid" id="menuGrid">
+                <!-- Dynamically loaded by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== ORDER HISTORY ====== -->
+    <section class="order-history-section">
+        <div class="container">
+            <h2 class="section-title">📜 Your <span>Order History</span></h2>
+            <div id="orderHistoryList">
+                <p class="empty-orders">No orders yet. Start exploring!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== FOOTER ====== -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>Culture<span>i</span></h3>
+                    <p>Food &amp; Parcel Delivery · Across Mzansi</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/index.html">Home</a></li>
+                        <li><a href="/restaurants.html">Restaurants</a></li>
+                        <li><a href="/drivers.html">Drivers</a></li>
                     </ul>
                 </div>
-                <div>
-                    <h4 style="color:var(--text-white);">Contact</h4>
-                    <p style="color:var(--text-secondary);">📧 info@cultureideliveries.com</p>
-                    <p style="color:var(--text-secondary);">📞 +27 67 910 0022</p>
+                <div class="footer-contact">
+                    <h4>Contact Us</h4>
+                    <p><i class="fas fa-envelope"></i> hello@cultureideliveries.com</p>
+                    <p><i class="fas fa-phone"></i> +27 67 910 0022</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Cape Town, South Africa</p>
                 </div>
             </div>
-            <hr style="border-color:var(--border-color);" />
-            <p style="text-align:center; color:var(--text-secondary); font-size:0.85rem; padding-top:1.5rem;">
-                &copy; 2026 Culturei. All rights reserved.
-            </p>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Culturei. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
-    <!-- ===== FIREBASE LIBRARIES ===== -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <!-- ====== CART SIDEBAR ====== -->
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-bag"></i> Your Cart</h3>
+            <span class="close-cart" onclick="toggleCart()">&times;</span>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p class="empty-cart">Your cart is empty.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">R 0.00</span>
+            </div>
+            <button class="btn-checkout" onclick="openCheckout()">Proceed to Checkout</button>
+        </div>
+    </div>
 
-    <!-- ===== FIREBASE CONFIG ===== -->
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDQMu0hbTP1NFVMK1Z9GZk9JN19XNvqJ3g",
-            authDomain: "culturei-food-parcel-del-6a5cb.firebaseapp.com",
-            projectId: "culturei-food-parcel-del-6a5cb",
-            storageBucket: "culturei-food-parcel-del-6a5cb.firebasestorage.app",
-            messagingSenderId: "1045902648656",
-            appId: "1:1045902648656:web:5c582e4e3831b67e2fb855",
-            measurementId: "G-91BSVDG092"
-        };
+    <!-- ====== CHECKOUT MODAL ====== -->
+    <div class="overlay" id="checkoutOverlay" onclick="closeCheckout()"></div>
+    <div class="checkout-modal" id="checkoutModal">
+        <span class="close-modal" onclick="closeCheckout()">&times;</span>
+        <h2><i class="fas fa-lock"></i> Checkout</h2>
+        <form id="checkoutForm" onsubmit="processCheckout(event)">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="fullName" placeholder="e.g. Thabo Mokoena" required />
+            </div>
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" id="phoneNumber" placeholder="e.g. 082 123 4567" required />
+            </div>
+            <div class="form-group">
+                <label>Delivery Address</label>
+                <input type="text" id="deliveryAddress" placeholder="e.g. 123 Mandela Ave, Johannesburg" required />
+            </div>
+            <div class="form-group">
+                <label>Delivery Type</label>
+                <select id="deliveryType" required>
+                    <option value="">Select delivery type</option>
+                    <option value="food">Food Delivery</option>
+                    <option value="parcel">Parcel Delivery</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>City</label>
+                    <input type="text" id="city" placeholder="e.g. Cape Town" required />
+                </div>
+                <div class="form-group">
+                    <label>Postal Code</label>
+                    <input type="text" id="postalCode" placeholder="e.g. 8001" />
+                </div>
+            </div>
+            <button type="submit" class="btn-pay">
+                <span id="payText">Pay Now</span>
+                <span class="spinner" id="spinner"></span>
+            </button>
+        </form>
+    </div>
 
-        firebase.initializeApp(firebaseConfig);
-    </script>
+    <script src="/script.js"></script>
+<!-- FIREBASE LIBRARIES -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
 
-    <!-- ===== DRIVER JAVASCRIPT ===== -->
-    <script>
-        // ============================================
-        // DRIVER APP - FULL LOGIC
-        // ============================================
+<!-- FIREBASE CONFIG -->
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDQMu0hbTP1NFVMK1Z9GZk9JN19XNvqJ3g",
+  authDomain: "culturei-food-parcel-del-6a5cb.firebaseapp.com",
+  projectId: "culturei-food-parcel-del-6a5cb",
+  storageBucket: "culturei-food-parcel-del-6a5cb.firebasestorage.app",
+  messagingSenderId: "1045902648656",
+  appId: "1:1045902648656:web:5c582e4e3831b67e2fb855",
+  measurementId: "G-91BSVDG092"
+};
 
-        const db = firebase.firestore();
-        let currentDriver = null;
-        let unsubscribeOrders = null;
-
-        // ----- LOGIN -----
-        function loginDriver() {
-            const nameInput = document.getElementById('driverName');
-            const name = nameInput.value.trim();
-
-            if (!name) {
-                alert('Please enter your name! 🧑‍✈️');
-                nameInput.focus();
-                return;
-            }
-
-            currentDriver = name;
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('dashboardSection').classList.add('active');
-            document.getElementById('driverNameDisplay').textContent = name;
-
-            // Start listening for orders in REAL-TIME
-            startListening();
-
-            // Save driver login to Firebase (optional)
-            db.collection('drivers').add({
-                name: name,
-                loginTime: new Date(),
-                status: 'online'
-            }).catch(err => console.log('Driver login saved:', err));
-
-            console.log(`✅ ${name} logged in!`);
-        }
-
-        // ----- LOGOUT -----
-        function logoutDriver() {
-            if (unsubscribeOrders) {
-                unsubscribeOrders(); // Stop listening
-                unsubscribeOrders = null;
-            }
-
-            // Save logout
-            if (currentDriver) {
-                db.collection('drivers').add({
-                    name: currentDriver,
-                    logoutTime: new Date(),
-                    status: 'offline'
-                }).catch(err => console.log('Logout saved:', err));
-            }
-
-            currentDriver = null;
-            document.getElementById('loginSection').style.display = 'block';
-            document.getElementById('dashboardSection').classList.remove('active');
-            document.getElementById('driverName').value = '';
-            console.log('👋 Logged out');
-        }
-
-        // ----- START LISTENING FOR ORDERS (REAL-TIME) -----
-        function startListening() {
-            if (unsubscribeOrders) {
-                unsubscribeOrders();
-            }
-
-            // Listen to ALL orders in real-time
-            unsubscribeOrders = db.collection('orders')
-                .orderBy('timestamp', 'desc')
-                .onSnapshot((snapshot) => {
-                    const available = [];
-                    const myOrders = [];
-                    const completed = [];
-
-                    snapshot.forEach((doc) => {
-                        const order = doc.data();
-                        order.id = doc.id;
-
-                        // Convert Firestore timestamp to Date
-                        if (order.timestamp && order.timestamp.toDate) {
-                            order.timestamp = order.timestamp.toDate();
-                        }
-
-                        if (order.status === 'pending') {
-                            available.push(order);
-                        } else if (order.status === 'accepted' && order.driverAssigned === currentDriver) {
-                            myOrders.push(order);
-                        } else if (order.status === 'picked_up' && order.driverAssigned === currentDriver) {
-                            myOrders.push(order);
-                        } else if (order.status === 'delivered' && order.driverAssigned === currentDriver) {
-                            completed.push(order);
-                        }
-                    });
-
-                    // Update the UI
-                    displayAvailableOrders(available);
-                    displayMyOrders(myOrders);
-                    updateStats(available.length, myOrders.length, completed.length);
-                }, (error) => {
-                    console.error('❌ Firestore error:', error);
-                    alert('Error loading orders. Check your internet.');
-                });
-        }
-
-        // ----- DISPLAY AVAILABLE ORDERS -----
-        function displayAvailableOrders(orders) {
-            const div = document.getElementById('availableOrders');
-
-            if (orders.length === 0) {
-                div.innerHTML = `
-                    <div class="no-orders">
-                        <span class="icon">🎯</span>
-                        No orders available right now<br />
-                        <span style="font-size:0.9rem;">Check back in a moment</span>
-                    </div>
-                `;
-                return;
-            }
-
-            let html = '';
-            orders.forEach((order) => {
-                const items = order.items ? order.items.map(i => i.name).join(', ') : 'Unknown items';
-                const total = order.total ? order.total.toFixed(2) : '0.00';
-                const city = order.city || 'Unknown';
-                const time = order.timestamp ? order.timestamp.toLocaleTimeString() : 'Just now';
-
-                html += `
-                    <div class="order-card-driver">
-                        <div class="order-header">
-                            <span class="order-id">#${order.id.slice(0, 8)}</span>
-                            <span class="order-time">🕐 ${time}</span>
-                            <span class="status-badge status-pending">Pending</span>
-                        </div>
-                        <div class="order-items">📦 ${items}</div>
-                        <div class="order-total">💰 R${total}</div>
-                        <div class="order-address">📍 ${city}</div>
-                        <div class="order-actions">
-                            <button class="btn-accept" onclick="acceptOrder('${order.id}')">
-                                ✅ Accept Order
-                            </button>
-                        </div>
-                    </div>
-                `;
-            });
-
-            div.innerHTML = html;
-        }
-
-        // ----- DISPLAY MY ORDERS -----
-        function displayMyOrders(orders) {
-            const div = document.getElementById('myDeliveries');
-
-            if (orders.length === 0) {
-                div.innerHTML = `
-                    <div class="no-orders">
-                        <span class="icon">🛵</span>
-                        You haven't accepted any deliveries yet
-                    </div>
-                `;
-                return;
-            }
-
-            let html = '';
-            orders.forEach((order) => {
-                const items = order.items ? order.items.map(i => i.name).join(', ') : 'Unknown items';
-                const total = order.total ? order.total.toFixed(2) : '0.00';
-                const city = order.city || 'Unknown';
-                const status = order.status || 'unknown';
-
-                let statusBadge = '';
-                if (status === 'accepted') statusBadge = '<span class="status-badge status-accepted">Accepted</span>';
-                else if (status === 'picked_up') statusBadge = '<span class="status-badge status-picked">Picked Up</span>';
-                else if (status === 'delivered') statusBadge = '<span class="status-badge status-delivered">Delivered</span>';
-                else statusBadge = `<span class="status-badge">${status}</span>`;
-
-                let actions = '';
-                if (status === 'accepted') {
-                    actions = `
-                        <button class="btn-pickup" onclick="updateOrder('${order.id}', 'picked_up')">
-                            📦 Picked Up
-                        </button>
-                    `;
-                } else if (status === 'picked_up') {
-                    actions = `
-                        <button class="btn-deliver" onclick="updateOrder('${order.id}', 'delivered')">
-                            ✅ Delivered
-                        </button>
-                    `;
-                } else if (status === 'delivered') {
-                    actions = `<span style="color:var(--text-secondary);">✅ Completed</span>`;
-                }
-
-                html += `
-                    <div class="order-card-driver">
-                        <div class="order-header">
-                            <span class="order-id">#${order.id.slice(0, 8)}</span>
-                            ${statusBadge}
-                        </div>
-                        <div class="order-items">📦 ${items}</div>
-                        <div class="order-total">💰 R${total}</div>
-                        <div class="order-address">📍 ${city}</div>
-                        <div class="order-actions">
-                            ${actions}
-                        </div>
-                    </div>
-                `;
-            });
-
-            div.innerHTML = html;
-        }
-
-        // ----- ACCEPT ORDER -----
-        function acceptOrder(orderId) {
-            if (!confirm('Accept this order? 🚗')) return;
-
-            db.collection('orders').doc(orderId).update({
-                status: 'accepted',
-                driverAssigned: currentDriver,
-                acceptedAt: new Date()
-            })
-                .then(() => {
-                    alert('✅ Order accepted! Go pick it up! 🚗');
-                })
-                .catch((error) => {
-                    alert('❌ Error: ' + error.message);
-                });
-        }
-
-        // ----- UPDATE ORDER STATUS -----
-        function updateOrder(orderId, status) {
-            const statusMap = {
-                'picked_up': 'Picked up! 📦',
-                'delivered': 'Delivered! ✅'
-            };
-
-            if (!confirm(`Mark as ${statusMap[status] || status}?`)) return;
-
-            db.collection('orders').doc(orderId).update({
-                status: status,
-                updatedAt: new Date()
-            })
-                .then(() => {
-                    alert(`✅ Order ${statusMap[status] || status}`);
-                })
-                .catch((error) => {
-                    alert('❌ Error: ' + error.message);
-                });
-        }
-
-        // ----- UPDATE STATS -----
-        function updateStats(available, myOrders, completed) {
-            document.getElementById('statAvailable').textContent = available;
-            document.getElementById('statMyOrders').textContent = myOrders;
-            document.getElementById('statCompleted').textContent = completed;
-
-            // Simple earnings calculation (R50 per delivery)
-            const earnings = completed * 50;
-            document.getElementById('statEarnings').textContent = `R${earnings}`;
-        }
-
-        // ----- ENTER KEY TO LOGIN -----
-        document.addEventListener('DOMContentLoaded', function() {
-            const nameInput = document.getElementById('driverName');
-            if (nameInput) {
-                nameInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        loginDriver();
-                    }
-                });
-                nameInput.focus();
-            }
-
-            // Dark mode toggle (matches your existing site)
-            const toggleBtn = document.getElementById('darkModeToggle');
-            if (toggleBtn) {
-                toggleBtn.addEventListener('click', function() {
-                    document.body.classList.toggle('light-mode');
-                    this.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
-                });
-            }
-        });
-
-        console.log('🚗 Driver app loaded!');
-    </script>
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
+</script>
 
 </body>
 </html>
