@@ -241,6 +241,7 @@ function addToCart(restaurantId) {
     }
     
     updateCartUI();
+    updateFloatingCartBadge();
     showNotification(`${restaurant.name} added to cart! 🛒`);
 }
 
@@ -298,6 +299,7 @@ function updateQuantity(restaurantId, change) {
             removeFromCart(restaurantId);
         } else {
             updateCartUI();
+            updateFloatingCartBadge();
         }
     }
 }
@@ -306,6 +308,7 @@ function updateQuantity(restaurantId, change) {
 function removeFromCart(restaurantId) {
     cart = cart.filter(item => item.id !== restaurantId);
     updateCartUI();
+    updateFloatingCartBadge();
     showNotification('Item removed from cart');
 }
 
@@ -363,6 +366,7 @@ function processCheckout(event) {
         
         cart = [];
         updateCartUI();
+        updateFloatingCartBadge();
         renderOrderHistory();
         updateStats();
         
@@ -477,7 +481,7 @@ function showNotification(message) {
     toast.innerHTML = message;
     toast.style.cssText = `
         position: fixed;
-        bottom: 20px;
+        bottom: 100px;
         right: 20px;
         background: var(--accent-orange);
         color: var(--primary-black);
@@ -608,11 +612,11 @@ function processDriverApplication(event) {
 
 // ===== OTHER FUNCTIONS =====
 function openDriver() {
-    window.location.href = 'drivers.html';
+    window.location.href = '/drivers.html';
 }
 
 function openOrder() {
-    window.location.href = 'restaurants.html';
+    window.location.href = '/restaurants.html';
 }
 
 function openParcel() {
@@ -622,6 +626,43 @@ function openParcel() {
 function openPartner() {
     showNotification('🤝 Partnership opportunities coming soon!');
 }
+
+// ==========================================
+// FLOATING CART BUTTON
+// ==========================================
+
+function createFloatingCart() {
+    // Check if floating cart already exists
+    if (document.querySelector('.floating-cart')) return;
+
+    // Get cart count
+    const count = document.getElementById('cartCount')?.textContent || '0';
+
+    // Create floating cart button
+    const btn = document.createElement('button');
+    btn.className = 'floating-cart pulse';
+    btn.innerHTML = `
+        <i class="fas fa-shopping-bag"></i>
+        Cart
+        <span class="cart-badge">${count}</span>
+    `;
+    btn.onclick = function() {
+        toggleCart();
+    };
+
+    // Add to body
+    document.body.appendChild(btn);
+}
+
+function updateFloatingCartBadge() {
+    const badge = document.querySelector('.floating-cart .cart-badge');
+    const count = document.getElementById('cartCount')?.textContent || '0';
+    if (badge) {
+        badge.textContent = count;
+    }
+}
+
+// ==========================================
 
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', function() {
@@ -633,11 +674,13 @@ document.addEventListener('DOMContentLoaded', function() {
     setupFilters();
     setupDarkMode();
     updateAuthUI();
+    createFloatingCart();
 
     // Set active nav link
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     document.querySelectorAll('nav ul li a').forEach(link => {
-        if (link.getAttribute('href') === currentPage) {
+        if (link.getAttribute('href') === currentPage || 
+            link.getAttribute('href') === '/' + currentPage) {
             link.classList.add('active');
         }
     });
@@ -661,3 +704,5 @@ window.openPartner = openPartner;
 window.initMap = initMap;
 window.trackOrder = trackOrder;
 window.signOut = signOut;
+window.createFloatingCart = createFloatingCart;
+window.updateFloatingCartBadge = updateFloatingCartBadge;
