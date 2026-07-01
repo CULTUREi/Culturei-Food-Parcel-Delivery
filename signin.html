@@ -252,7 +252,7 @@
             </div>
 
             <div class="social-auth">
-                <button onclick="alert('Google sign in coming soon!')">🔵 Google</button>
+                <button id="googleSignInBtn">🔵 Google</button>
                 <button onclick="alert('Facebook sign in coming soon!')">📘 Facebook</button>
             </div>
 
@@ -395,6 +395,47 @@
                 });
         });
 
+        // ============================================
+        // GOOGLE SIGN-IN (ADDED)
+        // ============================================
+
+        const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+        document.getElementById('googleSignInBtn').addEventListener('click', function() {
+            const btn = this;
+            btn.textContent = '⏳ Loading...';
+            btn.disabled = true;
+
+            auth.signInWithPopup(googleProvider)
+                .then((result) => {
+                    const user = result.user;
+                    alert(`✅ Welcome, ${user.displayName || user.email}!`);
+
+                    // Save to Firestore
+                    db.collection('users').doc(user.uid).set({
+                        email: user.email,
+                        name: user.displayName || 'User',
+                        photoURL: user.photoURL || '',
+                        lastLogin: new Date()
+                    }, { merge: true });
+
+                    btn.textContent = '✅ Signed In!';
+                    
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                })
+                .catch((error) => {
+                    let message = '❌ Error: ' + error.message;
+                    if (error.code === 'auth/popup-closed-by-user') {
+                        message = '❌ Sign-in cancelled. Please try again.';
+                    }
+                    alert(message);
+                    btn.textContent = '🔵 Google';
+                    btn.disabled = false;
+                });
+        });
+
         // ===== DARK MODE TOGGLE =====
         const toggleBtn = document.getElementById('darkModeToggle');
         if (toggleBtn) {
@@ -404,7 +445,7 @@
             });
         }
 
-        console.log('🔐 Sign In page loaded!');
+        console.log('🔐 Sign In page loaded with Google Sign-In!');
     </script>
 
 </body>
