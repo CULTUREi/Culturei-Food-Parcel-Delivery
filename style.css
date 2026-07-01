@@ -1023,6 +1023,81 @@ footer {
     100% { box-shadow: 0 8px 30px rgba(232, 122, 32, 0.5); }
 }
 
+/* ========================================== */
+/* GOOGLE SIGN-IN BUTTON STYLES              */
+/* ========================================== */
+
+.google-btn {
+    background: #fff;
+    color: #757575;
+    border: 1.5px solid var(--border-color) !important;
+    padding: 0.7rem 1.5rem;
+    border-radius: 60px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    font-size: 0.95rem;
+}
+
+.google-btn:hover {
+    background: #f5f5f5;
+    border-color: var(--accent-orange) !important;
+    color: var(--accent-orange);
+}
+
+.google-btn svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.google-btn-small {
+    background: transparent;
+    border: 1.5px solid var(--border-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-white);
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.google-btn-small:hover {
+    border-color: var(--accent-orange);
+    color: var(--accent-orange);
+}
+
+body.light-mode .google-btn {
+    background: #f5f5f5;
+    color: #1a1a1a;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light-mode .google-btn:hover {
+    background: #ffffff;
+    border-color: var(--accent-orange) !important;
+}
+
+body.light-mode .google-btn-small {
+    color: #1a1a1a;
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .google-btn-small:hover {
+    border-color: var(--accent-orange);
+    color: var(--accent-orange);
+}
+
 @media (max-width: 768px) {
     .floating-cart {
         padding: 12px 20px;
