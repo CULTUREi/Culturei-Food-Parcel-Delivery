@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Culturei - Pay</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+</head>
+<body>
+    <div class="container" style="max-width:500px; margin:3rem auto;">
+        <h2>Pay with <span style="color:#e87a20;">Culturei</span></h2>
+        <form id="paymentForm">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="fullName" placeholder="Thabo Mokoena" required />
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" placeholder="customer@email.com" required />
+            </div>
+            <div class="form-group">
+                <label>Amount (R)</label>
+                <input type="number" id="amount" placeholder="100" required />
+            </div>
+            <button type="submit" class="btn-primary" style="width:100%;">Pay Now 💳</button>
+        </form>
+    </div>
+
+    <script>
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value.trim();
+        const amount = parseFloat(document.getElementById('amount').value.trim()) * 100;
+        const fullName = document.getElementById('fullName').value.trim();
+
+        if (!email || !amount || !fullName) {
+            alert('Fill all fields!');
+            return;
+        }
+
+        const handler = PaystackPop.setup({
+            key: 'pk_test_YOUR_KEY_HERE', // ⬅️ Replace with your key
+            email: email,
+            amount: amount,
+            currency: 'ZAR',
+            ref: 'TRX-' + Math.random().toString(36).substring(2, 15),
+            metadata: { custom_fields: [{ display_name: "Full Name", value: fullName }] },
+            callback: function(response) {
+                alert('✅ Payment successful! Reference: ' + response.reference);
+            },
+            onClose: function() {
+                alert('❌ Payment cancelled.');
+            }
+        });
+        handler.openIframe();
+    });
+    </script>
+</body>
+</html>
