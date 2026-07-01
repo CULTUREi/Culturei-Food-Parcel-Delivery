@@ -1,5 +1,6 @@
 // ===== FIREBASE AUTH =====
 const auth = firebase.auth();
+const db = firebase.firestore();
 
 // ===== RESTAURANTS DATA =====
 const restaurants = [
@@ -98,9 +99,59 @@ const cartCount = document.getElementById('cartCount');
 const cartItems = document.getElementById('cartItems');
 const cartTotal = document.getElementById('cartTotal');
 
+// ============================================
+// GOOGLE SIGN-IN (ADDED - NO STYLES CHANGED)
+// ============================================
+
+function googleSignIn() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    
+    auth.signInWithPopup(provider)
+        .then((result) => {
+            const user = result.user;
+            currentUser = user;
+            showNotification(`✅ Welcome, ${user.displayName || user.email}!`);
+            
+            // Save to Firestore
+            db.collection('users').doc(user.uid).set({
+                email: user.email,
+                name: user.displayName || 'User',
+                photoURL: user.photoURL || '',
+                lastLogin: new Date()
+            }, { merge: true });
+            
+            updateAuthUI();
+            
+            // Redirect if on signin page
+            if (window.location.pathname.includes('signin.html')) {
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            }
+        })
+        .catch((error) => {
+            let message = '❌ Error: ' + error.message;
+            if (error.code === 'auth/popup-closed-by-user') {
+                message = '❌ Sign-in cancelled. Please try again.';
+            }
+            showNotification(message);
+        });
+}
+
+// Make Google Sign-In globally available
+window.googleSignIn = googleSignIn;
+
 // ===== AUTHENTICATION FUNCTIONS =====
 function openLogin() {
-    // Show a login/signup prompt
+    // Show login options
+    const choice = confirm("Click OK for Email/Password or Cancel for Google Sign-In");
+    
+    if (!choice) {
+        // Google Sign-In
+        googleSignIn();
+        return;
+    }
+    
     const email = prompt("Enter your email:");
     if (!email) return;
     
@@ -148,6 +199,8 @@ function signOut() {
 
 function updateAuthUI() {
     const signInBtn = document.querySelector('.btn-outline-light');
+    const googleBtn = document.getElementById('googleSignInBtn');
+    
     if (signInBtn) {
         if (currentUser) {
             signInBtn.innerHTML = `👤 ${currentUser.email}`;
@@ -157,13 +210,26 @@ function updateAuthUI() {
             signInBtn.onclick = openLogin;
         }
     }
+    
+    // Update Google button if it exists
+    if (googleBtn) {
+        if (currentUser) {
+            googleBtn.innerHTML = `✅ ${currentUser.displayName || currentUser.email}`;
+            googleBtn.disabled = true;
+            googleBtn.style.opacity = '0.7';
+        } else {
+            googleBtn.innerHTML = '🔵 Sign in with Google';
+            googleBtn.disabled = false;
+            googleBtn.style.opacity = '1';
+        }
+    }
 }
 
 // Listen for auth state changes
 auth.onAuthStateChanged((user) => {
     if (user) {
         currentUser = user;
-        showNotification(`👋 Hello ${user.email || 'User'}!`);
+        showNotification(`👋 Hello ${user.displayName || user.email || 'User'}!`);
     } else {
         currentUser = null;
     }
@@ -695,3 +761,4 @@ window.trackOrder = trackOrder;
 window.signOut = signOut;
 window.createFloatingCart = createFloatingCart;
 window.updateFloatingCartBadge = updateFloatingCartBadge;
+window.googleSignIn = googleSignIn;
