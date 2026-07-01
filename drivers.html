@@ -462,10 +462,10 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-    <!-- ===== FIREBASE CONFIG ===== -->
+    <!-- ===== FIREBASE CONFIG (UPDATED) ===== -->
     <script>
         const firebaseConfig = {
-            apiKey: "AIzaSyDQWu0hbTP1NFVMKlZ9GZk9JN19XNvqJ3g",
+            apiKey: "AIzaSyACwmaTgi075VasbpyAVNt_jzPDwvmqMc4",
             authDomain: "culturei-food-parcel-del-6a5cb.firebaseapp.com",
             projectId: "culturei-food-parcel-del-6a5cb",
             storageBucket: "culturei-food-parcel-del-6a5cb.firebasestorage.app",
@@ -499,7 +499,6 @@
                     currentUserEmail = user.email || user.displayName || 'Driver';
                     const name = user.displayName || user.email || 'Driver';
                     
-                    // Auto-login with Google
                     loginDriverWithName(name);
                 })
                 .catch((error) => {
@@ -511,17 +510,15 @@
                 });
         }
 
-        // ----- LOGIN WITH NAME (called by both manual and Google) -----
+        // ----- LOGIN WITH NAME -----
         function loginDriverWithName(name) {
             currentDriver = name;
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('dashboardSection').classList.add('active');
             document.getElementById('driverNameDisplay').textContent = name;
 
-            // Start listening for orders in REAL-TIME
             startListening();
 
-            // Save driver login to Firebase
             db.collection('drivers').add({
                 name: name,
                 email: currentUserEmail || 'manual',
@@ -549,11 +546,10 @@
         // ----- LOGOUT -----
         function logoutDriver() {
             if (unsubscribeOrders) {
-                unsubscribeOrders(); // Stop listening
+                unsubscribeOrders();
                 unsubscribeOrders = null;
             }
 
-            // Save logout
             if (currentDriver) {
                 db.collection('drivers').add({
                     name: currentDriver,
@@ -562,7 +558,6 @@
                 }).catch(err => console.log('Logout saved:', err));
             }
 
-            // Sign out from Firebase Auth if Google signed in
             if (auth.currentUser) {
                 auth.signOut().catch(err => console.log('Auth signout:', err));
             }
@@ -575,13 +570,12 @@
             console.log('👋 Logged out');
         }
 
-        // ----- START LISTENING FOR ORDERS (REAL-TIME) -----
+        // ----- START LISTENING FOR ORDERS -----
         function startListening() {
             if (unsubscribeOrders) {
                 unsubscribeOrders();
             }
 
-            // Listen to ALL orders in real-time
             unsubscribeOrders = db.collection('orders')
                 .orderBy('timestamp', 'desc')
                 .onSnapshot((snapshot) => {
@@ -593,7 +587,6 @@
                         const order = doc.data();
                         order.id = doc.id;
 
-                        // Convert Firestore timestamp to Date
                         if (order.timestamp && order.timestamp.toDate) {
                             order.timestamp = order.timestamp.toDate();
                         }
@@ -609,7 +602,6 @@
                         }
                     });
 
-                    // Update the UI
                     displayAvailableOrders(available);
                     displayMyOrders(myOrders);
                     updateStats(available.length, myOrders.length, completed.length);
@@ -711,102 +703,4 @@
                     <div class="order-card-driver">
                         <div class="order-header">
                             <span class="order-id">#${order.id.slice(0, 8)}</span>
-                            ${statusBadge}
-                        </div>
-                        <div class="order-items">📦 ${items}</div>
-                        <div class="order-total">💰 R${total}</div>
-                        <div class="order-address">📍 ${city}</div>
-                        <div class="order-actions">
-                            ${actions}
-                        </div>
-                    </div>
-                `;
-            });
-
-            div.innerHTML = html;
-        }
-
-        // ----- ACCEPT ORDER -----
-        function acceptOrder(orderId) {
-            if (!confirm('Accept this order? 🚗')) return;
-
-            db.collection('orders').doc(orderId).update({
-                status: 'accepted',
-                driverAssigned: currentDriver,
-                driverEmail: currentUserEmail || 'manual',
-                acceptedAt: new Date()
-            })
-                .then(() => {
-                    alert('✅ Order accepted! Go pick it up! 🚗');
-                })
-                .catch((error) => {
-                    alert('❌ Error: ' + error.message);
-                });
-        }
-
-        // ----- UPDATE ORDER STATUS -----
-        function updateOrder(orderId, status) {
-            const statusMap = {
-                'picked_up': 'Picked up! 📦',
-                'delivered': 'Delivered! ✅'
-            };
-
-            if (!confirm(`Mark as ${statusMap[status] || status}?`)) return;
-
-            db.collection('orders').doc(orderId).update({
-                status: status,
-                updatedAt: new Date()
-            })
-                .then(() => {
-                    alert(`✅ Order ${statusMap[status] || status}`);
-                })
-                .catch((error) => {
-                    alert('❌ Error: ' + error.message);
-                });
-        }
-
-        // ----- UPDATE STATS -----
-        function updateStats(available, myOrders, completed) {
-            document.getElementById('statAvailable').textContent = available;
-            document.getElementById('statMyOrders').textContent = myOrders;
-            document.getElementById('statCompleted').textContent = completed;
-
-            // Simple earnings calculation (R50 per delivery)
-            const earnings = completed * 50;
-            document.getElementById('statEarnings').textContent = `R${earnings}`;
-        }
-
-        // ----- ENTER KEY TO LOGIN -----
-        document.addEventListener('DOMContentLoaded', function() {
-            const nameInput = document.getElementById('driverName');
-            if (nameInput) {
-                nameInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        loginDriver();
-                    }
-                });
-                nameInput.focus();
-            }
-
-            // Dark mode toggle (matches your existing site)
-            const toggleBtn = document.getElementById('darkModeToggle');
-            if (toggleBtn) {
-                toggleBtn.addEventListener('click', function() {
-                    document.body.classList.toggle('light-mode');
-                    this.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
-                });
-            }
-        });
-
-        // Expose functions globally
-        window.googleDriverSignIn = googleDriverSignIn;
-        window.loginDriver = loginDriver;
-        window.logoutDriver = logoutDriver;
-        window.acceptOrder = acceptOrder;
-        window.updateOrder = updateOrder;
-
-        console.log('🚗 Driver app loaded with Google Sign-In!');
-    </script>
-
-</body>
-</html>
+                            ${
