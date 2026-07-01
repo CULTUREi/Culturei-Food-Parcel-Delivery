@@ -703,4 +703,99 @@
                     <div class="order-card-driver">
                         <div class="order-header">
                             <span class="order-id">#${order.id.slice(0, 8)}</span>
-                            ${
+                            ${statusBadge}
+                        </div>
+                        <div class="order-items">📦 ${items}</div>
+                        <div class="order-total">💰 R${total}</div>
+                        <div class="order-address">📍 ${city}</div>
+                        <div class="order-actions">
+                            ${actions}
+                        </div>
+                    </div>
+                `;
+            });
+
+            div.innerHTML = html;
+        }
+
+        // ----- ACCEPT ORDER -----
+        function acceptOrder(orderId) {
+            if (!confirm('Accept this order? 🚗')) return;
+
+            db.collection('orders').doc(orderId).update({
+                status: 'accepted',
+                driverAssigned: currentDriver,
+                driverEmail: currentUserEmail || 'manual',
+                acceptedAt: new Date()
+            })
+                .then(() => {
+                    alert('✅ Order accepted! Go pick it up! 🚗');
+                })
+                .catch((error) => {
+                    alert('❌ Error: ' + error.message);
+                });
+        }
+
+        // ----- UPDATE ORDER STATUS -----
+        function updateOrder(orderId, status) {
+            const statusMap = {
+                'picked_up': 'Picked up! 📦',
+                'delivered': 'Delivered! ✅'
+            };
+
+            if (!confirm(`Mark as ${statusMap[status] || status}?`)) return;
+
+            db.collection('orders').doc(orderId).update({
+                status: status,
+                updatedAt: new Date()
+            })
+                .then(() => {
+                    alert(`✅ Order ${statusMap[status] || status}`);
+                })
+                .catch((error) => {
+                    alert('❌ Error: ' + error.message);
+                });
+        }
+
+        // ----- UPDATE STATS -----
+        function updateStats(available, myOrders, completed) {
+            document.getElementById('statAvailable').textContent = available;
+            document.getElementById('statMyOrders').textContent = myOrders;
+            document.getElementById('statCompleted').textContent = completed;
+
+            const earnings = completed * 50;
+            document.getElementById('statEarnings').textContent = `R${earnings}`;
+        }
+
+        // ----- ENTER KEY TO LOGIN -----
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameInput = document.getElementById('driverName');
+            if (nameInput) {
+                nameInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        loginDriver();
+                    }
+                });
+                nameInput.focus();
+            }
+
+            const toggleBtn = document.getElementById('darkModeToggle');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function() {
+                    document.body.classList.toggle('light-mode');
+                    this.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
+                });
+            }
+        });
+
+        window.googleDriverSignIn = googleDriverSignIn;
+        window.loginDriver = loginDriver;
+        window.logoutDriver = logoutDriver;
+        window.acceptOrder = acceptOrder;
+        window.updateOrder = updateOrder;
+
+        console.log('🚗 Driver app loaded with Google Sign-In!');
+    </script>
+
+</body>
+</html>
