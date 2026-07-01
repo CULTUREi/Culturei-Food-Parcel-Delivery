@@ -304,17 +304,17 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-    <!-- ===== FIREBASE CONFIG ===== -->
+    <!-- ===== FIREBASE CONFIG (UPDATED) ===== -->
     <script>
-       const firebaseConfig = {
-  apiKey: "AIzaSyDQWu0hbTP1NFVMKlZ9GZk9JN19XNvqJ3g",
-  authDomain: "culturei-food-parcel-del-6a5cb.firebaseapp.com",
-  projectId: "culturei-food-parcel-del-6a5cb",
-  storageBucket: "culturei-food-parcel-del-6a5cb.firebasestorage.app",
-  messagingSenderId: "1045902648656",
-  appId: "1:1045902648656:web:5c582e4e3831b67e2fb855",
-  measurementId: "G-91BSVDGQ92"
-};
+        const firebaseConfig = {
+            apiKey: "AIzaSyACwmaTgi075VasbpyAVNt_jzPDwvmqMc4",
+            authDomain: "culturei-food-parcel-del-6a5cb.firebaseapp.com",
+            projectId: "culturei-food-parcel-del-6a5cb",
+            storageBucket: "culturei-food-parcel-del-6a5cb.firebasestorage.app",
+            messagingSenderId: "1045902648656",
+            appId: "1:1045902648656:web:5c582e4e3831b67e2fb855",
+            measurementId: "G-91BSVDGQ92"
+        };
 
         firebase.initializeApp(firebaseConfig);
 
@@ -328,9 +328,8 @@
         // Check if user is already signed in
         auth.onAuthStateChanged((user) => {
             if (user) {
-                // User is signed in
                 console.log('✅ Signed in as:', user.email);
-                document.querySelector('.auth-card .subtitle').textContent = 
+                document.querySelector('.auth-card .subtitle').textContent =
                     `✅ Signed in as ${user.email}`;
                 document.querySelector('.auth-card .btn-primary').textContent = '✅ Already Signed In';
                 document.querySelector('.auth-card .btn-primary').style.opacity = '0.7';
@@ -350,17 +349,14 @@
                 return;
             }
 
-            // Show loading
             btn.textContent = '⏳ Signing in...';
             btn.disabled = true;
 
-            // Sign in with Firebase
             auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
                     alert(`✅ Welcome back, ${user.email}!`);
 
-                    // Save login to Firestore
                     db.collection('users').doc(user.uid).set({
                         email: user.email,
                         lastLogin: new Date(),
@@ -370,15 +366,12 @@
                     btn.textContent = '✅ Signed In!';
                     btn.disabled = false;
 
-                    // Redirect after 2 seconds
                     setTimeout(() => {
                         window.location.href = 'index.html';
                     }, 2000);
                 })
                 .catch((error) => {
                     let message = '❌ Error: ' + error.message;
-
-                    // Friendly error messages
                     if (error.code === 'auth/user-not-found') {
                         message = '❌ No account found with this email. Please sign up first.';
                     } else if (error.code === 'auth/wrong-password') {
@@ -388,7 +381,6 @@
                     } else if (error.code === 'auth/too-many-requests') {
                         message = '❌ Too many failed attempts. Please try again later.';
                     }
-
                     alert(message);
                     btn.textContent = 'Sign In 🚀';
                     btn.disabled = false;
@@ -396,7 +388,7 @@
         });
 
         // ============================================
-        // GOOGLE SIGN-IN (ADDED)
+        // GOOGLE SIGN-IN
         // ============================================
 
         const googleProvider = new firebase.auth.GoogleAuthProvider();
@@ -411,7 +403,6 @@
                     const user = result.user;
                     alert(`✅ Welcome, ${user.displayName || user.email}!`);
 
-                    // Save to Firestore
                     db.collection('users').doc(user.uid).set({
                         email: user.email,
                         name: user.displayName || 'User',
@@ -420,7 +411,7 @@
                     }, { merge: true });
 
                     btn.textContent = '✅ Signed In!';
-                    
+
                     setTimeout(() => {
                         window.location.href = 'index.html';
                     }, 2000);
