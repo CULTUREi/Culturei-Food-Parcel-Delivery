@@ -1222,14 +1222,24 @@ body.light-mode .google-btn-small:hover {
     border-color: var(--accent-orange);
     color: var(--accent-orange);
 }
-/* FORCE CENTER CART */
+
+/* ========================================== */
+/* FORCE CENTER CART                         */
+/* ========================================== */
+
 .cart-sidebar {
     position: fixed !important;
     top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) scale(0.9) !important;
+    width: 90% !important;
+    max-width: 480px !important;
+    right: auto !important;
+    bottom: auto !important;
 }
 
 .cart-sidebar.open {
     transform: translate(-50%, -50%) scale(1) !important;
+    opacity: 1 !important;
+    pointer-events: all !important;
 }
