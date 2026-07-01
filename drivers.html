@@ -339,6 +339,24 @@
         <div class="driver-login-card">
             <h2>🚗 Driver <span>Dashboard</span></h2>
             <p>Sign in to view and accept delivery orders</p>
+            
+            <!-- Google Sign-In Button -->
+            <button class="google-btn" onclick="googleDriverSignIn()" style="margin-bottom:1rem;">
+                <svg width="20" height="20" viewBox="0 0 48 48">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                </svg>
+                Sign in with Google
+            </button>
+
+            <div style="display:flex; align-items:center; gap:1rem; margin:1rem 0; color:var(--text-secondary);">
+                <hr style="flex:1; border-color:var(--border-color);" />
+                <span>or</span>
+                <hr style="flex:1; border-color:var(--border-color);" />
+            </div>
+
             <div class="form-group">
                 <label for="driverName">Your Name</label>
                 <input type="text" id="driverName" placeholder="e.g. Thabo Mokoena" />
@@ -441,18 +459,19 @@
 
     <!-- ===== FIREBASE LIBRARIES ===== -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
     <!-- ===== FIREBASE CONFIG ===== -->
     <script>
         const firebaseConfig = {
-            apiKey: "AlzaSyDQwU6hbtP1NFVMKLZ9GZk9JN19XNvqJ3g",
+            apiKey: "AIzaSyDQWu0hbTP1NFVMKlZ9GZk9JN19XNvqJ3g",
             authDomain: "culturei-food-parcel-del-6a5cb.firebaseapp.com",
             projectId: "culturei-food-parcel-del-6a5cb",
             storageBucket: "culturei-food-parcel-del-6a5cb.firebasestorage.app",
             messagingSenderId: "1045902648656",
             appId: "1:1045902648656:web:5c582e4e3831b67e2fb855",
-            measurementId: "G-91BSVDG092"
+            measurementId: "G-91BSVDGQ92"
         };
 
         firebase.initializeApp(firebaseConfig);
@@ -461,14 +480,59 @@
     <!-- ===== DRIVER JAVASCRIPT ===== -->
     <script>
         // ============================================
-        // DRIVER APP - FULL LOGIC
+        // DRIVER APP - FULL LOGIC WITH GOOGLE SIGN-IN
         // ============================================
 
+        const auth = firebase.auth();
         const db = firebase.firestore();
         let currentDriver = null;
         let unsubscribeOrders = null;
+        let currentUserEmail = '';
 
-        // ----- LOGIN -----
+        // ----- GOOGLE SIGN-IN FOR DRIVERS -----
+        function googleDriverSignIn() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    const user = result.user;
+                    currentUserEmail = user.email || user.displayName || 'Driver';
+                    const name = user.displayName || user.email || 'Driver';
+                    
+                    // Auto-login with Google
+                    loginDriverWithName(name);
+                })
+                .catch((error) => {
+                    let message = '❌ Error: ' + error.message;
+                    if (error.code === 'auth/popup-closed-by-user') {
+                        message = '❌ Sign-in cancelled. Please try again.';
+                    }
+                    alert(message);
+                });
+        }
+
+        // ----- LOGIN WITH NAME (called by both manual and Google) -----
+        function loginDriverWithName(name) {
+            currentDriver = name;
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('dashboardSection').classList.add('active');
+            document.getElementById('driverNameDisplay').textContent = name;
+
+            // Start listening for orders in REAL-TIME
+            startListening();
+
+            // Save driver login to Firebase
+            db.collection('drivers').add({
+                name: name,
+                email: currentUserEmail || 'manual',
+                loginTime: new Date(),
+                status: 'online'
+            }).catch(err => console.log('Driver login saved:', err));
+
+            console.log(`✅ ${name} logged in!`);
+        }
+
+        // ----- MANUAL LOGIN -----
         function loginDriver() {
             const nameInput = document.getElementById('driverName');
             const name = nameInput.value.trim();
@@ -479,22 +543,7 @@
                 return;
             }
 
-            currentDriver = name;
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('dashboardSection').classList.add('active');
-            document.getElementById('driverNameDisplay').textContent = name;
-
-            // Start listening for orders in REAL-TIME
-            startListening();
-
-            // Save driver login to Firebase (optional)
-            db.collection('drivers').add({
-                name: name,
-                loginTime: new Date(),
-                status: 'online'
-            }).catch(err => console.log('Driver login saved:', err));
-
-            console.log(`✅ ${name} logged in!`);
+            loginDriverWithName(name);
         }
 
         // ----- LOGOUT -----
@@ -513,7 +562,13 @@
                 }).catch(err => console.log('Logout saved:', err));
             }
 
+            // Sign out from Firebase Auth if Google signed in
+            if (auth.currentUser) {
+                auth.signOut().catch(err => console.log('Auth signout:', err));
+            }
+
             currentDriver = null;
+            currentUserEmail = '';
             document.getElementById('loginSection').style.display = 'block';
             document.getElementById('dashboardSection').classList.remove('active');
             document.getElementById('driverName').value = '';
@@ -678,6 +733,7 @@
             db.collection('orders').doc(orderId).update({
                 status: 'accepted',
                 driverAssigned: currentDriver,
+                driverEmail: currentUserEmail || 'manual',
                 acceptedAt: new Date()
             })
                 .then(() => {
@@ -742,7 +798,14 @@
             }
         });
 
-        console.log('🚗 Driver app loaded!');
+        // Expose functions globally
+        window.googleDriverSignIn = googleDriverSignIn;
+        window.loginDriver = loginDriver;
+        window.logoutDriver = logoutDriver;
+        window.acceptOrder = acceptOrder;
+        window.updateOrder = updateOrder;
+
+        console.log('🚗 Driver app loaded with Google Sign-In!');
     </script>
 
 </body>
