@@ -101,19 +101,7 @@
         <div class="container">
             <h2 class="section-title">Track Your <span>Delivery</span></h2>
             <p class="map-subtitle">See where your order is in real-time across South Africa.</p>
-            <div id="map-container">
-                <div id="map"></div>
-                <div id="map-fallback" style="display: none; text-align: center; padding: 3rem; background: var(--bg-card); border-radius: 1.5rem; border: 1px solid var(--border-color);">
-                    <i class="fas fa-map-marked-alt" style="font-size: 4rem; color: var(--accent-orange); margin-bottom: 1rem;"></i>
-                    <h3 style="margin-bottom: 0.5rem;">📍 Delivery Tracking</h3>
-                    <p style="color: var(--text-muted);">Enter your delivery code to track your order in real-time.</p>
-                    <div style="display: flex; gap: 0.5rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap;">
-                        <input type="text" id="trackingCode" placeholder="Enter tracking code" style="padding: 0.7rem 1.2rem; border-radius: 30px; border: 2px solid var(--border-color); background: var(--bg-primary); color: var(--text-primary); min-width: 200px;">
-                        <button onclick="trackOrder()" class="btn-primary" style="padding: 0.7rem 2rem;">Track</button>
-                    </div>
-                    <div id="tracking-result" style="margin-top: 1rem;"></div>
-                </div>
-            </div>
+            <div id="map" style="width:100%; height:450px; border-radius:1.5rem; border:1px solid var(--border-color); background:var(--bg-card);"></div>
         </div>
     </section>
 
@@ -239,7 +227,7 @@
     <!-- ===== FIREBASE CONFIG ===== -->
     <script>
         const firebaseConfig = {
-            apiKey: "AIzaSyDQWu0hbTP1NFVMKLZ9GZk9JN19XNvqJ3g",
+            apiKey: "AIzaSyDQWu0hbTP1NFVMKlZ9GZk9JN19XNvqJ3g",
             authDomain: "culturei-food-parcel-del-6a5cb.firebaseapp.com",
             projectId: "culturei-food-parcel-del-6a5cb",
             storageBucket: "culturei-food-parcel-del-6a5cb.firebasestorage.app",
@@ -252,8 +240,8 @@
         firebase.analytics();
     </script>
 
-    <!-- Google Maps temporarily disabled - using fallback instead -->
-    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async></script> -->
+    <!-- ===== GOOGLE MAPS ===== -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDrjYu9GyJ0xFiXyIzSwoED_l-S3V0aDGo&callback=initMap" async></script>
 
     <!-- ===== YOUR SCRIPT.JS ===== -->
     <script src="/script.js"></script>
