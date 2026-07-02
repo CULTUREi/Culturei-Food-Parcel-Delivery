@@ -6,6 +6,33 @@
     <title>Culturei Delivery · Food & Parcel Delivery | South Africa</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="/style.css" />
+    <style>
+        /* ===== ANIMATED CARDS - MATCHES YOUR DARK THEME ===== */
+        .feature-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: default;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-12px) scale(1.03);
+            box-shadow: 0 20px 50px rgba(232, 122, 32, 0.25);
+            border-color: #e87a20;
+        }
+
+        .feature-card .icon {
+            display: inline-block;
+            animation: iconBounce 2.5s infinite;
+        }
+
+        .feature-card:nth-child(2) .icon { animation-delay: 0.3s; }
+        .feature-card:nth-child(3) .icon { animation-delay: 0.6s; }
+        .feature-card:nth-child(4) .icon { animation-delay: 0.9s; }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+    </style>
 </head>
 <body>
 
@@ -67,7 +94,7 @@
         </div>
     </section>
 
-    <!-- ====== FEATURES SECTION ====== -->
+    <!-- ====== FEATURES SECTION - ANIMATED ====== -->
     <section class="features-section">
         <div class="container">
             <h2 class="section-title">Why <span>Culturei</span>?</h2>
@@ -224,7 +251,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-    <!-- ===== FIREBASE CONFIG (UPDATED) ===== -->
+    <!-- ===== FIREBASE CONFIG ===== -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyACwmaTgi075VasbpyAVNt_jzPDwvmqMc4",
@@ -240,7 +267,7 @@
         firebase.analytics();
     </script>
 
-    <!-- ===== GOOGLE MAPS (UPDATED) ===== -->
+    <!-- ===== GOOGLE MAPS ===== -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDrjYu9GyJ0xFiXyIzSwoED_l-S3V0aDGo&callback=initMap" async></script>
 
     <!-- ===== YOUR SCRIPT.JS ===== -->
