@@ -405,7 +405,10 @@ nav ul li a.active {
     color: var(--text-muted);
 }
 
-/* ===== FEATURES SECTION ===== */
+/* ========================================== */
+/* FEATURES SECTION - ANIMATED CARDS         */
+/* ========================================== */
+
 .features-section {
     padding: 4rem 0;
     border-top: 1px solid var(--border-color);
@@ -428,25 +431,65 @@ nav ul li a.active {
     gap: 2rem;
 }
 
+/* ---- ANIMATED FEATURE CARDS ---- */
 .feature-card {
     background: var(--bg-card);
     border-radius: 1.5rem;
     padding: 2.2rem 1.8rem;
     text-align: center;
-    transition: var(--transition);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border: 1px solid var(--border-color);
+    cursor: default;
+    position: relative;
 }
 
 .feature-card:hover {
-    transform: translateY(-6px);
+    transform: translateY(-12px) scale(1.03);
     border-color: var(--accent-orange);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 50px rgba(232, 122, 32, 0.25);
 }
 
+/* Icon bounce animation */
 .feature-card .icon {
+    display: inline-block;
     font-size: 2.8rem;
     color: var(--accent-orange);
     margin-bottom: 0.75rem;
+    animation: iconBounce 2.5s ease-in-out infinite;
+}
+
+.feature-card:nth-child(2) .icon { animation-delay: 0.3s; }
+.feature-card:nth-child(3) .icon { animation-delay: 0.6s; }
+.feature-card:nth-child(4) .icon { animation-delay: 0.9s; }
+
+@keyframes iconBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* Glow pulse on hover */
+.feature-card::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 1.5rem;
+    background: linear-gradient(135deg, transparent 40%, var(--accent-orange) 50%, transparent 60%);
+    background-size: 300% 300%;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: -1;
+    filter: blur(8px);
+}
+
+.feature-card:hover::after {
+    opacity: 0.3;
+    animation: glowPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .feature-card h3 {
@@ -988,12 +1031,12 @@ footer {
 
 /* Cart sidebar - centered */
 .cart-sidebar {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.9);
-    width: 90%;
-    max-width: 480px;
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) scale(0.9) !important;
+    width: 90% !important;
+    max-width: 480px !important;
     max-height: 85vh;
     background: var(--bg-card);
     border-radius: 1.5rem;
@@ -1005,12 +1048,14 @@ footer {
     pointer-events: none;
     overflow-y: auto;
     border: 1px solid var(--border-color);
+    right: auto !important;
+    bottom: auto !important;
 }
 
 .cart-sidebar.open {
     opacity: 1;
     pointer-events: all;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%) scale(1) !important;
 }
 
 /* Cart header */
@@ -1224,22 +1269,128 @@ body.light-mode .google-btn-small:hover {
 }
 
 /* ========================================== */
-/* FORCE CENTER CART                         */
+/* CHECKOUT MODAL                            */
 /* ========================================== */
 
-.cart-sidebar {
-    position: fixed !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) scale(0.9) !important;
-    width: 90% !important;
-    max-width: 480px !important;
-    right: auto !important;
-    bottom: auto !important;
+.checkout-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 90%;
+    max-width: 500px;
+    max-height: 85vh;
+    background: var(--bg-card);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    z-index: 10001;
+    transition: all 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
 }
 
-.cart-sidebar.open {
-    transform: translate(-50%, -50%) scale(1) !important;
-    opacity: 1 !important;
-    pointer-events: all !important;
+.checkout-modal.open {
+    opacity: 1;
+    pointer-events: all;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.close-modal {
+    float: right;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: var(--transition);
+    background: none;
+    border: none;
+    padding: 0 0.5rem;
+}
+
+.close-modal:hover {
+    color: var(--accent-orange);
+}
+
+.checkout-modal h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent-orange);
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 0.8rem;
+    font-size: 1rem;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: border-color var(--transition);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent-orange);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.btn-pay {
+    width: 100%;
+    background: var(--accent-orange);
+    color: var(--primary-black);
+    border: none;
+    padding: 0.9rem;
+    border-radius: 60px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+}
+
+.btn-pay:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(232, 122, 32, 0.4);
+}
+
+.spinner {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 3px solid var(--primary-black);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.spinner.active {
+    display: inline-block;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
