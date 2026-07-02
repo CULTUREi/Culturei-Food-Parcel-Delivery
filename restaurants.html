@@ -25,6 +25,11 @@
                 </ul>
             </nav>
             <div class="header-actions">
+                <!-- ===== CART ICON ===== -->
+                <div class="cart-icon" onclick="toggleCart()">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
                 <button class="btn-outline-light" onclick="openLogin()">Sign In</button>
                 <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
                     <i class="fas fa-moon"></i>
@@ -91,8 +96,8 @@
                 </div>
                 <div class="footer-contact">
                     <h4>Contact Us</h4>
-                    <p><i class="fas fa-envelope"></i> hello@cultureideliveries.com</p>
-                    <p><i class="fas fa-phone"></i> +27 67 910 0022</p>
+                    <p><a href="mailto:hello@culturei.co.za" style="color:inherit; text-decoration:none;"><i class="fas fa-envelope"></i> hello@culturei.co.za</a></p>
+                    <p><a href="tel:+27679100022" style="color:inherit; text-decoration:none;"><i class="fas fa-phone"></i> +27 67 910 0022</a></p>
                     <p><i class="fas fa-map-marker-alt"></i> Cape Town, South Africa</p>
                 </div>
             </div>
