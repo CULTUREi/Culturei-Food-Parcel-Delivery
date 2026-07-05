@@ -448,13 +448,29 @@ nav ul li a.active {
     box-shadow: 0 20px 50px rgba(232, 122, 32, 0.2);
 }
 
-/* Icon bounce animation */
+/* ===== FIX IMAGE SIZING IN FEATURE CARDS ===== */
 .feature-card .icon {
-    display: inline-block;
-    font-size: 2.8rem;
-    color: var(--accent-orange);
-    margin-bottom: 0.75rem;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 18px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-primary);
     animation: iconBounce 2.5s ease-in-out infinite;
+}
+
+.feature-card .icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover .icon img {
+    transform: scale(1.05);
 }
 
 .feature-card:nth-child(2) .icon { animation-delay: 0.3s; }
