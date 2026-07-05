@@ -18,40 +18,6 @@
             box-shadow: 0 20px 50px rgba(232, 122, 32, 0.25);
             border-color: #e87a20;
         }
-
-        .feature-card .icon {
-            display: inline-block;
-            animation: iconBounce 2.5s infinite;
-        }
-
-        .feature-card:nth-child(2) .icon { animation-delay: 0.3s; }
-        .feature-card:nth-child(3) .icon { animation-delay: 0.6s; }
-        .feature-card:nth-child(4) .icon { animation-delay: 0.9s; }
-
-        @keyframes iconBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-
-        /* ===== IMAGE STYLES INSIDE ICON ===== */
-        .feature-card .icon img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            border-radius: 18px;
-            margin-bottom: 20px;
-        }
-
-        /* ===== HERO IMAGE STYLES ===== */
-        .hero-image img {
-            width: 100%;
-            height: 100%;
-            max-height: 450px;
-            object-fit: cover;
-            border-radius: 1.5rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--border-color);
-        }
     </style>
 </head>
 <body>
@@ -135,7 +101,7 @@
                     <p>Your order is delivered one at a time - no stops, no delays.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="icon"><img src="assets/images/live tracking.png" alt="Live Tracking"></div>
+                    <div class="icon"><img src="assets/images/live-tracking.png" alt="Live Tracking"></div>
                     <h3>Live Tracking</h3>
                     <p>Track your order in real-time and message your driver directly.</p>
                 </div>
