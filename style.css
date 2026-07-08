@@ -448,7 +448,6 @@ nav ul li a.active {
     box-shadow: 0 20px 50px rgba(232, 122, 32, 0.2);
 }
 
-/* ===== FIX IMAGE SIZING IN FEATURE CARDS ===== */
 .feature-card .icon {
     width: 100%;
     height: 200px;
@@ -645,70 +644,158 @@ nav ul li a.active {
     color: var(--primary-black);
 }
 
+/* ===== RESTAURANT GRID - UPDATED WITH IMAGES ===== */
 .restaurant-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
     margin-top: 2rem;
 }
 
+/* Restaurant Cards with Images */
 .restaurant-card {
     background: var(--bg-card);
-    border-radius: 1.2rem;
-    padding: 1.5rem;
-    text-align: center;
-    transition: var(--transition);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 1px solid var(--border-color);
-    cursor: pointer;
+    cursor: default;
 }
 
 .restaurant-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
     border-color: var(--accent-orange);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
 }
 
-.restaurant-card .icon {
-    font-size: 2.5rem;
-    color: var(--accent-orange);
-    margin-bottom: 0.5rem;
+.restaurant-image {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    background: var(--bg-primary);
 }
 
-.restaurant-card h4 {
-    font-weight: 600;
-    font-size: 1.05rem;
+.restaurant-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
 }
 
-.restaurant-card p {
-    color: var(--text-secondary);
-    font-size: 0.8rem;
-}
-
-.restaurant-card .price {
-    display: block;
-    color: var(--accent-orange);
-    font-weight: 700;
-    margin: 0.5rem 0;
-}
-
-.restaurant-card .btn-add {
-    background: var(--accent-orange);
-    color: var(--primary-black);
-    border: none;
-    padding: 0.4rem 1.2rem;
-    border-radius: 30px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.restaurant-card .btn-add:hover {
+.restaurant-card:hover .restaurant-image img {
     transform: scale(1.05);
 }
 
-.restaurant-card .btn-add.added {
-    background: #2d8a4e;
-    color: white;
+.featured-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--accent-orange);
+    color: var(--primary-black);
+    padding: 4px 14px;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    z-index: 2;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 10px rgba(232, 122, 32, 0.3);
+}
+
+.restaurant-info {
+    padding: 1.2rem 1.2rem 1.5rem;
+}
+
+.restaurant-info h4 {
+    margin: 0 0 4px 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.restaurant-info > p {
+    margin: 0 0 8px 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.restaurant-rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.restaurant-rating span {
+    font-size: 0.9rem;
+}
+
+.price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent-orange);
+    display: block;
+    margin: 8px 0 12px;
+}
+
+.restaurant-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.btn-add {
+    flex: 1;
+    background: var(--accent-orange);
+    border: none;
+    padding: 10px 16px;
+    border-radius: 60px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--primary-black);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-add:hover {
+    background: #d96a1a;
+    transform: scale(1.02);
+    box-shadow: 0 4px 15px rgba(232, 122, 32, 0.3);
+}
+
+.btn-add:active {
+    transform: scale(0.97);
+}
+
+.btn-favorite {
+    background: transparent;
+    border: 2px solid var(--border-color);
+    border-radius: 60px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-favorite:hover {
+    border-color: #f5c542;
+    transform: scale(1.05);
+}
+
+.btn-favorite.favorited {
+    border-color: #f5c542;
+    background: rgba(245, 197, 66, 0.1);
+}
+
+.btn-favorite:active {
+    transform: scale(0.9);
 }
 
 /* ===== DRIVERS PAGE ===== */
@@ -996,11 +1083,79 @@ footer {
     margin-bottom: 2rem;
 }
 
+.footer-brand h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.footer-brand h3 span {
+    color: var(--accent-orange);
+}
+
+.footer-brand p {
+    color: var(--text-secondary);
+    margin: 0.5rem 0 1rem;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-links a {
+    color: var(--text-secondary);
+    transition: var(--transition);
+    font-size: 1.2rem;
+}
+
+.social-links a:hover {
+    color: var(--accent-orange);
+}
+
+.footer-links h4,
+.footer-contact h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    color: var(--text-white);
+}
+
+.footer-links ul li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-links ul li a {
+    color: var(--text-secondary);
+    transition: var(--transition);
+}
+
+.footer-links ul li a:hover {
+    color: var(--accent-orange);
+}
+
+.footer-contact p {
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.footer-contact p i {
+    color: var(--accent-orange);
+    margin-right: 0.5rem;
+    width: 1.2rem;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
 /* ========================================== */
 /* CART SIDEBAR - CENTERED MODAL             */
 /* ========================================== */
 
-/* Overlay - dark background when cart is open */
 .overlay {
     position: fixed;
     top: 0;
@@ -1019,7 +1174,6 @@ footer {
     pointer-events: all;
 }
 
-/* Cart sidebar - centered */
 .cart-sidebar {
     position: fixed !important;
     top: 50% !important;
@@ -1048,7 +1202,6 @@ footer {
     transform: translate(-50%, -50%) scale(1) !important;
 }
 
-/* Cart header */
 .cart-header {
     display: flex;
     justify-content: space-between;
@@ -1077,7 +1230,6 @@ footer {
     color: var(--accent-orange);
 }
 
-/* Cart items */
 .cart-items {
     flex: 1;
     overflow-y: auto;
@@ -1146,7 +1298,6 @@ footer {
     padding: 2rem 0;
 }
 
-/* Cart footer */
 .cart-footer {
     padding-top: 1rem;
     border-top: 1px solid var(--border-color);
