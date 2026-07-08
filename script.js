@@ -2,13 +2,13 @@
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// ===== RESTAURANTS DATA =====
+// ===== RESTAURANTS DATA WITH IMAGES =====
 const restaurants = [
     {
         id: 1,
         name: "Hello Tomato",
         cuisine: "Pizza & Pasta",
-        icon: "fa-pizza-slice",
+        image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop",
         price: 85.00,
         rating: 4.5,
         deliveryTime: "30-45 min",
@@ -18,7 +18,7 @@ const restaurants = [
         id: 2,
         name: "Bento",
         cuisine: "Asian Fusion",
-        icon: "fa-fish",
+        image: "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&h=300&fit=crop",
         price: 95.00,
         rating: 4.7,
         deliveryTime: "25-40 min",
@@ -28,7 +28,7 @@ const restaurants = [
         id: 3,
         name: "Afrikoa",
         cuisine: "African Cuisine",
-        icon: "fa-drumstick-bite",
+        image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop",
         price: 75.00,
         rating: 4.3,
         deliveryTime: "35-50 min",
@@ -38,7 +38,7 @@ const restaurants = [
         id: 4,
         name: "Cinnabon",
         cuisine: "Bakery & Sweets",
-        icon: "fa-cookie-bite",
+        image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400&h=300&fit=crop",
         price: 65.00,
         rating: 4.6,
         deliveryTime: "20-30 min",
@@ -48,7 +48,7 @@ const restaurants = [
         id: 5,
         name: "Braai Republic",
         cuisine: "Traditional Braai",
-        icon: "fa-fire",
+        image: "https://images.unsplash.com/photo-1529042410759-befb1204b468?w=400&h=300&fit=crop",
         price: 110.00,
         rating: 4.8,
         deliveryTime: "40-55 min",
@@ -58,7 +58,7 @@ const restaurants = [
         id: 6,
         name: "Cape Malay",
         cuisine: "Malay Cuisine",
-        icon: "fa-pepper-hot",
+        image: "https://images.unsplash.com/photo-1588286840104-8957b019727f?w=400&h=300&fit=crop",
         price: 90.00,
         rating: 4.4,
         deliveryTime: "30-45 min",
@@ -68,7 +68,7 @@ const restaurants = [
         id: 7,
         name: "Sushi & Co",
         cuisine: "Japanese",
-        icon: "fa-utensils",
+        image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&h=300&fit=crop",
         price: 120.00,
         rating: 4.9,
         deliveryTime: "25-35 min",
@@ -78,7 +78,7 @@ const restaurants = [
         id: 8,
         name: "Curry House",
         cuisine: "Indian",
-        icon: "fa-pepper-hot",
+        image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&h=300&fit=crop",
         price: 80.00,
         rating: 4.2,
         deliveryTime: "35-50 min",
@@ -100,7 +100,7 @@ const cartItems = document.getElementById('cartItems');
 const cartTotal = document.getElementById('cartTotal');
 
 // ============================================
-// GOOGLE SIGN-IN (ADDED - NO STYLES CHANGED)
+// GOOGLE SIGN-IN
 // ============================================
 
 function googleSignIn() {
@@ -112,7 +112,6 @@ function googleSignIn() {
             currentUser = user;
             showNotification(`✅ Welcome, ${user.displayName || user.email}!`);
             
-            // Save to Firestore
             db.collection('users').doc(user.uid).set({
                 email: user.email,
                 name: user.displayName || 'User',
@@ -122,7 +121,6 @@ function googleSignIn() {
             
             updateAuthUI();
             
-            // Redirect if on signin page
             if (window.location.pathname.includes('signin.html')) {
                 setTimeout(() => {
                     window.location.href = 'index.html';
@@ -138,16 +136,13 @@ function googleSignIn() {
         });
 }
 
-// Make Google Sign-In globally available
 window.googleSignIn = googleSignIn;
 
 // ===== AUTHENTICATION FUNCTIONS =====
 function openLogin() {
-    // Show login options
     const choice = confirm("Click OK for Email/Password or Cancel for Google Sign-In");
     
     if (!choice) {
-        // Google Sign-In
         googleSignIn();
         return;
     }
@@ -161,7 +156,6 @@ function openLogin() {
     const action = confirm("Click OK to Sign Up or Cancel to Sign In");
     
     if (action) {
-        // Sign Up
         auth.createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 currentUser = userCredential.user;
@@ -172,7 +166,6 @@ function openLogin() {
                 showNotification(`❌ Sign Up Error: ${error.message}`);
             });
     } else {
-        // Sign In
         auth.signInWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 currentUser = userCredential.user;
@@ -211,7 +204,6 @@ function updateAuthUI() {
         }
     }
     
-    // Update Google button if it exists
     if (googleBtn) {
         if (currentUser) {
             googleBtn.innerHTML = `✅ ${currentUser.displayName || currentUser.email}`;
@@ -225,7 +217,6 @@ function updateAuthUI() {
     }
 }
 
-// Listen for auth state changes
 auth.onAuthStateChanged((user) => {
     if (user) {
         currentUser = user;
@@ -236,14 +227,13 @@ auth.onAuthStateChanged((user) => {
     updateAuthUI();
 });
 
-// ===== RENDER RESTAURANTS =====
+// ===== RENDER RESTAURANTS WITH IMAGES =====
 function renderRestaurants() {
     const grid = document.getElementById('menuGrid') || document.getElementById('restaurantGrid');
     if (!grid) return;
 
     let filteredRestaurants = restaurants;
 
-    // Apply search filter
     if (searchQuery) {
         filteredRestaurants = filteredRestaurants.filter(r => 
             r.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -251,7 +241,6 @@ function renderRestaurants() {
         );
     }
 
-    // Apply favorites filter
     if (currentFilter === 'favorites') {
         filteredRestaurants = filteredRestaurants.filter(r => favorites.includes(r.id));
     }
@@ -268,23 +257,28 @@ function renderRestaurants() {
 
     grid.innerHTML = filteredRestaurants.map(restaurant => `
         <div class="restaurant-card" data-id="${restaurant.id}">
-            <div class="icon"><i class="fas ${restaurant.icon}"></i></div>
-            <h4>${restaurant.name}</h4>
-            <p>${restaurant.cuisine}</p>
-            <div class="restaurant-rating">
-                <i class="fas fa-star" style="color: #f5c542;"></i>
-                <span>${restaurant.rating}</span>
-                <span style="color: var(--text-muted); font-size: 0.8rem;">(${restaurant.deliveryTime})</span>
+            <div class="restaurant-image">
+                <img src="${restaurant.image}" alt="${restaurant.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x300/2d2d2d/ffffff?text=${restaurant.name}'" />
+                ${restaurant.featured ? '<span class="featured-badge">⭐ Featured</span>' : ''}
             </div>
-            <span class="price">R${restaurant.price.toFixed(2)}</span>
-            <div class="restaurant-actions">
-                <button class="btn-add" onclick="addToCart(${restaurant.id})">
-                    <i class="fas fa-plus"></i> Add
-                </button>
-                <button class="btn-favorite ${favorites.includes(restaurant.id) ? 'favorited' : ''}" 
-                        onclick="toggleFavorite(${restaurant.id})">
-                    ${favorites.includes(restaurant.id) ? '⭐' : '☆'}
-                </button>
+            <div class="restaurant-info">
+                <h4>${restaurant.name}</h4>
+                <p>${restaurant.cuisine}</p>
+                <div class="restaurant-rating">
+                    <i class="fas fa-star" style="color: #f5c542;"></i>
+                    <span>${restaurant.rating}</span>
+                    <span style="color: var(--text-muted); font-size: 0.8rem;">(${restaurant.deliveryTime})</span>
+                </div>
+                <span class="price">R${restaurant.price.toFixed(2)}</span>
+                <div class="restaurant-actions">
+                    <button class="btn-add" onclick="addToCart(${restaurant.id})">
+                        <i class="fas fa-plus"></i> Add to Cart
+                    </button>
+                    <button class="btn-favorite ${favorites.includes(restaurant.id) ? 'favorited' : ''}" 
+                            onclick="toggleFavorite(${restaurant.id})">
+                        ${favorites.includes(restaurant.id) ? '⭐' : '☆'}
+                    </button>
+                </div>
             </div>
         </div>
     `).join('');
@@ -519,7 +513,6 @@ function setupDarkMode() {
     const toggle = document.getElementById('darkModeToggle');
     if (!toggle) return;
 
-    // Check saved preference
     if (localStorage.getItem('culturei_dark_mode') === 'true') {
         document.body.classList.add('light-mode');
         toggle.innerHTML = '<i class="fas fa-sun"></i>';
@@ -557,7 +550,6 @@ function showNotification(message) {
     `;
     document.body.appendChild(toast);
 
-    // Add animation style if not exists
     if (!document.getElementById('notification-style')) {
         const style = document.createElement('style');
         style.id = 'notification-style';
@@ -585,7 +577,6 @@ function initMap() {
     const mapElement = document.getElementById('map');
     if (!mapElement) return;
 
-    // South Africa center coordinates
     const southAfrica = { lat: -28.4793, lng: 24.6722 };
     
     const map = new google.maps.Map(mapElement, {
@@ -610,7 +601,6 @@ function initMap() {
         ]
     });
 
-    // Add markers for major cities
     const cities = [
         { lat: -33.9249, lng: 18.4241, name: "Cape Town" },
         { lat: -26.2041, lng: 28.0473, name: "Johannesburg" },
@@ -667,8 +657,6 @@ function processDriverApplication(event) {
     const vehicle = document.getElementById('vehicleType')?.value;
 
     showNotification(`✅ Application submitted, ${name}! We'll contact you at ${phone}.`);
-
-    // Reset form
     document.getElementById('driverForm')?.reset();
 }
 
@@ -689,14 +677,6 @@ function openPartner() {
     showNotification('🤝 Partnership opportunities coming soon!');
 }
 
-// ==========================================
-// FLOATING CART - REMOVED
-// ==========================================
-
-// Floating cart has been removed. Cart now opens from header.
-
-// ==========================================
-
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', function() {
     renderRestaurants();
@@ -708,7 +688,6 @@ document.addEventListener('DOMContentLoaded', function() {
     setupDarkMode();
     updateAuthUI();
 
-    // Set active nav link
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     document.querySelectorAll('nav ul li a').forEach(link => {
         if (link.getAttribute('href') === currentPage || 
