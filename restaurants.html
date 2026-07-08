@@ -58,6 +58,10 @@
 
             <div class="restaurant-grid" id="menuGrid">
                 <!-- Dynamically loaded by JavaScript -->
+                <div class="loading-message" style="text-align:center;padding:3rem;color:var(--text-muted);">
+                    <i class="fas fa-spinner fa-spin" style="font-size:2rem;"></i>
+                    <p>Loading restaurants...</p>
+                </div>
             </div>
         </div>
     </section>
@@ -169,15 +173,13 @@
         </form>
     </div>
 
-    <script src="/script.js"></script>
-    
-    <!-- ====== FIREBASE LIBRARIES ====== -->
+    <!-- ====== FIREBASE LIBRARIES (MUST LOAD FIRST) ====== -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-    <!-- ====== FIREBASE CONFIG (UPDATED) ====== -->
+    <!-- ====== FIREBASE CONFIG ====== -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyACwmaTgi075VasbpyAVNt_jzPDwvmqMc4",
@@ -192,6 +194,9 @@
         firebase.initializeApp(firebaseConfig);
         firebase.analytics();
     </script>
+
+    <!-- ====== SCRIPT.JS (LOAD LAST) ====== -->
+    <script src="/script.js"></script>
 
 </body>
 </html>
