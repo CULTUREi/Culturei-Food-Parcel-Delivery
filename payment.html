@@ -3,7 +3,8 @@
 <head>
     <title>Culturei - Pay</title>
     <link rel="stylesheet" href="style.css" />
-    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <!-- ✅ UPDATED to v2 (latest) -->
+    <script src="https://js.paystack.co/v2/inline.js"></script>
 </head>
 <body>
     <div class="container" style="max-width:500px; margin:3rem auto;">
@@ -38,14 +39,19 @@
         }
 
         const handler = PaystackPop.setup({
-            key: 'pk_test_YOUR_KEY_HERE', // ⬅️ Replace with your key
+            key: 'pk_test_YOUR_KEY_HERE', // ⬅️ REPLACE with your public key from Paystack dashboard
             email: email,
             amount: amount,
             currency: 'ZAR',
             ref: 'TRX-' + Math.random().toString(36).substring(2, 15),
-            metadata: { custom_fields: [{ display_name: "Full Name", value: fullName }] },
+            metadata: { 
+                custom_fields: [
+                    { display_name: "Full Name", value: fullName }
+                ] 
+            },
             callback: function(response) {
                 alert('✅ Payment successful! Reference: ' + response.reference);
+                // You can redirect or save order here
             },
             onClose: function() {
                 alert('❌ Payment cancelled.');
