@@ -5,6 +5,28 @@
     <link rel="stylesheet" href="style.css" />
     <!-- ✅ UPDATED to v2 (latest) -->
     <script src="https://js.paystack.co/v2/inline.js"></script>
+    <style>
+        /* WhatsApp icon style */
+        .whatsapp-icon {
+            display: inline-block;
+            margin-left: 8px;
+            font-size: 1.2rem;
+            transition: transform 0.2s ease;
+            text-decoration: none;
+            color: #25D366;
+        }
+
+        .whatsapp-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .footer-contact p {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+    </style>
 </head>
 <body>
     <div class="container" style="max-width:500px; margin:3rem auto;">
@@ -24,7 +46,41 @@
             </div>
             <button type="submit" class="btn-primary" style="width:100%;">Pay Now 💳</button>
         </form>
+
+        <!-- ====== SIMPLE FOOTER ====== -->
+        <footer style="margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--border-color);">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+                <div>
+                    <h4 style="color:var(--text-white);">Quick Links</h4>
+                    <ul style="list-style:none; padding:0; color:var(--text-secondary);">
+                        <li><a href="index.html" style="color:var(--text-secondary); text-decoration:none;">Home</a></li>
+                        <li><a href="restaurants.html" style="color:var(--text-secondary); text-decoration:none;">Restaurants</a></li>
+                        <li><a href="drivers.html" style="color:var(--text-secondary); text-decoration:none;">Drivers</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color:var(--text-white);">Contact Us</h4>
+                    <p style="color:var(--text-secondary); margin:0.3rem 0;">
+                        <a href="mailto:culturesonox@gmail.com" style="color:var(--text-secondary); text-decoration:none;">📧 culturesonox@gmail.com</a>
+                    </p>
+                    <p style="color:var(--text-secondary); margin:0.3rem 0; display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
+                        <a href="tel:+27679100022" style="color:var(--text-secondary); text-decoration:none;">📞 +27 67 910 0022</a>
+                        <a href="https://wa.me/27679100022" target="_blank" class="whatsapp-icon" title="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </p>
+                    <p style="color:var(--text-secondary); margin:0.3rem 0; display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
+                        <a href="tel:+27736226645" style="color:var(--text-secondary); text-decoration:none;">📞 +27 73 622 6645</a>
+                        <a href="https://wa.me/27736226645" target="_blank" class="whatsapp-icon" title="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </p>
+                </div>
+            </div>
+            <p style="text-align:center; color:var(--text-secondary); font-size:0.85rem; padding-top:1.5rem; margin:0;">
+                &copy; 2026 Culturei. All rights reserved.
+            </p>
+        </footer>
     </div>
+
+    <!-- Font Awesome for WhatsApp icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <script>
     document.getElementById('paymentForm').addEventListener('submit', function(e) {
@@ -39,7 +95,7 @@
         }
 
         const handler = PaystackPop.setup({
-            key: 'pk_test_5803b8971f3bc493f538b5cc203de8cf3d606e14', //
+            key: 'pk_test_5803b8971f3bc493f538b5cc203de8cf3d606e14',
             email: email,
             amount: amount,
             currency: 'ZAR',
