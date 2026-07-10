@@ -275,6 +275,19 @@
             margin-bottom: 0.5rem;
         }
 
+        /* WhatsApp icon style */
+        .whatsapp-icon {
+            display: inline-block;
+            margin-left: 10px;
+            font-size: 1.2rem;
+            transition: transform 0.2s ease;
+            text-decoration: none;
+        }
+
+        .whatsapp-icon:hover {
+            transform: scale(1.2);
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .driver-stats {
@@ -447,7 +460,14 @@
                 <div>
                     <h4 style="color:var(--text-white);">Contact</h4>
                     <p style="color:var(--text-secondary);"><a href="mailto:culturesonox@gmail.com" style="color:var(--text-secondary); text-decoration:none;">📧 culturesonox@gmail.com</a></p>
-                    <p style="color:var(--text-secondary);"><a href="tel:+27679100022" style="color:var(--text-secondary); text-decoration:none;">📞 +27 67 910 0022</a></p>
+                    <p style="color:var(--text-secondary);">
+                        <a href="tel:+27679100022" style="color:var(--text-secondary); text-decoration:none;">📞 +27 67 910 0022</a>
+                        <a href="https://wa.me/27679100022" target="_blank" class="whatsapp-icon" title="Chat on WhatsApp">💬</a>
+                    </p>
+                    <p style="color:var(--text-secondary);">
+                        <a href="tel:+27736226645" style="color:var(--text-secondary); text-decoration:none;">📞 +27 73 622 6645</a>
+                        <a href="https://wa.me/27736226645" target="_blank" class="whatsapp-icon" title="Chat on WhatsApp">💬</a>
+                    </p>
                 </div>
             </div>
             <hr style="border-color:var(--border-color);" />
