@@ -4,6 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Delivery App</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        /* WhatsApp icon style */
+        .whatsapp-icon {
+            display: inline-block;
+            margin-left: 8px;
+            font-size: 1.2rem;
+            transition: transform 0.2s ease;
+            text-decoration: none;
+            color: #25D366;
+        }
+
+        .whatsapp-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .footer-contact p {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+    </style>
 </head>
 <body>
 
@@ -19,6 +42,9 @@
     
     <!-- 🔥 ADDED FOR GOOGLE SIGN-IN -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+    <!-- Font Awesome for WhatsApp icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <!-- ============================================ -->
     <!-- YOUR ORIGINAL HTML - EXACTLY AS YOU HAD IT! -->
@@ -51,6 +77,47 @@
             🔵 Sign in with Google
         </button>
     </div>
+
+    <!-- ====== FOOTER ====== -->
+    <footer style="margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--border-color, #333);">
+        <div style="max-width:1200px; margin:0 auto; padding:0 1rem;">
+            <div style="display:grid; grid-template-columns:2fr 1fr 1fr; gap:2rem; margin-bottom:2rem;">
+                <div>
+                    <h3 style="font-size:1.5rem; color:#e87a20;">Culturei</h3>
+                    <p style="color:var(--text-secondary, #aaa);">Delivery Across Mzansi</p>
+                    <p style="color:var(--text-secondary, #aaa); font-size:0.9rem; margin-top:0.5rem;">
+                        Connecting restaurants, drivers, and customers across South Africa.
+                    </p>
+                </div>
+                <div>
+                    <h4 style="color:var(--text-white, #fff);">Quick Links</h4>
+                    <ul style="color:var(--text-secondary, #aaa); list-style:none; padding:0;">
+                        <li><a href="index.html" style="color:var(--text-secondary, #aaa); text-decoration:none;">Home</a></li>
+                        <li><a href="restaurants.html" style="color:var(--text-secondary, #aaa); text-decoration:none;">Restaurants</a></li>
+                        <li><a href="drivers.html" style="color:var(--text-secondary, #aaa); text-decoration:none;">Drivers</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color:var(--text-white, #fff);">Contact</h4>
+                    <p style="color:var(--text-secondary, #aaa);">
+                        <a href="mailto:culturesonox@gmail.com" style="color:var(--text-secondary, #aaa); text-decoration:none;">📧 culturesonox@gmail.com</a>
+                    </p>
+                    <p style="color:var(--text-secondary, #aaa); display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
+                        <a href="tel:+27679100022" style="color:var(--text-secondary, #aaa); text-decoration:none;">📞 +27 67 910 0022</a>
+                        <a href="https://wa.me/27679100022" target="_blank" class="whatsapp-icon" title="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </p>
+                    <p style="color:var(--text-secondary, #aaa); display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
+                        <a href="tel:+27736226645" style="color:var(--text-secondary, #aaa); text-decoration:none;">📞 +27 73 622 6645</a>
+                        <a href="https://wa.me/27736226645" target="_blank" class="whatsapp-icon" title="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </p>
+                </div>
+            </div>
+            <hr style="border-color:var(--border-color, #333);" />
+            <p style="text-align:center; color:var(--text-secondary, #aaa); font-size:0.85rem; padding-top:1.5rem;">
+                &copy; 2026 Culturei. All rights reserved.
+            </p>
+        </div>
+    </footer>
 
     <!-- ============================================ -->
     <!-- FIREBASE CONFIG - EXACTLY AS YOU HAD IT! -->
