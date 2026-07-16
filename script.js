@@ -138,7 +138,17 @@ function googleSignIn() {
 
 window.googleSignIn = googleSignIn;
 
-// ===== AUTHENTICATION FUNCTIONS =====
+// ============================================
+// DRIVER OTP FUNCTIONS (ADDED)
+// ============================================
+
+// These functions are now in driver.html directly
+// They are kept here for compatibility if needed elsewhere
+
+// ============================================
+// AUTHENTICATION FUNCTIONS
+// ============================================
+
 function openLogin() {
     const choice = confirm("Click OK for Email/Password or Cancel for Google Sign-In");
     
