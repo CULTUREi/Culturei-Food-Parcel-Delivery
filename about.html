@@ -54,9 +54,21 @@
       color: var(--text-primary, #1a202c);
     }
 
-    /* inline company info */
+    /* ---- clickable contact links ---- */
+    .contact-link {
+      color: var(--accent-orange, #e67e22);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s, text-decoration 0.2s;
+    }
+
+    .contact-link:hover {
+      color: var(--accent-orange-dark, #d35400);
+      text-decoration: underline;
+    }
+
     .company-details p {
-      margin: 0.25rem 0;
+      margin: 0.4rem 0;
     }
 
     /* small responsiveness */
@@ -167,8 +179,14 @@
       <p><strong>Company:</strong> CULTURE (PTY) LTD</p>
       <p><strong>Registration Number:</strong> 2024/823947/07</p>
       <p><strong>Location:</strong> Cape Town, South Africa</p>
-      <p><strong>Customer Support (Call & WhatsApp):</strong> +27 67 910 0022</p>
-      <p><strong>Email:</strong> culturesonox@gmail.com</p>
+      <p>
+        <strong>Customer Support (Call & WhatsApp):</strong>
+        <a href="tel:+27679100022" class="contact-link">+27 67 910 0022</a>
+      </p>
+      <p>
+        <strong>Email:</strong>
+        <a href="mailto:culturesonox@gmail.com" class="contact-link">culturesonox@gmail.com</a>
+      </p>
     </div>
 
   </div> <!-- /about-card -->
@@ -206,8 +224,12 @@
 
       <div>
         <h4 style="color:var(--text-white, #f7fafc);margin-bottom:0.5rem;">Contact</h4>
-        <p style="margin:0.2rem 0;">📧 culturesonox@gmail.com</p>
-        <p style="margin:0.2rem 0;">📞 +27 67 910 0022</p>
+        <p style="margin:0.2rem 0;">
+          📧 <a href="mailto:culturesonox@gmail.com" class="contact-link" style="font-weight:400;">culturesonox@gmail.com</a>
+        </p>
+        <p style="margin:0.2rem 0;">
+          📞 <a href="tel:+27679100022" class="contact-link" style="font-weight:400;">+27 67 910 0022</a>
+        </p>
       </div>
 
     </div>
@@ -246,11 +268,5 @@
   })();
 </script>
 
-<!--
-  NOTE: this page relies on /style.css for global variables & layout.
-  if that file is missing, the fallback styles (inside :root) are used.
-  all content from the original code is preserved.
--->
 </body>
 </html>
-</p>
