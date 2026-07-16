@@ -288,6 +288,28 @@
             transform: scale(1.2);
         }
 
+        /* OTP section styles */
+        #otpSection {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .otp-timer {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .btn-verify {
+            background: #2d8a4e !important;
+            width: 100%;
+        }
+
+        .btn-verify:hover {
+            background: #1a6b3a !important;
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .driver-stats {
@@ -346,7 +368,7 @@
     </header>
 
     <!-- ============================================ -->
-    <!-- DRIVER LOGIN SECTION                         -->
+    <!-- DRIVER LOGIN SECTION WITH OTP                -->
     <!-- ============================================ -->
     <section class="container driver-login-section" id="loginSection">
         <div class="driver-login-card">
@@ -370,13 +392,34 @@
                 <hr style="flex:1; border-color:var(--border-color);" />
             </div>
 
+            <!-- PHONE NUMBER FIELD -->
             <div class="form-group">
-                <label for="driverName">Your Name</label>
-                <input type="text" id="driverName" placeholder="e.g. Thabo Mokoena" />
+                <label for="driverPhone">📱 Phone Number</label>
+                <input type="tel" id="driverPhone" placeholder="e.g. 0712345678" />
             </div>
-            <button class="btn-primary" onclick="loginDriver()" style="width:100%;">
-                Sign In 🚀
+            
+            <!-- SEND OTP BUTTON -->
+            <button class="btn-primary" onclick="sendOTP()" id="sendOtpBtn" style="width:100%;">
+                📨 Send OTP
             </button>
+
+            <!-- OTP SECTION (Hidden initially) -->
+            <div id="otpSection" style="display:none;">
+                <div class="form-group" style="margin-top:1rem;">
+                    <label for="otpCode">🔐 Enter OTP Code</label>
+                    <input type="text" id="otpCode" placeholder="e.g. 123456" maxlength="6" />
+                </div>
+                <button class="btn-primary btn-verify" onclick="verifyOTP()" style="width:100%;">
+                    ✅ Verify & Login
+                </button>
+                <div class="otp-timer">
+                    ⏳ OTP expires in 5 minutes
+                    <span style="display:block; font-size:0.75rem; margin-top:0.3rem;">
+                        <a href="#" onclick="resendOTP(); return false;" style="color:var(--accent-orange);">Resend OTP</a>
+                    </span>
+                </div>
+            </div>
+
             <p style="margin-top:1rem; font-size:0.85rem; color:var(--text-secondary);">
                 ⚡ Orders appear in real-time once you're logged in
             </p>
@@ -482,7 +525,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-    <!-- ===== FIREBASE CONFIG (UPDATED) ===== -->
+    <!-- ===== FIREBASE CONFIG ===== -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyACwmaTgi075VasbpyAVNt_jzPDwvmqMc4",
@@ -497,10 +540,10 @@
         firebase.initializeApp(firebaseConfig);
     </script>
 
-    <!-- ===== DRIVER JAVASCRIPT ===== -->
+    <!-- ===== DRIVER JAVASCRIPT WITH OTP ===== -->
     <script>
         // ============================================
-        // DRIVER APP - FULL LOGIC WITH GOOGLE SIGN-IN
+        // DRIVER APP - OTP + GOOGLE SIGN-IN
         // ============================================
 
         const auth = firebase.auth();
@@ -508,8 +551,122 @@
         let currentDriver = null;
         let unsubscribeOrders = null;
         let currentUserEmail = '';
+        let storedPhone = '';
+        let generatedOTP = '';
+        let otpTimer = null;
 
-        // ----- GOOGLE SIGN-IN FOR DRIVERS -----
+        // ----- SEND OTP -----
+        function sendOTP() {
+            const phoneInput = document.getElementById('driverPhone');
+            const phone = phoneInput.value.trim();
+
+            if (!phone || phone.length < 10) {
+                alert('📱 Please enter a valid phone number (e.g. 0712345678)');
+                phoneInput.focus();
+                return;
+            }
+
+            storedPhone = phone;
+            generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            // Show OTP section
+            document.getElementById('otpSection').style.display = 'block';
+            document.getElementById('sendOtpBtn').textContent = '📨 OTP Sent!';
+            document.getElementById('sendOtpBtn').style.background = '#2d8a4e';
+            document.getElementById('sendOtpBtn').disabled = true;
+            
+            // Auto-focus OTP input
+            document.getElementById('otpCode').focus();
+
+            // Log OTP (in production, send via SMS)
+            console.log(`🔐 OTP for ${phone}: ${generatedOTP}`);
+            alert(`📨 OTP sent to ${phone}!\n\nYour OTP is: ${generatedOTP}\n(Replace with SMS in production)`);
+
+            // Auto-expire after 5 min
+            if (otpTimer) clearTimeout(otpTimer);
+            otpTimer = setTimeout(() => {
+                if (document.getElementById('otpSection').style.display !== 'none') {
+                    alert('⏳ OTP expired. Please request a new one.');
+                    resetOTP();
+                }
+            }, 300000);
+        }
+
+        // ----- RESEND OTP -----
+        function resendOTP() {
+            resetOTP();
+            sendOTP();
+        }
+
+        // ----- RESET OTP STATE -----
+        function resetOTP() {
+            document.getElementById('otpSection').style.display = 'none';
+            document.getElementById('sendOtpBtn').textContent = '📨 Send OTP';
+            document.getElementById('sendOtpBtn').style.background = '';
+            document.getElementById('sendOtpBtn').disabled = false;
+            document.getElementById('otpCode').value = '';
+            if (otpTimer) {
+                clearTimeout(otpTimer);
+                otpTimer = null;
+            }
+        }
+
+        // ----- VERIFY OTP -----
+        function verifyOTP() {
+            const otpInput = document.getElementById('otpCode');
+            const enteredOTP = otpInput.value.trim();
+
+            if (!enteredOTP) {
+                alert('Please enter the OTP code sent to your phone.');
+                otpInput.focus();
+                return;
+            }
+
+            if (enteredOTP !== generatedOTP) {
+                alert('❌ Invalid OTP. Please try again.');
+                otpInput.value = '';
+                otpInput.focus();
+                return;
+            }
+
+            // OTP verified - fetch or create driver
+            db.collection('drivers')
+                .where('phone', '==', storedPhone)
+                .limit(1)
+                .get()
+                .then((snapshot) => {
+                    let driverName = 'Driver';
+                    
+                    if (!snapshot.empty) {
+                        // Existing driver - use saved name
+                        driverName = snapshot.docs[0].data().name || 'Driver';
+                        loginDriverWithName(driverName, storedPhone);
+                    } else {
+                        // New driver - ask for name
+                        driverName = prompt('👋 Welcome! Enter your full name:', 'Thabo Mokoena');
+                        if (!driverName || driverName.trim() === '') {
+                            alert('Name is required to continue.');
+                            return;
+                        }
+                        // Save new driver
+                        db.collection('drivers').add({
+                            name: driverName.trim(),
+                            phone: storedPhone,
+                            createdAt: new Date(),
+                            status: 'online'
+                        }).then(() => {
+                            loginDriverWithName(driverName.trim(), storedPhone);
+                        }).catch((err) => {
+                            alert('❌ Error saving driver: ' + err.message);
+                        });
+                    }
+                })
+                .catch((error) => {
+                    alert('❌ Error verifying: ' + error.message);
+                });
+        }
+
+        // ----- GOOGLE SIGN-IN -----
         function googleDriverSignIn() {
             const provider = new firebase.auth.GoogleAuthProvider();
             
@@ -518,8 +675,7 @@
                     const user = result.user;
                     currentUserEmail = user.email || user.displayName || 'Driver';
                     const name = user.displayName || user.email || 'Driver';
-                    
-                    loginDriverWithName(name);
+                    loginDriverWithName(name, user.phoneNumber || 'google-user');
                 })
                 .catch((error) => {
                     let message = '❌ Error: ' + error.message;
@@ -531,7 +687,7 @@
         }
 
         // ----- LOGIN WITH NAME -----
-        function loginDriverWithName(name) {
+        function loginDriverWithName(name, phone) {
             currentDriver = name;
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('dashboardSection').classList.add('active');
@@ -539,28 +695,16 @@
 
             startListening();
 
+            // Log login
             db.collection('drivers').add({
                 name: name,
+                phone: phone || 'unknown',
                 email: currentUserEmail || 'manual',
                 loginTime: new Date(),
                 status: 'online'
             }).catch(err => console.log('Driver login saved:', err));
 
             console.log(`✅ ${name} logged in!`);
-        }
-
-        // ----- MANUAL LOGIN -----
-        function loginDriver() {
-            const nameInput = document.getElementById('driverName');
-            const name = nameInput.value.trim();
-
-            if (!name) {
-                alert('Please enter your name! 🧑‍✈️');
-                nameInput.focus();
-                return;
-            }
-
-            loginDriverWithName(name);
         }
 
         // ----- LOGOUT -----
@@ -586,7 +730,8 @@
             currentUserEmail = '';
             document.getElementById('loginSection').style.display = 'block';
             document.getElementById('dashboardSection').classList.remove('active');
-            document.getElementById('driverName').value = '';
+            document.getElementById('driverPhone').value = '';
+            resetOTP();
             console.log('👋 Logged out');
         }
 
@@ -787,16 +932,25 @@
             document.getElementById('statEarnings').textContent = `R${earnings}`;
         }
 
-        // ----- ENTER KEY TO LOGIN -----
+        // ----- ENTER KEY HANDLING -----
         document.addEventListener('DOMContentLoaded', function() {
-            const nameInput = document.getElementById('driverName');
-            if (nameInput) {
-                nameInput.addEventListener('keypress', function(e) {
+            const phoneInput = document.getElementById('driverPhone');
+            if (phoneInput) {
+                phoneInput.addEventListener('keypress', function(e) {
                     if (e.key === 'Enter') {
-                        loginDriver();
+                        sendOTP();
                     }
                 });
-                nameInput.focus();
+                phoneInput.focus();
+            }
+
+            const otpInput = document.getElementById('otpCode');
+            if (otpInput) {
+                otpInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        verifyOTP();
+                    }
+                });
             }
 
             const toggleBtn = document.getElementById('darkModeToggle');
@@ -808,13 +962,16 @@
             }
         });
 
+        // Expose functions globally
+        window.sendOTP = sendOTP;
+        window.resendOTP = resendOTP;
+        window.verifyOTP = verifyOTP;
         window.googleDriverSignIn = googleDriverSignIn;
-        window.loginDriver = loginDriver;
         window.logoutDriver = logoutDriver;
         window.acceptOrder = acceptOrder;
         window.updateOrder = updateOrder;
 
-        console.log('🚗 Driver app loaded with Google Sign-In!');
+        console.log('🚗 Driver app loaded with OTP + Google Sign-In!');
     </script>
 
 </body>
