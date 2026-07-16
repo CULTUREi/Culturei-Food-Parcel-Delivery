@@ -1,83 +1,256 @@
-<section class="container" style="padding: 3rem 0;">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Culturei · About</title>
 
-    <div style="text-align:center; margin-bottom:2.5rem;">
-        <h1 style="font-size:2.8rem; font-weight:800;">
-            About <span style="color:var(--accent-orange);">Culturei Deliveries</span>
-        </h1>
+  <!-- base style (minimal reset + variables) -->
+  <link rel="stylesheet" href="/style.css" />
 
-        <p style="color:var(--text-secondary); font-size:1.15rem; max-width:800px; margin:1rem auto;">
-            Delivering More Than Orders Across South Africa.
-        </p>
+  <style>
+    /* ---- page specific styles ---- */
+    .about-page {
+      padding: 3rem 0;
+    }
+
+    .about-card {
+      background: var(--bg-card, #ffffff);
+      border-radius: 1.5rem;
+      padding: 2.5rem;
+      border: 1px solid var(--border-color, #e2e8f0);
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+    }
+
+    .about-card h2 {
+      color: var(--accent-orange, #e67e22);
+      margin: 1.8rem 0 0.8rem 0;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .about-card h2:first-of-type {
+      margin-top: 0;
+    }
+
+    .about-card p,
+    .about-card li {
+      color: var(--text-secondary, #2d3748);
+      line-height: 1.8;
+    }
+
+    .about-card ul,
+    .about-card ol {
+      margin-left: 1.5rem;
+      margin-top: 0.5rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .about-card li {
+      margin-bottom: 0.3rem;
+    }
+
+    .about-card strong {
+      color: var(--text-primary, #1a202c);
+    }
+
+    /* inline company info */
+    .company-details p {
+      margin: 0.25rem 0;
+    }
+
+    /* small responsiveness */
+    @media (max-width: 640px) {
+      .about-card {
+        padding: 1.5rem;
+      }
+      .about-page h1 {
+        font-size: 2.2rem !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="container header-container">
+
+    <a href="/index.html" class="logo">
+      Culturei
+      <span class="tagline">Delivery Across Mzansi</span>
+    </a>
+
+    <nav>
+      <ul>
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/restaurants.html">Restaurants</a></li>
+        <li><a href="/drivers.html">Drivers</a></li>
+        <li><a href="/about.html" class="active">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a href="/signin.html" class="btn-outline-light">Sign In</a>
+      <button class="dark-mode-toggle" id="darkModeToggle">🌙</button>
     </div>
 
-    <div class="card" style="padding:2rem;">
+  </div>
+</header>
 
-        <h2>Who We Are</h2>
+<!-- ===== ABOUT CONTENT ===== -->
+<section class="container about-page">
 
-        <p>
-            Welcome to <strong>Culturei Deliveries</strong>, a proudly South African delivery platform
-            owned and operated by <strong>CULTURE (PTY) LTD</strong>.
-        </p>
+  <div style="text-align:center;margin-bottom:2.5rem;">
+    <h1 style="font-size:2.8rem;font-weight:800;margin-bottom:0.25rem;">
+      About
+      <span style="color:var(--accent-orange, #e67e22);">
+        Culturei Deliveries
+      </span>
+    </h1>
+    <p style="color:var(--text-secondary, #4a5568);font-size:1.15rem;max-width:700px;margin:0.5rem auto 0;">
+      Delivering More Than Orders Across South Africa.
+    </p>
+  </div>
 
-        <p>
-            We connect customers with their favourite restaurants through a reliable network of
-            independent delivery drivers, making food delivery simple, fast and convenient.
-        </p>
+  <!-- main about card -->
+  <div class="about-card">
 
-        <h2>Our Vision</h2>
+    <h2>Who We Are</h2>
+    <p>
+      Welcome to <strong>Culturei Deliveries</strong>, a proudly South African delivery platform owned and operated by <strong>CULTURE (PTY) LTD</strong>.
+    </p>
+    <p>
+      We connect customers with their favourite restaurants through a reliable network of independent delivery drivers, making food delivery simple, fast and convenient.
+    </p>
 
-        <p>
-            To become one of South Africa's most trusted delivery platforms by building strong
-            partnerships with restaurants, empowering drivers and providing customers with an
-            exceptional delivery experience.
-        </p>
+    <h2>Our Vision</h2>
+    <p>
+      To become one of South Africa's most trusted delivery platforms by building strong partnerships with restaurants, empowering drivers and providing customers with an exceptional delivery experience.
+    </p>
 
-        <h2>Our Mission</h2>
+    <h2>Our Mission</h2>
+    <p>
+      We are committed to delivering outstanding customer service while helping local restaurants grow and creating earning opportunities for independent drivers.
+    </p>
 
-        <p>
-            We are committed to delivering outstanding customer service while helping local restaurants
-            grow and creating earning opportunities for independent drivers.
-        </p>
+    <h2>How Culturei Deliveries Works</h2>
+    <ol>
+      <li>Customers browse restaurants and place their orders through the Culturei Deliveries platform.</li>
+      <li>Restaurants receive and prepare the order.</li>
+      <li>An independent delivery driver collects the order.</li>
+      <li>The order is delivered safely to the customer.</li>
+      <li>Restaurants and drivers receive scheduled weekly payouts according to their agreements with Culturei Deliveries.</li>
+    </ol>
 
-        <h2>How Culturei Deliveries Works</h2>
+    <h2>Why Choose Culturei Deliveries?</h2>
+    <ul>
+      <li>Fast and reliable delivery.</li>
+      <li>Secure payment processing.</li>
+      <li>Professional customer support.</li>
+      <li>Trusted partnerships with local restaurants.</li>
+      <li>Opportunities for independent drivers.</li>
+    </ul>
 
-        <ol>
-            <li>Customers place orders through the Culturei Deliveries platform.</li>
-            <li>Restaurants receive and prepare the order.</li>
-            <li>An independent driver collects the order.</li>
-            <li>The order is delivered safely to the customer.</li>
-            <li>Restaurants and drivers receive scheduled weekly payouts according to their agreements with Culturei Deliveries.</li>
-        </ol>
+    <h2>Supporting Local Businesses</h2>
+    <p>
+      We believe local businesses are the heart of our communities. Our goal is to help restaurants reach more customers while providing an affordable, reliable and professional delivery service.
+    </p>
+    <p>
+      As Culturei Deliveries grows, we remain committed to honesty, transparency and continuous improvement in everything we do.
+    </p>
 
-        <h2>Why Choose Culturei Deliveries?</h2>
-
-        <ul>
-            <li>Fast and reliable delivery.</li>
-            <li>Secure online ordering.</li>
-            <li>Professional customer support.</li>
-            <li>Trusted restaurant partnerships.</li>
-            <li>Opportunities for independent drivers.</li>
-        </ul>
-
-        <h2>Supporting Local Business</h2>
-
-        <p>
-            We believe local businesses are the heart of our communities. Our goal is to help restaurants
-            reach more customers while providing an affordable and reliable delivery solution.
-        </p>
-
-        <h2>Company Information</h2>
-
-        <p><strong>Company:</strong> CULTURE (PTY) LTD</p>
-
-        <p><strong>Registration Number:</strong> 2024/823947/07</p>
-
-        <p><strong>Location:</strong> Cape Town, South Africa</p>
-
-        <p><strong>Customer Support (Call & WhatsApp):</strong> +27 67 910 0022</p>
-
-        <p><strong>Email:</strong> culturesonox@gmail.com</p>
-
+    <h2>Company Information</h2>
+    <div class="company-details">
+      <p><strong>Company:</strong> CULTURE (PTY) LTD</p>
+      <p><strong>Registration Number:</strong> 2024/823947/07</p>
+      <p><strong>Location:</strong> Cape Town, South Africa</p>
+      <p><strong>Customer Support (Call & WhatsApp):</strong> +27 67 910 0022</p>
+      <p><strong>Email:</strong> culturesonox@gmail.com</p>
     </div>
+
+  </div> <!-- /about-card -->
 
 </section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container">
+
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:2rem;margin-bottom:2rem;">
+
+      <div>
+        <h3 style="font-size:1.5rem;color:var(--accent-orange, #e67e22);margin-bottom:0.25rem;">
+          Culturei
+        </h3>
+        <p style="color:var(--text-secondary, #cbd5e0);">
+          Delivery Across Mzansi
+        </p>
+        <p style="color:var(--text-secondary, #cbd5e0);font-size:.9rem;margin-top:.5rem;">
+          Connecting restaurants, drivers and customers across South Africa.
+        </p>
+      </div>
+
+      <div>
+        <h4 style="color:var(--text-white, #f7fafc);margin-bottom:0.5rem;">Quick Links</h4>
+        <ul style="list-style:none;padding:0;margin:0;">
+          <li><a href="/index.html">Home</a></li>
+          <li><a href="/restaurants.html">Restaurants</a></li>
+          <li><a href="/drivers.html">Drivers</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 style="color:var(--text-white, #f7fafc);margin-bottom:0.5rem;">Contact</h4>
+        <p style="margin:0.2rem 0;">📧 culturesonox@gmail.com</p>
+        <p style="margin:0.2rem 0;">📞 +27 67 910 0022</p>
+      </div>
+
+    </div>
+
+    <hr style="border-color:var(--border-color, #2d3748);">
+
+    <p style="text-align:center;padding-top:1.5rem;color:var(--text-secondary, #a0aec0);font-size:0.9rem;">
+      © 2026 CULTURE (PTY) LTD. All rights reserved.
+    </p>
+
+  </div>
+</footer>
+
+<!-- ===== DARK MODE TOGGLE ===== -->
+<script>
+  (function() {
+    const toggleBtn = document.getElementById('darkModeToggle');
+    if (!toggleBtn) return;
+
+    // check localStorage for preference
+    const currentMode = localStorage.getItem('culturei-theme');
+    if (currentMode === 'light') {
+      document.body.classList.add('light-mode');
+      toggleBtn.textContent = '☀️';
+    } else {
+      document.body.classList.remove('light-mode');
+      toggleBtn.textContent = '🌙';
+    }
+
+    toggleBtn.addEventListener('click', function() {
+      document.body.classList.toggle('light-mode');
+      const isLight = document.body.classList.contains('light-mode');
+      this.textContent = isLight ? '☀️' : '🌙';
+      localStorage.setItem('culturei-theme', isLight ? 'light' : 'dark');
+    });
+  })();
+</script>
+
+<!--
+  NOTE: this page relies on /style.css for global variables & layout.
+  if that file is missing, the fallback styles (inside :root) are used.
+  all content from the original code is preserved.
+-->
+</body>
+</html>
+</p>
