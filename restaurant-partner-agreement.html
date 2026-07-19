@@ -1,1 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Restaurant Partner Agreement for restaurants partnering with Culturei Deliveries in South Africa.">
+    <meta name="keywords" content="Restaurant Partner, Food Delivery, Culturei Deliveries, South Africa">
+    <meta name="author" content="CULTURE (PTY) LTD">
+    <title>Restaurant Partner Agreement | Culturei Deliveries</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #121212;
+            color: #f5f5f5;
+            line-height: 1.8;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #111;
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, .4);
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .logo span {
+            color: #F7931E;
+        }
+
+        .logo a {
+            color: #fff;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+        }
+
+        nav ul li a {
+            color: #fff;
+            font-size: 15px;
+            transition: .3s;
+        }
+
+        nav ul li a:hover {
+            color: #F7931E;
+        }
+
+        .hero {
+            margin-top: 85px;
+            background: linear-gradient(rgba(0, 0, 0, .75), rgba(0, 0, 0, .75)), url('images/legal-banner.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 120px 8%;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            max-width: 900px;
+            margin: auto;
+            font-size: 18px;
+            color: #ddd;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 70px 0;
+        }
+
+        .toc {
+            background: #1c1c1c;
+            padding: 35px;
+            border-radius: 14px;
+            margin-bottom: 50px;
+            border-left: 5px solid #F7931E;
+        }
+
+        .toc h2 {
+            margin-bottom: 20px;
+            color: #F7931E;
+        }
+
+        .toc ul {
+            columns: 2;
+            list-style: none;
+        }
+
+        .toc li {
+            margin: 12px 0;
+        }
+
+        .toc a {
+            color: #ddd;
+            transition: .3s;
+        }
+
+        .toc a:hover {
+            color: #F7931E;
+        }
+
+        .legal-card {
+            background: #1b1b1b;
+            padding: 40px;
+            margin-bottom: 35px;
+            border-radius: 15px;
+            border-left: 5px solid #F7931E;
+            transition: .3s;
+        }
+
+        .legal-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, .35);
+        }
+
+        .legal-card h2 {
+            color: #F7931E;
+            margin-bottom: 18px;
+        }
+
+        .legal-card ul {
+            margin-top: 15px;
+            padding-left: 25px;
+        }
+
+        .legal-card li {
+            margin-bottom: 10px;
+        }
+
+        .legal-card p {
+            margin-bottom: 12px;
+        }
+
+        .back-top {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #F7931E;
+            color: #fff;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 20px;
+            font-weight: bold;
+            transition: .3s;
+        }
+
+        .back-top:hover {
+            background: #e07e0a;
+        }
+
+        footer {
+            background: #0d0d0d;
+            padding: 60px 8% 25px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-grid h3 {
+            color: #F7931E;
+            margin-bottom: 15px;
+        }
+
+        .footer-grid ul {
+            list-style: none;
+        }
+
+        .footer-grid li {
+            margin: 10px 0;
+        }
+
+        .footer-grid a:hover {
+            color: #F7931E;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        @media (max-width: 900px) {
+            nav ul {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .toc ul {
+                columns: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <a href="index.html">Culture<span>i</span> Deliveries</a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="restaurants.html">Restaurants</a></li>
+                <li><a href="parcel-delivery.html">Parcel Delivery</a></li>
+                <li><a href="drivers.html">Drivers</a></li>
+                <li><a href="tracking.html">Live Tracking</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container" style="padding:0;">
+            <h1>Restaurant Partner Agreement</h1>
+            <p>
+                This Restaurant Partner Policy sets out the standards, responsibilities and operational requirements
+                for all restaurants partnering with Culturei Deliveries.
+            </p>
+        </div>
+    </section>
+
+    <div class="container">
+
+        <div class="toc">
+            <h2>Contents</h2>
+            <ul>
+                <li><a href="#section1">1. Purpose</a></li>
+                <li><a href="#section2">2. Eligibility Requirements</a></li>
+                <li><a href="#section3">3. Restaurant Onboarding</a></li>
+                <li><a href="#section4">4. Order Management</a></li>
+                <li><a href="#section5">5. Food Quality</a></li>
+                <li><a href="#section6">6. Packaging Standards</a></li>
+                <li><a href="#section7">7. Collection by Delivery Drivers</a></li>
+                <li><a href="#section8">8. Menu Accuracy</a></li>
+                <li><a href="#section9">9. Customer Service</a></li>
+                <li><a href="#section10">10. Payments and Weekly Payouts</a></li>
+                <li><a href="#section11">11. Cancellations and Refunds</a></li>
+                <li><a href="#section12">12. Food Safety and Legal Compliance</a></li>
+                <li><a href="#section13">13. Performance Standards</a></li>
+                <li><a href="#section14">14. Suspension or Removal from the Platform</a></li>
+                <li><a href="#section15">15. Partnership Commitment</a></li>
+            </ul>
+        </div>
+
+        <!-- SECTION 1 -->
+        <div class="legal-card" id="section1">
+            <h2>1. Purpose</h2>
+            <p>
+                This Restaurant Partner Policy sets out the standards, responsibilities and operational requirements
+                for all restaurants partnering with Culturei Deliveries.
+            </p>
+            <p>
+                The purpose of this policy is to ensure that customers receive high-quality food, reliable service
+                and a consistent delivery experience while supporting restaurant partners in growing their businesses.
+            </p>
+            <p>
+                All restaurant partners are expected to comply with this policy, the Restaurant Partner Agreement
+                and all applicable South African laws and regulations.
+            </p>
+        </div>
+
+        <!-- SECTION 2 -->
+        <div class="legal-card" id="section2">
+            <h2>2. Eligibility Requirements</h2>
+            <p>To become a Restaurant Partner, a business must:</p>
+            <ul>
+                <li>Operate as a legitimate food business.</li>
+                <li>Hold all licences, permits and registrations required by law.</li>
+                <li>Comply with applicable food safety and health regulations.</li>
+                <li>Provide accurate business information during registration.</li>
+                <li>Supply valid banking details for payouts.</li>
+                <li>Agree to the Culturei Deliveries Restaurant Partner Agreement.</li>
+                <li>Meet the operational standards required by Culturei Deliveries.</li>
+            </ul>
+            <p>Culturei Deliveries reserves the right to approve or decline any partnership application at its discretion.</p>
+        </div>
+
+        <!-- SECTION 3 -->
+        <div class="legal-card" id="section3">
+            <h2>3. Restaurant Onboarding</h2>
+            <p>Before activation on the platform, restaurant partners may be required to provide:</p>
+            <ul>
+                <li>Business registration details (where applicable).</li>
+                <li>Owner or authorised representative identification.</li>
+                <li>Contact information.</li>
+                <li>Banking details.</li>
+                <li>Trading address.</li>
+                <li>Trading hours.</li>
+                <li>Menu with accurate descriptions and pricing.</li>
+                <li>Company logo and promotional images (where available).</li>
+            </ul>
+            <p>Restaurants are responsible for ensuring that all information supplied remains accurate and up to date.</p>
+        </div>
+
+        <!-- SECTION 4 -->
+        <div class="legal-card" id="section4">
+            <h2>4. Order Management</h2>
+            <p>Restaurant partners are expected to:</p>
+            <ul>
+                <li>Monitor incoming orders during operating hours.</li>
+                <li>Accept or decline orders promptly.</li>
+                <li>Begin food preparation immediately after accepting an order.</li>
+                <li>Notify Culturei Deliveries of any delays or stock shortages.</li>
+                <li>Mark orders as "Ready for Collection" only when fully prepared.</li>
+            </ul>
+            <p>Timely order management helps minimise waiting times for customers and delivery drivers.</p>
+        </div>
+
+        <!-- SECTION 5 -->
+        <div class="legal-card" id="section5">
+            <h2>5. Food Quality</h2>
+            <p>Restaurant partners remain solely responsible for:</p>
+            <ul>
+                <li>Food preparation.</li>
+                <li>Food quality.</li>
+                <li>Taste and presentation.</li>
+                <li>Portion sizes.</li>
+                <li>Food freshness.</li>
+                <li>Compliance with food safety standards.</li>
+            </ul>
+            <p>
+                Culturei Deliveries does not prepare, cook or alter food products and therefore cannot guarantee
+                the quality of food prepared by restaurant partners.
+            </p>
+        </div>
+
+        <!-- SECTION 6 -->
+        <div class="legal-card" id="section6">
+            <h2>6. Packaging Standards</h2>
+            <p>Restaurants must package orders appropriately to ensure safe transportation.</p>
+            <p><strong>Packaging should:</strong></p>
+            <ul>
+                <li>Prevent spills and leaks.</li>
+                <li>Protect food quality during delivery.</li>
+                <li>Keep hot food hot and cold food cold where reasonably possible.</li>
+                <li>Clearly identify customer orders.</li>
+                <li>Include all ordered items.</li>
+            </ul>
+            <p>Poor packaging may lead to customer complaints and negatively affect service quality.</p>
+        </div>
+
+        <!-- SECTION 7 -->
+        <div class="legal-card" id="section7">
+            <h2>7. Collection by Delivery Drivers</h2>
+            <p>When a driver arrives, restaurant staff should:</p>
+            <ul>
+                <li>Verify the order number.</li>
+                <li>Confirm the customer's name.</li>
+                <li>Hand over the correct order.</li>
+                <li>Ensure all items are included.</li>
+                <li>Confirm that packaging is properly sealed where applicable.</li>
+            </ul>
+            <p>Restaurants should avoid unnecessary delays once an order is marked as ready.</p>
+        </div>
+
+        <!-- SECTION 8 -->
+        <div class="legal-card" id="section8">
+            <h2>8. Menu Accuracy</h2>
+            <p>Restaurants are responsible for maintaining accurate menu information.</p>
+            <p><strong>Menu listings should include:</strong></p>
+            <ul>
+                <li>Correct prices.</li>
+                <li>Accurate descriptions.</li>
+                <li>Available options and extras.</li>
+                <li>Allergy information where applicable.</li>
+                <li>Availability of menu items.</li>
+            </ul>
+            <p>Menu updates should be made promptly to avoid customer disappointment.</p>
+        </div>
+
+        <!-- SECTION 9 -->
+        <div class="legal-card" id="section9">
+            <h2>9. Customer Service</h2>
+            <p>Restaurant partners are expected to:</p>
+            <ul>
+                <li>Treat customers and delivery drivers professionally.</li>
+                <li>Cooperate with Culturei Deliveries Customer Support.</li>
+                <li>Respond to operational enquiries promptly.</li>
+                <li>Assist in resolving customer concerns where required.</li>
+            </ul>
+            <p>Positive customer experiences strengthen both the restaurant's reputation and the Culturei Deliveries brand.</p>
+        </div>
+
+        <!-- SECTION 10 -->
+        <div class="legal-card" id="section10">
+            <h2>10. Payments and Weekly Payouts</h2>
+            <p>
+                Restaurant earnings are calculated based on completed customer orders, less any agreed service fees,
+                commissions or other authorised deductions.
+            </p>
+            <p>Payments are made according to the scheduled weekly payout cycle.</p>
+            <p>Restaurants are responsible for ensuring that their banking information remains accurate.</p>
+        </div>
+
+        <!-- SECTION 11 -->
+        <div class="legal-card" id="section11">
+            <h2>11. Cancellations and Refunds</h2>
+            <p>Restaurants should avoid cancelling accepted orders unless absolutely necessary.</p>
+            <p>Where cancellation becomes unavoidable, the restaurant should notify Culturei Deliveries immediately.</p>
+            <p>
+                Refunds and payment adjustments will be handled in accordance with the Culturei Deliveries
+                Refund and Cancellation Policy.
+            </p>
+        </div>
+
+        <!-- SECTION 12 -->
+        <div class="legal-card" id="section12">
+            <h2>12. Food Safety and Legal Compliance</h2>
+            <p>Restaurant partners are responsible for complying with all applicable South African laws relating to:</p>
+            <ul>
+                <li>Food hygiene.</li>
+                <li>Health and safety.</li>
+                <li>Consumer protection.</li>
+                <li>Business licensing.</li>
+                <li>Labour laws applicable to their own employees.</li>
+                <li>Environmental health requirements.</li>
+            </ul>
+            <p>Culturei Deliveries may request evidence of compliance where appropriate.</p>
+        </div>
+
+        <!-- SECTION 13 -->
+        <div class="legal-card" id="section13">
+            <h2>13. Performance Standards</h2>
+            <p>Culturei Deliveries monitors service quality to maintain a high standard across the platform.</p>
+            <p><strong>Performance may be assessed using factors such as:</strong></p>
+            <ul>
+                <li>Order acceptance rate.</li>
+                <li>Preparation times.</li>
+                <li>Order accuracy.</li>
+                <li>Customer feedback.</li>
+                <li>Complaint history.</li>
+                <li>Reliability.</li>
+                <li>Compliance with company policies.</li>
+            </ul>
+            <p>
+                Where performance issues arise, Culturei Deliveries may work with the restaurant to improve service
+                before taking further action.
+            </p>
+        </div>
+
+        <!-- SECTION 14 -->
+        <div class="legal-card" id="section14">
+            <h2>14. Suspension or Removal from the Platform</h2>
+            <p>Culturei Deliveries reserves the right to temporarily suspend or permanently remove a restaurant partner from the platform where necessary.</p>
+            <p><strong>Reasons may include:</strong></p>
+            <ul>
+                <li>Serious food safety concerns.</li>
+                <li>Fraudulent activity.</li>
+                <li>Repeated failure to meet operational standards.</li>
+                <li>Misrepresentation of products or pricing.</li>
+                <li>Persistent customer complaints.</li>
+                <li>Breach of the Restaurant Partner Agreement.</li>
+                <li>Failure to comply with applicable laws.</li>
+            </ul>
+            <p>
+                Where reasonably possible, the restaurant will be informed of the reasons and given an opportunity
+                to respond before permanent removal.
+            </p>
+        </div>
+
+        <!-- SECTION 15 -->
+        <div class="legal-card" id="section15">
+            <h2>15. Partnership Commitment</h2>
+            <p>Culturei Deliveries values long-term relationships with restaurant partners.</p>
+            <p><strong>We are committed to:</strong></p>
+            <ul>
+                <li>Supporting business growth.</li>
+                <li>Providing reliable technology.</li>
+                <li>Offering professional customer support.</li>
+                <li>Maintaining transparent communication.</li>
+                <li>Continuously improving our platform and services.</li>
+            </ul>
+            <p>
+                Together with our restaurant partners, we aim to provide customers across South Africa with a fast,
+                reliable and enjoyable food delivery experience.
+            </p>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <h3>Culturei Deliveries</h3>
+                <p>
+                    Fast, Safe &amp; Reliable delivery services connecting customers,
+                    restaurants and independent delivery drivers across South Africa.
+                </p>
+            </div>
+            <div>
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="drivers.html">Drivers</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>Legal &amp; Compliance</h3>
+                <ul>
+                    <li><a href="terms-and-conditions.html">Terms &amp; Conditions</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="cookie-policy.html">Cookie Policy</a></li>
+                    <li><a href="refund-policy.html">Refund &amp; Cancellation Policy</a></li>
+                    <li><a href="business-ethics-policy.html">Business Ethics Policy</a></li>
+                    <li><a href="driver-agreement.html">Driver Agreement</a></li>
+                    <li><a href="restaurant-partner-agreement.html">Restaurant Partner Agreement</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>Contact</h3>
+                <p>Email: culturesonox@gmail.com</p>
+                <p>Call &amp; WhatsApp: +27 67 910 0022</p>
+                <p>South Africa</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2026 CULTURE (PTY) LTD. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <a href="#" class="back-top" title="Back to Top">&#8679;</a>
+
+</body>
+</html>
