@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Driver Agreement for independent delivery drivers using the Culturei Deliveries platform in South Africa.">
+    <meta name="keywords" content="Driver Agreement, Delivery Drivers, Culturei Deliveries, South Africa">
+    <meta name="author" content="CULTURE (PTY) LTD">
+    <title>Driver Agreement | Culturei Deliveries</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #121212;
+            color: #f5f5f5;
+            line-height: 1.8;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #111;
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, .4);
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .logo span {
+            color: #F7931E;
+        }
+
+        .logo a {
+            color: #fff;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+        }
+
+        nav ul li a {
+            color: #fff;
+            font-size: 15px;
+            transition: .3s;
+        }
+
+        nav ul li a:hover {
+            color: #F7931E;
+        }
+
+        .hero {
+            margin-top: 85px;
+            background: linear-gradient(rgba(0, 0, 0, .75), rgba(0, 0, 0, .75)), url('images/legal-banner.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 120px 8%;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            max-width: 900px;
+            margin: auto;
+            font-size: 18px;
+            color: #ddd;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 70px 0;
+        }
+
+        .toc {
+            background: #1c1c1c;
+            padding: 35px;
+            border-radius: 14px;
+            margin-bottom: 50px;
+            border-left: 5px solid #F7931E;
+        }
+
+        .toc h2 {
+            margin-bottom: 20px;
+            color: #F7931E;
+        }
+
+        .toc ul {
+            columns: 2;
+            list-style: none;
+        }
+
+        .toc li {
+            margin: 12px 0;
+        }
+
+        .toc a {
+            color: #ddd;
+            transition: .3s;
+        }
+
+        .toc a:hover {
+            color: #F7931E;
+        }
+
+        .legal-card {
+            background: #1b1b1b;
+            padding: 40px;
+            margin-bottom: 35px;
+            border-radius: 15px;
+            border-left: 5px solid #F7931E;
+            transition: .3s;
+        }
+
+        .legal-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, .35);
+        }
+
+        .legal-card h2 {
+            color: #F7931E;
+            margin-bottom: 18px;
+        }
+
+        .legal-card ul {
+            margin-top: 15px;
+            padding-left: 25px;
+        }
+
+        .legal-card li {
+            margin-bottom: 10px;
+        }
+
+        .legal-card p {
+            margin-bottom: 12px;
+        }
+
+        .back-top {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #F7931E;
+            color: #fff;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 20px;
+            font-weight: bold;
+            transition: .3s;
+        }
+
+        .back-top:hover {
+            background: #e07e0a;
+        }
+
+        footer {
+            background: #0d0d0d;
+            padding: 60px 8% 25px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-grid h3 {
+            color: #F7931E;
+            margin-bottom: 15px;
+        }
+
+        .footer-grid ul {
+            list-style: none;
+        }
+
+        .footer-grid li {
+            margin: 10px 0;
+        }
+
+        .footer-grid a:hover {
+            color: #F7931E;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        @media (max-width: 900px) {
+            nav ul {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .toc ul {
+                columns: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <a href="index.html">Culture<span>i</span> Deliveries</a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="restaurants.html">Restaurants</a></li>
+                <li><a href="parcel-delivery.html">Parcel Delivery</a></li>
+                <li><a href="drivers.html">Drivers</a></li>
+                <li><a href="tracking.html">Live Tracking</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container" style="padding:0;">
+            <h1>Driver Agreement</h1>
+            <p>
+                This Driver Agreement establishes the operational standards, responsibilities and expectations
+                for all independent delivery drivers using the Culturei Deliveries platform.
+            </p>
+        </div>
+    </section>
+
+    <div class="container">
+
+        <div class="toc">
+            <h2>Contents</h2>
+            <ul>
+                <li><a href="#section1">1. Purpose</a></li>
+                <li><a href="#section2">2. Driver Eligibility</a></li>
+                <li><a href="#section3">3. Driver Onboarding</a></li>
+                <li><a href="#section4">4. Professional Conduct</a></li>
+                <li><a href="#section5">5. Delivery Standards</a></li>
+                <li><a href="#section6">6. Food Safety</a></li>
+                <li><a href="#section7">7. Customer Service</a></li>
+                <li><a href="#section8">8. Safety</a></li>
+                <li><a href="#section9">9. Earnings and Weekly Payouts</a></li>
+                <li><a href="#section10">10. Account Suspension</a></li>
+                <li><a href="#section11">11. Termination of Platform Access</a></li>
+                <li><a href="#section12">12. Confidentiality</a></li>
+                <li><a href="#section13">13. Acknowledgement</a></li>
+            </ul>
+        </div>
+
+        <!-- SECTION 1 -->
+        <div class="legal-card" id="section1">
+            <h2>1. Purpose</h2>
+            <p>
+                This Driver Operations Manual establishes the operational standards, responsibilities and
+                expectations for all independent delivery drivers using the Culturei Deliveries platform.
+            </p>
+            <p>
+                The purpose of this manual is to promote professionalism, safety, reliability and excellent
+                customer service while ensuring that deliveries are completed efficiently and in accordance
+                with the policies of Culturei Deliveries.
+            </p>
+            <p>
+                Independent delivery drivers are independent contractors and are not employees of Culturei
+                Deliveries unless otherwise agreed in writing.
+            </p>
+        </div>
+
+        <!-- SECTION 2 -->
+        <div class="legal-card" id="section2">
+            <h2>2. Driver Eligibility</h2>
+            <p>To deliver using the Culturei Deliveries platform, every driver must:</p>
+            <ul>
+                <li>Be at least 18 years of age.</li>
+                <li>Hold a valid South African driver's licence appropriate for the vehicle being used.</li>
+                <li>Provide a valid South African Identity Document, Smart ID Card or Passport (where applicable).</li>
+                <li>Provide proof of address when requested.</li>
+                <li>Operate a roadworthy and legally registered vehicle.</li>
+                <li>Maintain valid vehicle licence documentation.</li>
+                <li>Carry any insurance required by law.</li>
+                <li>Successfully complete the Culturei Deliveries onboarding process.</li>
+                <li>Accept the Culturei Deliveries Driver Agreement.</li>
+            </ul>
+            <p>Culturei Deliveries may request updated documentation at any time to verify continued eligibility.</p>
+        </div>
+
+        <!-- SECTION 3 -->
+        <div class="legal-card" id="section3">
+            <h2>3. Driver Onboarding</h2>
+            <p>Before gaining access to the platform, drivers may be required to:</p>
+            <ul>
+                <li>Complete identity verification.</li>
+                <li>Submit all required documents.</li>
+                <li>Attend an onboarding session or complete online training.</li>
+                <li>Read and accept all applicable company policies.</li>
+                <li>Demonstrate an understanding of delivery procedures and customer service expectations.</li>
+            </ul>
+            <p>Activation of a driver account remains at the sole discretion of Culturei Deliveries.</p>
+        </div>
+
+        <!-- SECTION 4 -->
+        <div class="legal-card" id="section4">
+            <h2>4. Professional Conduct</h2>
+            <p>Drivers are expected to conduct themselves professionally at all times.</p>
+            <p><strong>Drivers must:</strong></p>
+            <ul>
+                <li>Treat customers, restaurant staff and Culturei Deliveries personnel with courtesy and respect.</li>
+                <li>Use professional language.</li>
+                <li>Maintain good personal hygiene.</li>
+                <li>Wear clean and presentable clothing while making deliveries.</li>
+                <li>Handle all customer property with care.</li>
+                <li>Protect the reputation of Culturei Deliveries.</li>
+            </ul>
+            <p><strong>Drivers must not:</strong></p>
+            <ul>
+                <li>Use abusive, threatening or discriminatory language.</li>
+                <li>Harass customers or restaurant staff.</li>
+                <li>Consume alcohol or illegal drugs while using the platform.</li>
+                <li>Smoke or vape while handling customer orders.</li>
+                <li>Request additional cash or personal payments outside the platform without authorisation.</li>
+                <li>Share customer information with any unauthorised person.</li>
+            </ul>
+        </div>
+
+        <!-- SECTION 5 -->
+        <div class="legal-card" id="section5">
+            <h2>5. Delivery Standards</h2>
+            <p>Drivers are expected to:</p>
+            <ul>
+                <li>Accept delivery requests only when they are able to complete them.</li>
+                <li>Travel to restaurants promptly.</li>
+                <li>Verify the correct order before leaving the restaurant.</li>
+                <li>Transport food carefully to maintain quality.</li>
+                <li>Deliver orders as quickly and safely as reasonably possible.</li>
+                <li>Confirm successful delivery through the platform.</li>
+                <li>Report any delivery issues immediately.</li>
+            </ul>
+            <p>Drivers should never intentionally delay deliveries.</p>
+        </div>
+
+        <!-- SECTION 6 -->
+        <div class="legal-card" id="section6">
+            <h2>6. Food Safety</h2>
+            <p>Drivers play an important role in protecting food quality.</p>
+            <p><strong>Drivers must:</strong></p>
+            <ul>
+                <li>Keep food upright during transport where practical.</li>
+                <li>Avoid unnecessary handling of food packaging.</li>
+                <li>Never open sealed food containers.</li>
+                <li>Keep delivery bags reasonably clean.</li>
+                <li>Protect food from excessive heat, rain or contamination.</li>
+            </ul>
+            <p>Drivers are not permitted to alter, consume or tamper with customer orders.</p>
+        </div>
+
+        <!-- SECTION 7 -->
+        <div class="legal-card" id="section7">
+            <h2>7. Customer Service</h2>
+            <p>Drivers represent the Culturei Deliveries brand during every delivery.</p>
+            <p><strong>Drivers should:</strong></p>
+            <ul>
+                <li>Greet customers politely.</li>
+                <li>Confirm the customer's name before handing over the order.</li>
+                <li>Handle complaints calmly and professionally.</li>
+                <li>Refer payment or refund enquiries to Culturei Deliveries Customer Support.</li>
+                <li>Respect customer privacy.</li>
+            </ul>
+            <p>Drivers must never argue with customers.</p>
+        </div>
+
+        <!-- SECTION 8 -->
+        <div class="legal-card" id="section8">
+            <h2>8. Safety</h2>
+            <p>Safety takes priority over delivery speed.</p>
+            <p><strong>Drivers must:</strong></p>
+            <ul>
+                <li>Obey all South African road traffic laws.</li>
+                <li>Never drive recklessly.</li>
+                <li>Avoid using a mobile phone while driving unless permitted by law through a hands-free device.</li>
+                <li>Wear any legally required safety equipment.</li>
+                <li>Park legally and safely.</li>
+                <li>Report accidents immediately.</li>
+            </ul>
+            <p>No delivery is more important than the safety of any person.</p>
+        </div>
+
+        <!-- SECTION 9 -->
+        <div class="legal-card" id="section9">
+            <h2>9. Earnings and Weekly Payouts</h2>
+            <p>Drivers earn delivery fees in accordance with the applicable fee structure communicated by Culturei Deliveries.</p>
+            <p><strong>Driver earnings:</strong></p>
+            <ul>
+                <li>Are calculated based on completed deliveries.</li>
+                <li>May include incentives or promotional bonuses where applicable.</li>
+                <li>Are paid through the scheduled weekly payout process, subject to verification and any lawful deductions or adjustments.</li>
+            </ul>
+            <p>Drivers are responsible for complying with their own tax obligations where applicable.</p>
+        </div>
+
+        <!-- SECTION 10 -->
+        <div class="legal-card" id="section10">
+            <h2>10. Account Suspension</h2>
+            <p>Culturei Deliveries may temporarily suspend a driver's access to the platform where necessary.</p>
+            <p><strong>Reasons may include:</strong></p>
+            <ul>
+                <li>Expired documentation.</li>
+                <li>Customer safety concerns.</li>
+                <li>Fraud investigations.</li>
+                <li>Repeated service failures.</li>
+                <li>Serious complaints.</li>
+                <li>Unsafe driving behaviour.</li>
+                <li>Breaches of this Driver Operations Manual.</li>
+            </ul>
+            <p>Where reasonably possible, drivers will be informed of the reason for suspension and given an opportunity to respond.</p>
+        </div>
+
+        <!-- SECTION 11 -->
+        <div class="legal-card" id="section11">
+            <h2>11. Termination of Platform Access</h2>
+            <p>Culturei Deliveries reserves the right to permanently deactivate a driver's account where there has been a serious or repeated breach of company policies or applicable law.</p>
+            <p><strong>Examples include:</strong></p>
+            <ul>
+                <li>Fraud or theft.</li>
+                <li>Violence or threats of violence.</li>
+                <li>Driving under the influence of alcohol or illegal drugs.</li>
+                <li>Deliberate damage to customer or restaurant property.</li>
+                <li>Repeated dishonesty.</li>
+                <li>Repeated failure to meet minimum service standards.</li>
+                <li>Criminal conduct connected to use of the platform.</li>
+            </ul>
+            <p>Where appropriate, Culturei Deliveries may report unlawful conduct to the relevant authorities.</p>
+        </div>
+
+        <!-- SECTION 12 -->
+        <div class="legal-card" id="section12">
+            <h2>12. Confidentiality</h2>
+            <p>
+                Drivers must keep confidential all non-public information obtained through the Culturei Deliveries
+                platform, including customer details, restaurant information and operational procedures.
+            </p>
+            <p>Customer information may only be used for the purpose of completing the assigned delivery.</p>
+        </div>
+
+        <!-- SECTION 13 -->
+        <div class="legal-card" id="section13">
+            <h2>13. Acknowledgement</h2>
+            <p>
+                By registering and using the Culturei Deliveries platform, independent delivery drivers acknowledge
+                that they have read, understood and agree to comply with this Driver Operations Manual and all other
+                applicable Culturei Deliveries policies.
+            </p>
+            <p>Failure to comply with these requirements may result in suspension or permanent removal from the platform.</p>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <h3>Culturei Deliveries</h3>
+                <p>
+                    Fast, Safe &amp; Reliable delivery services connecting customers,
+                    restaurants and independent delivery drivers across South Africa.
+                </p>
+            </div>
+            <div>
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="drivers.html">Drivers</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>Legal &amp; Compliance</h3>
+                <ul>
+                    <li><a href="terms-and-conditions.html">Terms &amp; Conditions</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="cookie-policy.html">Cookie Policy</a></li>
+                    <li><a href="refund-policy.html">Refund &amp; Cancellation Policy</a></li>
+                    <li><a href="business-ethics-policy.html">Business Ethics Policy</a></li>
+                    <li><a href="driver-agreement.html">Driver Agreement</a></li>
+                    <li><a href="restaurant-partner-agreement.html">Restaurant Partner Agreement</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>Contact</h3>
+                <p>Email: culturesonox@gmail.com</p>
+                <p>Call &amp; WhatsApp: +27 67 910 0022</p>
+                <p>South Africa</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2026 CULTURE (PTY) LTD. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <a href="#" class="back-top" title="Back to Top">&#8679;</a>
+
+</body>
+</html>
