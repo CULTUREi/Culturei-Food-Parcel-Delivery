@@ -96,6 +96,12 @@
             transform: scale(1.03);
         }
 
+        .btn-track:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .tracking-hint {
             color: #888;
             font-size: 13px;
@@ -281,6 +287,18 @@
             100% { opacity: 1; transform: scale(1); }
         }
 
+        .not-found {
+            text-align: center;
+            padding: 30px 20px;
+            color: #ff6b6b;
+        }
+
+        .not-found i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.6;
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 600px) {
             .tracking-input-group {
@@ -354,7 +372,7 @@
         <div class="tracking-card">
             <div class="tracking-input-group">
                 <input type="text" id="trackingInput" placeholder="Enter tracking number (e.g. CUL-2026-001)" />
-                <button class="btn-track" onclick="trackOrder()">
+                <button class="btn-track" id="trackBtn" onclick="trackOrder()">
                     <i class="fas fa-search"></i> Track
                 </button>
             </div>
@@ -364,52 +382,7 @@
 
             <!-- ===== STATUS DISPLAY ===== -->
             <div class="status-display" id="statusDisplay">
-                <div class="order-info">
-                    <h3>Order <span id="orderNumber">CUL-2026-001</span></h3>
-                    <span class="order-badge"><i class="fas fa-circle"></i> Live</span>
-                </div>
-
-                <!-- Timeline -->
-                <div class="timeline" id="timeline">
-                    <div class="timeline-item completed" data-step="0">
-                        <span class="status-icon"><i class="fas fa-check"></i></span>
-                        <div class="step-title">Order Confirmed</div>
-                        <div class="step-time" id="time0">Today, 09:30</div>
-                    </div>
-                    <div class="timeline-item completed" data-step="1">
-                        <span class="status-icon"><i class="fas fa-check"></i></span>
-                        <div class="step-title">Picked Up</div>
-                        <div class="step-time" id="time1">Today, 10:15</div>
-                    </div>
-                    <div class="timeline-item active" data-step="2">
-                        <span class="status-icon"><i class="fas fa-spinner fa-spin"></i></span>
-                        <div class="step-title">In Transit</div>
-                        <div class="step-time" id="time2">Today, 11:00</div>
-                    </div>
-                    <div class="timeline-item pending" data-step="3">
-                        <span class="status-icon"><i class="fas fa-clock"></i></span>
-                        <div class="step-title">Out for Delivery</div>
-                        <div class="step-time" id="time3">Estimated 12:30</div>
-                    </div>
-                    <div class="timeline-item pending" data-step="4">
-                        <span class="status-icon"><i class="fas fa-clock"></i></span>
-                        <div class="step-title">Delivered</div>
-                        <div class="step-time" id="time4">Estimated 13:00</div>
-                    </div>
-                </div>
-
-                <!-- Map Placeholder -->
-                <div class="map-placeholder">
-                    <div><i class="fas fa-map-marked-alt"></i></div>
-                    <p>
-                        <span class="live-dot"></span>
-                        Driver is currently <span style="color:#F7931E; font-weight:500;">en route</span> to drop-off location
-                    </p>
-                    <p style="font-size:12px; color:#555; margin-top:6px;">
-                        <i class="fas fa-location-dot" style="color:#F7931E;"></i>
-                        Estimated arrival: <span id="etaDisplay" style="color:#fff;">12:30</span>
-                    </p>
-                </div>
+                <div id="trackingResult"></div>
             </div>
         </div>
     </div>
@@ -466,13 +439,14 @@
         </div>
     </footer>
 
-    <!-- ====== SCRIPTS ====== -->
+    <!-- ====== FIREBASE ====== -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
     <script>
+        // ===== FIREBASE CONFIG =====
         const firebaseConfig = {
             apiKey: "AIzaSyACwmaTgi075VasbpyAVNt_jzPDwvmqMc4",
             authDomain: "culturei-food-parcel-del-6a5cb.firebaseapp.com",
@@ -485,107 +459,173 @@
 
         firebase.initializeApp(firebaseConfig);
         firebase.analytics();
+        const db = firebase.firestore();
 
-        // ===== TRACKING DATA =====
-        const trackingData = {
-            'CUL-2026-001': {
-                order: 'CUL-2026-001',
-                status: 'in-transit',
-                steps: [
-                    { label: 'Order Confirmed', time: 'Today, 09:30', completed: true },
-                    { label: 'Picked Up', time: 'Today, 10:15', completed: true },
-                    { label: 'In Transit', time: 'Today, 11:00', completed: false, active: true },
-                    { label: 'Out for Delivery', time: 'Estimated 12:30', completed: false },
-                    { label: 'Delivered', time: 'Estimated 13:00', completed: false }
-                ],
-                eta: '12:30',
-                driverLocation: 'en route to drop-off location'
-            },
-            'CUL-2026-002': {
-                order: 'CUL-2026-002',
-                status: 'out-for-delivery',
-                steps: [
-                    { label: 'Order Confirmed', time: 'Today, 08:15', completed: true },
-                    { label: 'Picked Up', time: 'Today, 09:00', completed: true },
-                    { label: 'In Transit', time: 'Today, 09:45', completed: true },
-                    { label: 'Out for Delivery', time: 'Today, 10:30', completed: false, active: true },
-                    { label: 'Delivered', time: 'Estimated 11:15', completed: false }
-                ],
-                eta: '11:15',
-                driverLocation: 'approaching drop-off location'
-            }
-        };
-
-        // ===== TRACK ORDER =====
-        function trackOrder() {
+        // ===== TRACK ORDER FROM FIRESTORE =====
+        async function trackOrder() {
             const input = document.getElementById('trackingInput').value.trim().toUpperCase();
             const display = document.getElementById('statusDisplay');
-            const data = trackingData[input];
+            const resultDiv = document.getElementById('trackingResult');
+            const trackBtn = document.getElementById('trackBtn');
 
-            if (!data) {
-                alert('Tracking number not found. Please try CUL-2026-001 or CUL-2026-002');
-                display.classList.remove('active');
+            if (!input) {
+                alert('Please enter a tracking number.');
                 return;
             }
 
-            // Update order number
-            document.getElementById('orderNumber').textContent = data.order;
+            // Show loading
+            trackBtn.disabled = true;
+            trackBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Searching...';
+            resultDiv.innerHTML = '';
 
-            // Update ETA
-            document.getElementById('etaDisplay').textContent = data.eta;
+            try {
+                // Query Firestore for the tracking number
+                const snapshot = await db.collection('parcelBookings')
+                    .where('trackingNumber', '==', input)
+                    .get();
 
-            // Update timeline
-            const items = document.querySelectorAll('.timeline-item');
-            const stepLabels = ['Order Confirmed', 'Picked Up', 'In Transit', 'Out for Delivery', 'Delivered'];
+                if (snapshot.empty) {
+                    // Try orders collection too
+                    const orderSnapshot = await db.collection('orders')
+                        .where('trackingNumber', '==', input)
+                        .get();
 
-            items.forEach((item, index) => {
-                const step = data.steps[index];
-                if (!step) return;
-
-                // Reset classes
-                item.classList.remove('completed', 'active', 'pending');
-
-                if (step.completed) {
-                    item.classList.add('completed');
-                } else if (step.active) {
-                    item.classList.add('active');
-                } else {
-                    item.classList.add('pending');
-                }
-
-                // Update text
-                const titleEl = item.querySelector('.step-title');
-                const timeEl = item.querySelector('.step-time');
-                if (titleEl) titleEl.textContent = step.label;
-                if (timeEl) timeEl.textContent = step.time;
-
-                // Update icon
-                const iconEl = item.querySelector('.status-icon i');
-                if (iconEl) {
-                    if (step.completed) {
-                        iconEl.className = 'fas fa-check';
-                    } else if (step.active) {
-                        iconEl.className = 'fas fa-spinner fa-spin';
-                    } else {
-                        iconEl.className = 'fas fa-clock';
+                    if (orderSnapshot.empty) {
+                        resultDiv.innerHTML = `
+                            <div class="not-found">
+                                <i class="fas fa-search"></i>
+                                <h3 style="color:#fff;">Tracking Number Not Found</h3>
+                                <p style="color:#888;">Please check the number and try again.</p>
+                            </div>
+                        `;
+                        display.classList.add('active');
+                        trackBtn.disabled = false;
+                        trackBtn.innerHTML = '<i class="fas fa-search"></i> Track';
+                        return;
                     }
-                }
-            });
 
-            // Update map placeholder
-            const mapP = document.querySelector('.map-placeholder p:first-child');
-            if (mapP) {
-                const dot = mapP.querySelector('.live-dot');
-                const textNode = mapP.childNodes[2];
-                if (textNode) {
-                    textNode.textContent = ` Driver is currently ${data.driverLocation}`;
+                    // Found in orders
+                    const doc = orderSnapshot.docs[0];
+                    const data = doc.data();
+                    renderTrackingResult(data, input);
+                    display.classList.add('active');
+                    trackBtn.disabled = false;
+                    trackBtn.innerHTML = '<i class="fas fa-search"></i> Track';
+                    return;
                 }
+
+                // Found in parcelBookings
+                const doc = snapshot.docs[0];
+                const data = doc.data();
+                renderTrackingResult(data, input);
+                display.classList.add('active');
+
+            } catch (error) {
+                console.error('Error tracking order:', error);
+                resultDiv.innerHTML = `
+                    <div class="not-found">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3 style="color:#fff;">Error</h3>
+                        <p style="color:#888;">Could not retrieve tracking information. Please try again.</p>
+                    </div>
+                `;
+                display.classList.add('active');
             }
 
-            display.classList.add('active');
+            trackBtn.disabled = false;
+            trackBtn.innerHTML = '<i class="fas fa-search"></i> Track';
         }
 
-        // ===== SAMPLE FILLERS =====
+        // ===== RENDER TRACKING RESULT =====
+        function renderTrackingResult(data, trackingNumber) {
+            const resultDiv = document.getElementById('trackingResult');
+
+            // Determine status
+            const status = data.status || 'pending';
+            const steps = [
+                { label: 'Order Confirmed', key: 'confirmed', time: data.createdAt || 'Today' },
+                { label: 'Picked Up', key: 'pickedUp', time: data.pickupDate || 'Pending' },
+                { label: 'In Transit', key: 'inTransit', time: 'In progress' },
+                { label: 'Out for Delivery', key: 'outForDelivery', time: 'Estimated' },
+                { label: 'Delivered', key: 'delivered', time: 'Pending' }
+            ];
+
+            // Map status to step index
+            const statusMap = {
+                'pending': 0,
+                'confirmed': 1,
+                'picked-up': 2,
+                'in-transit': 2,
+                'out-for-delivery': 3,
+                'delivered': 4
+            };
+
+            const activeIndex = statusMap[status] || 0;
+
+            let timelineHTML = '';
+            steps.forEach((step, index) => {
+                let cls = 'pending';
+                let icon = 'fa-clock';
+                if (index < activeIndex) {
+                    cls = 'completed';
+                    icon = 'fa-check';
+                } else if (index === activeIndex) {
+                    cls = 'active';
+                    icon = 'fa-spinner fa-spin';
+                }
+
+                timelineHTML += `
+                    <div class="timeline-item ${cls}" data-step="${index}">
+                        <span class="status-icon"><i class="fas ${icon}"></i></span>
+                        <div class="step-title">${step.label}</div>
+                        <div class="step-time">${step.time}</div>
+                    </div>
+                `;
+            });
+
+            // ETA
+            const eta = data.eta || 'Calculating...';
+
+            // Driver location
+            const driverLocation = data.driverLocation || 'en route to drop-off location';
+
+            // Customer info
+            const customerName = data.fullName || data.customerName || 'Customer';
+            const pickup = data.pickupAddress || 'Pickup location';
+            const dropoff = data.dropoffAddress || 'Drop-off location';
+
+            resultDiv.innerHTML = `
+                <div class="order-info">
+                    <h3>Order <span>${trackingNumber}</span></h3>
+                    <span class="order-badge"><i class="fas fa-circle"></i> ${status.replace('-', ' ').toUpperCase()}</span>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px; font-size:14px; background:#121212; padding:15px; border-radius:12px;">
+                    <div><strong style="color:#888;">Customer:</strong> <span style="color:#fff;">${customerName}</span></div>
+                    <div><strong style="color:#888;">Pickup:</strong> <span style="color:#fff;">${pickup}</span></div>
+                    <div><strong style="color:#888;">Drop-off:</strong> <span style="color:#fff;">${dropoff}</span></div>
+                    <div><strong style="color:#888;">ETA:</strong> <span style="color:#F7931E;">${eta}</span></div>
+                </div>
+
+                <div class="timeline" id="timeline">
+                    ${timelineHTML}
+                </div>
+
+                <div class="map-placeholder">
+                    <div><i class="fas fa-map-marked-alt"></i></div>
+                    <p>
+                        <span class="live-dot"></span>
+                        Driver is currently <span style="color:#F7931E; font-weight:500;">${driverLocation}</span>
+                    </p>
+                    <p style="font-size:12px; color:#555; margin-top:6px;">
+                        <i class="fas fa-location-dot" style="color:#F7931E;"></i>
+                        Estimated arrival: <span style="color:#fff;">${eta}</span>
+                    </p>
+                </div>
+            `;
+        }
+
+        // ===== SAMPLE FILLERS (for demo) =====
         function fillSample() {
             document.getElementById('trackingInput').value = 'CUL-2026-001';
             trackOrder();
@@ -602,6 +642,42 @@
                 trackOrder();
             }
         });
+
+        // ===== GENERATE TRACKING NUMBER =====
+        function generateTrackingNumber() {
+            const year = new Date().getFullYear();
+            const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+            return `CUL-${year}-${random}`;
+        }
+
+        // ===== SAVE BOOKING TO FIRESTORE =====
+        async function saveParcelBooking(formData) {
+            const trackingNumber = generateTrackingNumber();
+
+            const bookingData = {
+                ...formData,
+                trackingNumber: trackingNumber,
+                status: 'confirmed',
+                createdAt: new Date().toISOString(),
+                eta: 'Calculating...',
+                driverLocation: 'Awaiting driver assignment'
+            };
+
+            try {
+                await db.collection('parcelBookings').add(bookingData);
+                return { success: true, trackingNumber };
+            } catch (error) {
+                console.error('Error saving booking:', error);
+                return { success: false, error: error.message };
+            }
+        }
+
+        // ===== EXPOSE FUNCTIONS GLOBALLY =====
+        window.trackOrder = trackOrder;
+        window.fillSample = fillSample;
+        window.fillSample2 = fillSample2;
+        window.saveParcelBooking = saveParcelBooking;
+        window.generateTrackingNumber = generateTrackingNumber;
     </script>
 
     <script src="script.js"></script>
