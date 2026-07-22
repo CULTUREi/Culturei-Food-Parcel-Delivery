@@ -208,6 +208,12 @@
             margin-right: 10px;
         }
 
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .form-success {
             display: none;
             text-align: center;
@@ -223,6 +229,13 @@
             font-size: 40px;
             display: block;
             margin-bottom: 10px;
+        }
+
+        .form-success .tracking-number {
+            color: #F7931E;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
         @media (max-width: 600px) {
@@ -389,14 +402,16 @@
                     <textarea id="parcelDetails" placeholder="Describe what you're sending (size, weight, special instructions)"></textarea>
                 </div>
 
-                <button type="submit" class="btn-submit">
+                <button type="submit" class="btn-submit" id="submitBtn">
                     <i class="fas fa-paper-plane"></i> Submit Booking
                 </button>
 
                 <div class="form-success" id="formSuccess">
                     <i class="fas fa-check-circle"></i>
                     <h3 style="color:#81c784;">Booking Submitted!</h3>
-                    <p>We'll contact you shortly to confirm your parcel pickup.</p>
+                    <p>Your tracking number: <span class="tracking-number" id="trackingNumberDisplay">CUL-2026-XXXX</span></p>
+                    <p style="font-size:14px; color:#aaa; margin-top:8px;">Use this number to track your parcel on the <a href="tracking.html" style="color:#F7931E;">Live Tracking</a> page.</p>
+                    <p style="font-size:13px; color:#888; margin-top:12px;">We'll also contact you shortly to confirm pickup.</p>
                 </div>
             </form>
         </div>
@@ -473,31 +488,87 @@
 
         firebase.initializeApp(firebaseConfig);
         firebase.analytics();
+        const db = firebase.firestore();
+
+        // ===== GENERATE TRACKING NUMBER =====
+        function generateTrackingNumber() {
+            const year = new Date().getFullYear();
+            const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+            return `CUL-${year}-${random}`;
+        }
 
         // ===== PARCEL BOOKING FORM SUBMISSION =====
-        function submitParcelBooking(event) {
+        async function submitParcelBooking(event) {
             event.preventDefault();
 
-            const fullName = document.getElementById('fullName').value;
-            const phone = document.getElementById('phoneNumber').value;
-            const pickup = document.getElementById('pickupAddress').value;
-            const dropoff = document.getElementById('dropoffAddress').value;
+            const fullName = document.getElementById('fullName').value.trim();
+            const phone = document.getElementById('phoneNumber').value.trim();
+            const pickup = document.getElementById('pickupAddress').value.trim();
+            const dropoff = document.getElementById('dropoffAddress').value.trim();
             const city = document.getElementById('city').value;
             const date = document.getElementById('pickupDate').value;
-            const details = document.getElementById('parcelDetails').value;
+            const details = document.getElementById('parcelDetails').value.trim();
 
-            // Show success message
-            document.getElementById('formSuccess').style.display = 'block';
+            const submitBtn = document.getElementById('submitBtn');
+            const successDiv = document.getElementById('formSuccess');
 
-            // Optional: You can send this data to Firebase Firestore here
+            // Validate
+            if (!fullName || !phone || !pickup || !dropoff || !city || !date) {
+                alert('Please fill in all required fields.');
+                return;
+            }
 
-            // Reset form after 3 seconds
-            setTimeout(() => {
-                document.getElementById('parcelBookingForm').reset();
-                document.getElementById('formSuccess').style.display = 'none';
-            }, 5000);
+            // Generate tracking number
+            const trackingNumber = generateTrackingNumber();
 
-            console.log('Parcel Booking:', { fullName, phone, pickup, dropoff, city, date, details });
+            // Prepare booking data
+            const bookingData = {
+                fullName,
+                phone,
+                pickupAddress: pickup,
+                dropoffAddress: dropoff,
+                city,
+                pickupDate: date,
+                parcelDetails: details || '',
+                trackingNumber: trackingNumber,
+                status: 'confirmed',
+                createdAt: new Date().toISOString(),
+                eta: 'Calculating...',
+                driverLocation: 'Awaiting driver assignment',
+                source: 'website-parcel'
+            };
+
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+            try {
+                // Save to Firestore
+                await db.collection('parcelBookings').add(bookingData);
+
+                // Show success with tracking number
+                document.getElementById('trackingNumberDisplay').textContent = trackingNumber;
+                successDiv.style.display = 'block';
+
+                // Scroll to success message
+                successDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                // Reset form after 8 seconds
+                setTimeout(() => {
+                    document.getElementById('parcelBookingForm').reset();
+                    successDiv.style.display = 'none';
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Booking';
+                }, 10000);
+
+                console.log('Parcel Booking Saved:', bookingData);
+
+            } catch (error) {
+                console.error('Error saving booking:', error);
+                alert('Error submitting booking. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Booking';
+            }
         }
     </script>
 
