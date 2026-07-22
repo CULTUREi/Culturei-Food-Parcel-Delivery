@@ -1,1 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Track your Culturei Deliveries order or parcel in real-time across South Africa." />
+    <meta name="keywords" content="Live Tracking, Track Delivery, Culturei Deliveries, South Africa" />
+    <meta name="author" content="CULTURE (PTY) LTD" />
+    <title>Live Tracking | Culturei Deliveries</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .tracking-hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('assets/images/tracking-banner.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 8% 60px;
+            text-align: center;
+            margin-top: 85px;
+        }
 
+        .tracking-hero h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .tracking-hero h1 span {
+            color: #F7931E;
+        }
+
+        .tracking-hero p {
+            max-width: 600px;
+            margin: auto;
+            font-size: 17px;
+            color: #ddd;
+        }
+
+        .tracking-container {
+            max-width: 800px;
+            margin: -40px auto 60px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tracking-card {
+            background: #1b1b1b;
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid #2d2d2d;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        }
+
+        .tracking-input-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .tracking-input-group input {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            background: #121212;
+            color: #fff;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .tracking-input-group input:focus {
+            outline: none;
+            border-color: #F7931E;
+            box-shadow: 0 0 0 3px rgba(247, 147, 30, 0.15);
+        }
+
+        .tracking-input-group input::placeholder {
+            color: #666;
+        }
+
+        .btn-track {
+            padding: 14px 32px;
+            background: #F7931E;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .btn-track:hover {
+            background: #e07e0a;
+            transform: scale(1.03);
+        }
+
+        .tracking-hint {
+            color: #888;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .tracking-hint span {
+            color: #F7931E;
+            cursor: pointer;
+        }
+
+        .tracking-hint span:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== STATUS DISPLAY ===== */
+        .status-display {
+            display: none;
+            margin-top: 35px;
+            padding-top: 30px;
+            border-top: 1px solid #2d2d2d;
+        }
+
+        .status-display.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .order-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .order-info h3 {
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .order-info h3 span {
+            color: #F7931E;
+        }
+
+        .order-badge {
+            background: #2a2a2a;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            color: #aaa;
+        }
+
+        .order-badge i {
+            color: #4caf50;
+            margin-right: 6px;
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin: 25px 0 30px;
+            position: relative;
+            padding-left: 35px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 12px;
+            bottom: 12px;
+            width: 3px;
+            background: #2d2d2d;
+            border-radius: 10px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: 14px 0 14px 20px;
+            border-left: 3px solid transparent;
+            transition: 0.3s;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -31px;
+            top: 20px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #2d2d2d;
+            border: 3px solid #1b1b1b;
+            transition: 0.3s;
+        }
+
+        .timeline-item.active::before {
+            background: #F7931E;
+            box-shadow: 0 0 20px rgba(247, 147, 30, 0.3);
+        }
+
+        .timeline-item.completed::before {
+            background: #4caf50;
+        }
+
+        .timeline-item .status-icon {
+            position: absolute;
+            left: -28px;
+            top: 18px;
+            font-size: 12px;
+            color: #1b1b1b;
+            z-index: 1;
+        }
+
+        .timeline-item .step-title {
+            color: #fff;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .timeline-item .step-time {
+            color: #888;
+            font-size: 13px;
+            margin-top: 2px;
+        }
+
+        .timeline-item.active .step-title {
+            color: #F7931E;
+        }
+
+        .timeline-item.completed .step-title {
+            color: #4caf50;
+        }
+
+        .timeline-item.pending .step-title {
+            color: #666;
+        }
+
+        /* ===== MAP PLACEHOLDER ===== */
+        .map-placeholder {
+            background: #121212;
+            border-radius: 14px;
+            padding: 40px 20px;
+            text-align: center;
+            border: 1px solid #2d2d2d;
+            margin-top: 10px;
+        }
+
+        .map-placeholder i {
+            font-size: 48px;
+            color: #F7931E;
+            opacity: 0.5;
+            margin-bottom: 12px;
+        }
+
+        .map-placeholder p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .map-placeholder .live-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #4caf50;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .tracking-input-group {
+                flex-direction: column;
+            }
+
+            .btn-track {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .tracking-hero h1 {
+                font-size: 32px;
+            }
+
+            .tracking-card {
+                padding: 25px 20px;
+            }
+
+            .order-info {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .timeline {
+                padding-left: 25px;
+            }
+
+            .timeline-item {
+                padding-left: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ====== HEADER ====== -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="index.html" style="text-decoration:none; color:inherit;">Culture<span>i</span></a>
+                <span class="tagline">Delivery - Across Mzansi</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="restaurants.html">Restaurants</a></li>
+                    <li><a href="parcel-delivery.html">Parcel Delivery</a></li>
+                    <li><a href="drivers.html">Drivers</a></li>
+                    <li><a href="tracking.html" class="active">Live Tracking</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button class="btn-outline-light" onclick="openLogin()">Sign In</button>
+                <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====== HERO ====== -->
+    <section class="tracking-hero">
+        <h1>Live <span>Tracking</span></h1>
+        <p>Enter your tracking number to see real-time delivery progress across South Africa.</p>
+    </section>
+
+    <!-- ====== TRACKING FORM ====== -->
+    <div class="tracking-container">
+        <div class="tracking-card">
+            <div class="tracking-input-group">
+                <input type="text" id="trackingInput" placeholder="Enter tracking number (e.g. CUL-2026-001)" />
+                <button class="btn-track" onclick="trackOrder()">
+                    <i class="fas fa-search"></i> Track
+                </button>
+            </div>
+            <p class="tracking-hint">
+                <i class="fas fa-info-circle"></i> Try: <span onclick="fillSample()">CUL-2026-001</span> or <span onclick="fillSample2()">CUL-2026-002</span>
+            </p>
+
+            <!-- ===== STATUS DISPLAY ===== -->
+            <div class="status-display" id="statusDisplay">
+                <div class="order-info">
+                    <h3>Order <span id="orderNumber">CUL-2026-001</span></h3>
+                    <span class="order-badge"><i class="fas fa-circle"></i> Live</span>
+                </div>
+
+                <!-- Timeline -->
+                <div class="timeline" id="timeline">
+                    <div class="timeline-item completed" data-step="0">
+                        <span class="status-icon"><i class="fas fa-check"></i></span>
+                        <div class="step-title">Order Confirmed</div>
+                        <div class="step-time" id="time0">Today, 09:30</div>
+                    </div>
+                    <div class="timeline-item completed" data-step="1">
+                        <span class="status-icon"><i class="fas fa-check"></i></span>
+                        <div class="step-title">Picked Up</div>
+                        <div class="step-time" id="time1">Today, 10:15</div>
+                    </div>
+                    <div class="timeline-item active" data-step="2">
+                        <span class="status-icon"><i class="fas fa-spinner fa-spin"></i></span>
+                        <div class="step-title">In Transit</div>
+                        <div class="step-time" id="time2">Today, 11:00</div>
+                    </div>
+                    <div class="timeline-item pending" data-step="3">
+                        <span class="status-icon"><i class="fas fa-clock"></i></span>
+                        <div class="step-title">Out for Delivery</div>
+                        <div class="step-time" id="time3">Estimated 12:30</div>
+                    </div>
+                    <div class="timeline-item pending" data-step="4">
+                        <span class="status-icon"><i class="fas fa-clock"></i></span>
+                        <div class="step-title">Delivered</div>
+                        <div class="step-time" id="time4">Estimated 13:00</div>
+                    </div>
+                </div>
+
+                <!-- Map Placeholder -->
+                <div class="map-placeholder">
+                    <div><i class="fas fa-map-marked-alt"></i></div>
+                    <p>
+                        <span class="live-dot"></span>
+                        Driver is currently <span style="color:#F7931E; font-weight:500;">en route</span> to drop-off location
+                    </p>
+                    <p style="font-size:12px; color:#555; margin-top:6px;">
+                        <i class="fas fa-location-dot" style="color:#F7931E;"></i>
+                        Estimated arrival: <span id="etaDisplay" style="color:#fff;">12:30</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== FOOTER ====== -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>Culture<span>i</span></h3>
+                    <p>Food and Parcel Delivery - Across Mzansi</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="restaurants.html">Restaurants</a></li>
+                        <li><a href="parcel-delivery.html">Parcel Delivery</a></li>
+                        <li><a href="drivers.html">Drivers</a></li>
+                        <li><a href="tracking.html">Live Tracking</a></li>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="payment-policy.html">Payment Policy</a></li>
+                        <li><a href="refund-policy.html">Refund Policy</a></li>
+                        <li><a href="business-ethics-policy.html">Business Ethics Policy</a></li>
+                        <li><a href="cookie-policy.html">Cookie Policy</a></li>
+                        <li><a href="driver-agreement.html">Driver Agreement</a></li>
+                        <li><a href="restaurant-partner-agreement.html">Restaurant Partner Agreement</a></li>
+                        <li><a href="live-tracking-policy.html">Live Tracking Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact Us</h4>
+                    <p><a href="mailto:hello@culturei.co.za" style="color:inherit; text-decoration:none;"><i class="fas fa-envelope"></i> culturesonox@gmail.com</a></p>
+                    <p>
+                        <a href="tel:+27679100022" style="color:inherit; text-decoration:none;"><i class="fas fa-phone"></i> +27 67 910 0022</a>
+                        <a href="https://wa.me/27679100022" target="_blank" class="whatsapp-icon" title="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </p>
+                    <p>
+                        <a href="tel:+27736226645" style="color:inherit; text-decoration:none;"><i class="fas fa-phone"></i> +27 73 622 6645</a>
+                        <a href="https://wa.me/27736226645" target="_blank" class="whatsapp-icon" title="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </p>
+                    <p><i class="fas fa-map-marker-alt"></i> Cape Town, South Africa</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Culturei. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ====== SCRIPTS ====== -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyACwmaTgi075VasbpyAVNt_jzPDwvmqMc4",
+            authDomain: "culturei-food-parcel-del-6a5cb.firebaseapp.com",
+            projectId: "culturei-food-parcel-del-6a5cb",
+            storageBucket: "culturei-food-parcel-del-6a5cb.firebasestorage.app",
+            messagingSenderId: "1045902648656",
+            appId: "1:1045902648656:web:5c582e4e3831b67e2fb855",
+            measurementId: "G-91BSVDGQ92"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+        // ===== TRACKING DATA =====
+        const trackingData = {
+            'CUL-2026-001': {
+                order: 'CUL-2026-001',
+                status: 'in-transit',
+                steps: [
+                    { label: 'Order Confirmed', time: 'Today, 09:30', completed: true },
+                    { label: 'Picked Up', time: 'Today, 10:15', completed: true },
+                    { label: 'In Transit', time: 'Today, 11:00', completed: false, active: true },
+                    { label: 'Out for Delivery', time: 'Estimated 12:30', completed: false },
+                    { label: 'Delivered', time: 'Estimated 13:00', completed: false }
+                ],
+                eta: '12:30',
+                driverLocation: 'en route to drop-off location'
+            },
+            'CUL-2026-002': {
+                order: 'CUL-2026-002',
+                status: 'out-for-delivery',
+                steps: [
+                    { label: 'Order Confirmed', time: 'Today, 08:15', completed: true },
+                    { label: 'Picked Up', time: 'Today, 09:00', completed: true },
+                    { label: 'In Transit', time: 'Today, 09:45', completed: true },
+                    { label: 'Out for Delivery', time: 'Today, 10:30', completed: false, active: true },
+                    { label: 'Delivered', time: 'Estimated 11:15', completed: false }
+                ],
+                eta: '11:15',
+                driverLocation: 'approaching drop-off location'
+            }
+        };
+
+        // ===== TRACK ORDER =====
+        function trackOrder() {
+            const input = document.getElementById('trackingInput').value.trim().toUpperCase();
+            const display = document.getElementById('statusDisplay');
+            const data = trackingData[input];
+
+            if (!data) {
+                alert('Tracking number not found. Please try CUL-2026-001 or CUL-2026-002');
+                display.classList.remove('active');
+                return;
+            }
+
+            // Update order number
+            document.getElementById('orderNumber').textContent = data.order;
+
+            // Update ETA
+            document.getElementById('etaDisplay').textContent = data.eta;
+
+            // Update timeline
+            const items = document.querySelectorAll('.timeline-item');
+            const stepLabels = ['Order Confirmed', 'Picked Up', 'In Transit', 'Out for Delivery', 'Delivered'];
+
+            items.forEach((item, index) => {
+                const step = data.steps[index];
+                if (!step) return;
+
+                // Reset classes
+                item.classList.remove('completed', 'active', 'pending');
+
+                if (step.completed) {
+                    item.classList.add('completed');
+                } else if (step.active) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.add('pending');
+                }
+
+                // Update text
+                const titleEl = item.querySelector('.step-title');
+                const timeEl = item.querySelector('.step-time');
+                if (titleEl) titleEl.textContent = step.label;
+                if (timeEl) timeEl.textContent = step.time;
+
+                // Update icon
+                const iconEl = item.querySelector('.status-icon i');
+                if (iconEl) {
+                    if (step.completed) {
+                        iconEl.className = 'fas fa-check';
+                    } else if (step.active) {
+                        iconEl.className = 'fas fa-spinner fa-spin';
+                    } else {
+                        iconEl.className = 'fas fa-clock';
+                    }
+                }
+            });
+
+            // Update map placeholder
+            const mapP = document.querySelector('.map-placeholder p:first-child');
+            if (mapP) {
+                const dot = mapP.querySelector('.live-dot');
+                const textNode = mapP.childNodes[2];
+                if (textNode) {
+                    textNode.textContent = ` Driver is currently ${data.driverLocation}`;
+                }
+            }
+
+            display.classList.add('active');
+        }
+
+        // ===== SAMPLE FILLERS =====
+        function fillSample() {
+            document.getElementById('trackingInput').value = 'CUL-2026-001';
+            trackOrder();
+        }
+
+        function fillSample2() {
+            document.getElementById('trackingInput').value = 'CUL-2026-002';
+            trackOrder();
+        }
+
+        // ===== ENTER KEY SUPPORT =====
+        document.getElementById('trackingInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                trackOrder();
+            }
+        });
+    </script>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
