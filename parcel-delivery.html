@@ -110,48 +110,131 @@
             font-size: 14px;
         }
 
-        .cta-box {
-            background: linear-gradient(135deg, #1b1b1b, #2a1a0a);
-            padding: 60px 40px;
+        /* ===== BOOKING FORM ===== */
+        .booking-form {
+            background: #1b1b1b;
+            padding: 50px 40px;
             border-radius: 20px;
-            text-align: center;
-            border: 1px solid #F7931E;
+            border: 1px solid #2d2d2d;
             margin: 40px 0;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .cta-box h2 {
+        .booking-form h2 {
+            text-align: center;
             color: #fff;
             font-size: 32px;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
         }
 
-        .cta-box h2 span {
+        .booking-form h2 span {
             color: #F7931E;
         }
 
-        .cta-box p {
-            color: #ccc;
-            max-width: 600px;
-            margin: 0 auto 25px;
-            font-size: 17px;
+        .booking-form p.sub {
+            text-align: center;
+            color: #bbb;
+            margin-bottom: 30px;
+            font-size: 15px;
         }
 
-        .btn-parcel {
-            display: inline-block;
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #ddd;
+            font-weight: 500;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            background: #121212;
+            color: #fff;
+            font-size: 15px;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #F7931E;
+            box-shadow: 0 0 0 3px rgba(247, 147, 30, 0.15);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
             background: #F7931E;
             color: #fff;
-            padding: 14px 40px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 16px;
-            transition: 0.3s;
             border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
             cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
         }
 
-        .btn-parcel:hover {
+        .btn-submit:hover {
             background: #e07e0a;
-            transform: scale(1.05);
+            transform: scale(1.02);
+        }
+
+        .btn-submit i {
+            margin-right: 10px;
+        }
+
+        .form-success {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background: #1a3a1a;
+            border-radius: 12px;
+            border: 1px solid #2e7d32;
+            color: #81c784;
+            margin-top: 15px;
+        }
+
+        .form-success i {
+            font-size: 40px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .booking-form {
+                padding: 30px 20px;
+            }
+            .parcel-hero h1 {
+                font-size: 32px;
+            }
         }
     </style>
 </head>
@@ -248,11 +331,74 @@
             </div>
         </div>
 
-        <!-- ====== CTA ====== -->
-        <div class="cta-box">
-            <h2>Ready to <span>Send</span> a Parcel?</h2>
-            <p>Book a parcel delivery now and experience fast, reliable service across South Africa.</p>
-            <button class="btn-parcel" onclick="window.location.href='tracking.html'">Book Now</button>
+        <!-- ====== BOOKING FORM ====== -->
+        <div class="booking-form" id="bookingForm">
+            <h2>Book a <span>Parcel</span> Delivery</h2>
+            <p class="sub">Fill in the details below and we'll schedule your pickup.</p>
+
+            <form id="parcelBookingForm" onsubmit="submitParcelBooking(event)">
+                <div class="form-group">
+                    <label for="fullName"><i class="fas fa-user"></i> Full Name</label>
+                    <input type="text" id="fullName" placeholder="e.g. Thabo Mokoena" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="phoneNumber"><i class="fas fa-phone"></i> Phone Number</label>
+                    <input type="tel" id="phoneNumber" placeholder="e.g. 082 123 4567" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="pickupAddress"><i class="fas fa-map-pin"></i> Pickup Address</label>
+                    <input type="text" id="pickupAddress" placeholder="e.g. 123 Mandela Ave, Johannesburg" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="dropoffAddress"><i class="fas fa-flag-checkered"></i> Drop-off Address</label>
+                    <input type="text" id="dropoffAddress" placeholder="e.g. 456 Long Street, Cape Town" required />
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city"><i class="fas fa-city"></i> City</label>
+                        <select id="city" required>
+                            <option value="">Select City</option>
+                            <option value="Cape Town">Cape Town</option>
+                            <option value="Johannesburg">Johannesburg</option>
+                            <option value="Durban">Durban</option>
+                            <option value="Pretoria">Pretoria</option>
+                            <option value="Port Elizabeth">Port Elizabeth</option>
+                            <option value="Bloemfontein">Bloemfontein</option>
+                            <option value="East London">East London</option>
+                            <option value="Kimberley">Kimberley</option>
+                            <option value="Nelspruit">Nelspruit</option>
+                            <option value="Polokwane">Polokwane</option>
+                            <option value="Rustenburg">Rustenburg</option>
+                            <option value="George">George</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pickupDate"><i class="fas fa-calendar"></i> Pickup Date</label>
+                        <input type="date" id="pickupDate" required />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="parcelDetails"><i class="fas fa-box"></i> Parcel Details (Optional)</label>
+                    <textarea id="parcelDetails" placeholder="Describe what you're sending (size, weight, special instructions)"></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-paper-plane"></i> Submit Booking
+                </button>
+
+                <div class="form-success" id="formSuccess">
+                    <i class="fas fa-check-circle"></i>
+                    <h3 style="color:#81c784;">Booking Submitted!</h3>
+                    <p>We'll contact you shortly to confirm your parcel pickup.</p>
+                </div>
+            </form>
         </div>
 
     </section>
@@ -327,6 +473,32 @@
 
         firebase.initializeApp(firebaseConfig);
         firebase.analytics();
+
+        // ===== PARCEL BOOKING FORM SUBMISSION =====
+        function submitParcelBooking(event) {
+            event.preventDefault();
+
+            const fullName = document.getElementById('fullName').value;
+            const phone = document.getElementById('phoneNumber').value;
+            const pickup = document.getElementById('pickupAddress').value;
+            const dropoff = document.getElementById('dropoffAddress').value;
+            const city = document.getElementById('city').value;
+            const date = document.getElementById('pickupDate').value;
+            const details = document.getElementById('parcelDetails').value;
+
+            // Show success message
+            document.getElementById('formSuccess').style.display = 'block';
+
+            // Optional: You can send this data to Firebase Firestore here
+
+            // Reset form after 3 seconds
+            setTimeout(() => {
+                document.getElementById('parcelBookingForm').reset();
+                document.getElementById('formSuccess').style.display = 'none';
+            }, 5000);
+
+            console.log('Parcel Booking:', { fullName, phone, pickup, dropoff, city, date, details });
+        }
     </script>
 
     <script src="script.js"></script>
