@@ -1,1 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Culturei Deliveries Parcel Delivery - Send small parcels anywhere in South Africa with real-time tracking." />
+    <meta name="keywords" content="Parcel Delivery, Courier, South Africa, Culturei Deliveries" />
+    <meta name="author" content="CULTURE (PTY) LTD" />
+    <title>Parcel Delivery | Culturei Deliveries</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .parcel-hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('assets/images/parcel-banner.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 120px 8%;
+            text-align: center;
+            margin-top: 85px;
+        }
 
+        .parcel-hero h1 {
+            font-size: 52px;
+            margin-bottom: 20px;
+        }
+
+        .parcel-hero h1 span {
+            color: #F7931E;
+        }
+
+        .parcel-hero p {
+            max-width: 700px;
+            margin: auto;
+            font-size: 18px;
+            color: #ddd;
+        }
+
+        .parcel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 60px 0;
+        }
+
+        .parcel-card {
+            background: #1b1b1b;
+            padding: 40px 30px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid #2d2d2d;
+            transition: all 0.3s ease;
+        }
+
+        .parcel-card:hover {
+            transform: translateY(-8px);
+            border-color: #F7931E;
+            box-shadow: 0 15px 40px rgba(247, 147, 30, 0.15);
+        }
+
+        .parcel-card i {
+            font-size: 48px;
+            color: #F7931E;
+            margin-bottom: 20px;
+        }
+
+        .parcel-card h3 {
+            color: #fff;
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .parcel-card p {
+            color: #bbb;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .parcel-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            padding: 40px 0;
+        }
+
+        .step {
+            text-align: center;
+        }
+
+        .step .number {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background: #F7931E;
+            color: #fff;
+            border-radius: 50%;
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 50px;
+            margin-bottom: 15px;
+        }
+
+        .step h4 {
+            color: #fff;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .step p {
+            color: #bbb;
+            font-size: 14px;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, #1b1b1b, #2a1a0a);
+            padding: 60px 40px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid #F7931E;
+            margin: 40px 0;
+        }
+
+        .cta-box h2 {
+            color: #fff;
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .cta-box h2 span {
+            color: #F7931E;
+        }
+
+        .cta-box p {
+            color: #ccc;
+            max-width: 600px;
+            margin: 0 auto 25px;
+            font-size: 17px;
+        }
+
+        .btn-parcel {
+            display: inline-block;
+            background: #F7931E;
+            color: #fff;
+            padding: 14px 40px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-parcel:hover {
+            background: #e07e0a;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ====== HEADER ====== -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="index.html" style="text-decoration:none; color:inherit;">Culture<span>i</span></a>
+                <span class="tagline">Delivery - Across Mzansi</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="restaurants.html">Restaurants</a></li>
+                    <li><a href="parcel-delivery.html" class="active">Parcel Delivery</a></li>
+                    <li><a href="drivers.html">Drivers</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button class="btn-outline-light" onclick="openLogin()">Sign In</button>
+                <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====== HERO ====== -->
+    <section class="parcel-hero">
+        <h1>Parcel <span>Delivery</span> Across Mzansi</h1>
+        <p>Send small parcels anywhere in South Africa with real-time tracking, dedicated drivers and reliable service.</p>
+    </section>
+
+    <!-- ====== FEATURES ====== -->
+    <section class="container">
+        <h2 style="text-align:center; font-size:36px; margin-bottom:10px;">Why Choose <span style="color:#F7931E;">Culturei</span>?</h2>
+        <p style="text-align:center; color:#bbb; margin-bottom:40px;">Fast, secure and affordable parcel delivery across South Africa.</p>
+
+        <div class="parcel-grid">
+            <div class="parcel-card">
+                <i class="fas fa-box"></i>
+                <h3>Small Parcels</h3>
+                <p>Send documents, small packages and goods anywhere in South Africa with ease.</p>
+            </div>
+            <div class="parcel-card">
+                <i class="fas fa-map-marker-alt"></i>
+                <h3>Real-Time Tracking</h3>
+                <p>Track your parcel live from collection to delivery — full visibility at every step.</p>
+            </div>
+            <div class="parcel-card">
+                <i class="fas fa-motorcycle"></i>
+                <h3>Dedicated Drivers</h3>
+                <p>Your parcel is delivered one at a time — no stops, no delays.</p>
+            </div>
+            <div class="parcel-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Safe & Secure</h3>
+                <p>Your items are handled with care and respect by professional delivery drivers.</p>
+            </div>
+            <div class="parcel-card">
+                <i class="fas fa-clock"></i>
+                <h3>Fast Delivery</h3>
+                <p>Get your parcels delivered quickly and efficiently across major cities in South Africa.</p>
+            </div>
+            <div class="parcel-card">
+                <i class="fas fa-phone-alt"></i>
+                <h3>24/7 Support</h3>
+                <p>Our customer support team is available to assist with any questions or concerns.</p>
+            </div>
+        </div>
+
+        <!-- ====== HOW IT WORKS ====== -->
+        <h2 style="text-align:center; font-size:36px; margin:50px 0 10px;">How It <span style="color:#F7931E;">Works</span></h2>
+        <p style="text-align:center; color:#bbb; margin-bottom:30px;">Three simple steps to send your parcel.</p>
+
+        <div class="parcel-steps">
+            <div class="step">
+                <div class="number">1</div>
+                <h4>Book a Delivery</h4>
+                <p>Enter pickup and delivery details, parcel size and schedule your collection.</p>
+            </div>
+            <div class="step">
+                <div class="number">2</div>
+                <h4>Driver Collects</h4>
+                <p>A professional driver collects your parcel at the scheduled time.</p>
+            </div>
+            <div class="step">
+                <div class="number">3</div>
+                <h4>Track & Receive</h4>
+                <p>Track your parcel live and receive confirmation once delivered.</p>
+            </div>
+        </div>
+
+        <!-- ====== CTA ====== -->
+        <div class="cta-box">
+            <h2>Ready to <span>Send</span> a Parcel?</h2>
+            <p>Book a parcel delivery now and experience fast, reliable service across South Africa.</p>
+            <button class="btn-parcel" onclick="window.location.href='tracking.html'">Book Now</button>
+        </div>
+
+    </section>
+
+    <!-- ====== FOOTER ====== -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>Culture<span>i</span></h3>
+                    <p>Food and Parcel Delivery - Across Mzansi</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="restaurants.html">Restaurants</a></li>
+                        <li><a href="parcel-delivery.html">Parcel Delivery</a></li>
+                        <li><a href="drivers.html">Drivers</a></li>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="payment-policy.html">Payment Policy</a></li>
+                        <li><a href="refund-policy.html">Refund Policy</a></li>
+                        <li><a href="business-ethics-policy.html">Business Ethics Policy</a></li>
+                        <li><a href="cookie-policy.html">Cookie Policy</a></li>
+                        <li><a href="driver-agreement.html">Driver Agreement</a></li>
+                        <li><a href="restaurant-partner-agreement.html">Restaurant Partner Agreement</a></li>
+                        <li><a href="live-tracking-policy.html">Live Tracking Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact Us</h4>
+                    <p><a href="mailto:hello@culturei.co.za" style="color:inherit; text-decoration:none;"><i class="fas fa-envelope"></i> culturesonox@gmail.com</a></p>
+                    <p>
+                        <a href="tel:+27679100022" style="color:inherit; text-decoration:none;"><i class="fas fa-phone"></i> +27 67 910 0022</a>
+                        <a href="https://wa.me/27679100022" target="_blank" class="whatsapp-icon" title="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </p>
+                    <p>
+                        <a href="tel:+27736226645" style="color:inherit; text-decoration:none;"><i class="fas fa-phone"></i> +27 73 622 6645</a>
+                        <a href="https://wa.me/27736226645" target="_blank" class="whatsapp-icon" title="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </p>
+                    <p><i class="fas fa-map-marker-alt"></i> Cape Town, South Africa</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Culturei. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ====== SCRIPTS ====== -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyACwmaTgi075VasbpyAVNt_jzPDwvmqMc4",
+            authDomain: "culturei-food-parcel-del-6a5cb.firebaseapp.com",
+            projectId: "culturei-food-parcel-del-6a5cb",
+            storageBucket: "culturei-food-parcel-del-6a5cb.firebasestorage.app",
+            messagingSenderId: "1045902648656",
+            appId: "1:1045902648656:web:5c582e4e3831b67e2fb855",
+            measurementId: "G-91BSVDGQ92"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
