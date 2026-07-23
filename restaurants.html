@@ -16,16 +16,188 @@
             text-decoration: none;
             color: #25D366;
         }
-
         .whatsapp-icon:hover {
             transform: scale(1.2);
         }
-
         .footer-contact p {
             display: flex;
             align-items: center;
             gap: 8px;
             flex-wrap: wrap;
+        }
+
+        /* --- NEW: Restaurant Card with Add to Cart --- */
+        .restaurant-card {
+            background: var(--card-bg, #fff);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: default;
+            display: flex;
+            flex-direction: column;
+        }
+        .restaurant-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        .restaurant-card .card-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background: #e9ecef;
+        }
+        .restaurant-card .card-body {
+            padding: 1rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .restaurant-card .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.25rem;
+        }
+        .restaurant-card .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        .restaurant-card .card-cuisine {
+            font-size: 0.85rem;
+            color: var(--text-muted, #777);
+            margin-bottom: 0.5rem;
+        }
+        .restaurant-card .card-rating {
+            font-size: 0.9rem;
+            color: #f59e0b;
+        }
+        .restaurant-card .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #eee;
+        }
+        .restaurant-card .card-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-orange, #d35400);
+        }
+        .restaurant-card .btn-add-cart {
+            background: var(--primary-orange, #d35400);
+            color: #fff;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .restaurant-card .btn-add-cart:hover {
+            background: var(--primary-orange-hover, #e67e22);
+        }
+        .restaurant-card .btn-add-cart:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* --- NEW: Search & Filter --- */
+        .search-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0 2rem;
+            align-items: center;
+        }
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 0.7rem 2.5rem 0.7rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 50px;
+            font-size: 1rem;
+            background: var(--input-bg, #fff);
+            color: var(--text-color, #222);
+            transition: border-color 0.2s;
+        }
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-orange, #d35400);
+        }
+        .clear-search {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #999;
+            cursor: pointer;
+            display: none;
+        }
+        .clear-search.visible {
+            display: block;
+        }
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .filter-tab {
+            background: var(--tab-bg, #f1f3f5);
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-color, #333);
+        }
+        .filter-tab:hover {
+            background: var(--primary-orange, #d35400);
+            color: #fff;
+        }
+        .filter-tab.active {
+            background: var(--primary-orange, #d35400);
+            color: #fff;
+        }
+
+        /* --- NEW: Favorite star toggle --- */
+        .favorite-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #ccc;
+            transition: color 0.2s;
+            padding: 0 4px;
+        }
+        .favorite-btn.active {
+            color: #f59e0b;
+        }
+        .favorite-btn:hover {
+            color: #f59e0b;
+        }
+
+        /* --- Responsive tweaks --- */
+        @media (max-width: 600px) {
+            .search-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-tabs {
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -47,7 +219,6 @@
                 </ul>
             </nav>
             <div class="header-actions">
-                <!-- ===== CART ICON ===== -->
                 <div class="cart-icon" onclick="toggleCart()">
                     <i class="fas fa-shopping-bag"></i>
                     <span class="cart-count" id="cartCount">0</span>
@@ -66,7 +237,7 @@
             <h2 class="section-title">Our <span>Restaurants</span></h2>
             <p class="menu-subtitle">Discover authentic cultural cuisine from around South Africa.</p>
             
-            <!-- Search Bar -->
+            <!-- ===== SEARCH & FILTER ===== -->
             <div class="search-container">
                 <div class="search-box">
                     <input type="text" id="searchInput" placeholder="🔍 Search restaurants or cuisine..." />
@@ -155,12 +326,11 @@
                 <span>Total:</span>
                 <span id="cartTotal">R 0.00</span>
             </div>
-            <!-- ✅ FIXED: Now links directly to your Paystack product page -->
             <a href="https://paystack.shop/pay/0sam0qbqp4" class="btn-checkout">Proceed to Checkout</a>
         </div>
     </div>
 
-    <!-- ====== FIREBASE LIBRARIES (MUST LOAD FIRST) ====== -->
+    <!-- ====== FIREBASE LIBRARIES ====== -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
@@ -177,13 +347,287 @@
             appId: "1:1045902648656:web:5c582e4e3831b67e2fb855",
             measurementId: "G-91BSVDGQ92"
         };
-
         firebase.initializeApp(firebaseConfig);
         firebase.analytics();
     </script>
 
-    <!-- ====== SCRIPT.JS (LOAD LAST) ====== -->
-    <script src="/script.js"></script>
+    <!-- ====== UPDATED SCRIPT.JS WITH SEARCH/FILTER/ADD-TO-CART ====== -->
+    <script>
+        // --- Wait for Firebase to load ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const db = firebase.firestore();
+
+            // --- DOM refs ---
+            const grid = document.getElementById('menuGrid');
+            const searchInput = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('clearSearch');
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            const cartCount = document.getElementById('cartCount');
+            const cartItemsEl = document.getElementById('cartItems');
+            const cartTotalEl = document.getElementById('cartTotal');
+
+            // --- State ---
+            let allRestaurants = [];
+            let currentFilter = 'all';
+            let currentSearch = '';
+            let cart = JSON.parse(localStorage.getItem('culturei_cart') || '[]');
+            let favorites = JSON.parse(localStorage.getItem('culturei_favorites') || '[]');
+
+            // --- Render function ---
+            function renderRestaurants() {
+                let filtered = allRestaurants;
+
+                // Search filter
+                if (currentSearch.trim()) {
+                    const q = currentSearch.toLowerCase().trim();
+                    filtered = filtered.filter(r =>
+                        r.name.toLowerCase().includes(q) ||
+                        (r.cuisine && r.cuisine.toLowerCase().includes(q)) ||
+                        (r.category && r.category.toLowerCase().includes(q))
+                    );
+                }
+
+                // Favorites filter
+                if (currentFilter === 'favorites') {
+                    filtered = filtered.filter(r => favorites.includes(r.id));
+                }
+
+                if (filtered.length === 0) {
+                    grid.innerHTML = `
+                        <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-muted);">
+                            <i class="fas fa-search" style="font-size:2rem;display:block;margin-bottom:1rem;"></i>
+                            <p>No restaurants found. Try a different search.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                grid.innerHTML = filtered.map(r => `
+                    <div class="restaurant-card" data-id="${r.id}">
+                        <img class="card-image" src="${r.image || 'https://via.placeholder.com/300x160/e9ecef/999?text=' + encodeURIComponent(r.name)}" alt="${r.name}" />
+                        <div class="card-body">
+                            <div class="card-header">
+                                <h3 class="card-title">${r.name}</h3>
+                                <button class="favorite-btn ${favorites.includes(r.id) ? 'active' : ''}" onclick="toggleFavorite('${r.id}')" title="Favorite">
+                                    <i class="fas fa-star"></i>
+                                </button>
+                            </div>
+                            <div class="card-cuisine">${r.cuisine || r.category || 'Local Cuisine'}</div>
+                            <div class="card-rating">
+                                ★ ${r.rating || '4.5'} (${r.deliveryTime || '20-40'} min)
+                            </div>
+                            <div class="card-meta">
+                                <span class="card-price">R ${r.price || '65.00'}</span>
+                                <button class="btn-add-cart" onclick="addToCart('${r.id}')">
+                                    <i class="fas fa-plus"></i> Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // --- Add to Cart ---
+            window.addToCart = function(restaurantId) {
+                const restaurant = allRestaurants.find(r => r.id === restaurantId);
+                if (!restaurant) return;
+
+                const existing = cart.find(item => item.id === restaurantId);
+                if (existing) {
+                    existing.quantity += 1;
+                } else {
+                    cart.push({
+                        id: restaurant.id,
+                        name: restaurant.name,
+                        price: parseFloat(restaurant.price || 65),
+                        quantity: 1,
+                        image: restaurant.image
+                    });
+                }
+                saveCart();
+                updateCartUI();
+                showToast(`${restaurant.name} added to cart!`);
+            };
+
+            // --- Toggle Favorite ---
+            window.toggleFavorite = function(restaurantId) {
+                const idx = favorites.indexOf(restaurantId);
+                if (idx > -1) {
+                    favorites.splice(idx, 1);
+                } else {
+                    favorites.push(restaurantId);
+                }
+                localStorage.setItem('culturei_favorites', JSON.stringify(favorites));
+                renderRestaurants();
+            };
+
+            // --- Cart functions ---
+            function saveCart() {
+                localStorage.setItem('culturei_cart', JSON.stringify(cart));
+            }
+
+            function updateCartUI() {
+                const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+                cartCount.textContent = count;
+
+                if (cart.length === 0) {
+                    cartItemsEl.innerHTML = '<p class="empty-cart">Your cart is empty.</p>';
+                    cartTotalEl.textContent = 'R 0.00';
+                    return;
+                }
+
+                let html = '';
+                let total = 0;
+                cart.forEach(item => {
+                    const subtotal = item.price * item.quantity;
+                    total += subtotal;
+                    html += `
+                        <div class="cart-item">
+                            <div>
+                                <strong>${item.name}</strong>
+                                <div style="font-size:0.85rem;color:#888;">R ${item.price} x ${item.quantity}</div>
+                            </div>
+                            <div>
+                                <span style="font-weight:700;">R ${subtotal.toFixed(2)}</span>
+                                <button onclick="removeFromCart('${item.id}')" style="background:none;border:none;color:#d35400;cursor:pointer;margin-left:8px;">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                cartItemsEl.innerHTML = html;
+                cartTotalEl.textContent = `R ${total.toFixed(2)}`;
+            }
+
+            window.removeFromCart = function(restaurantId) {
+                cart = cart.filter(item => item.id !== restaurantId);
+                saveCart();
+                updateCartUI();
+                renderRestaurants();
+            };
+
+            // --- Toast notification ---
+            function showToast(message) {
+                const toast = document.createElement('div');
+                toast.style.cssText = `
+                    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+                    background: #1a1a2e; color: #fff; padding: 0.8rem 1.5rem;
+                    border-radius: 50px; font-weight: 600; z-index: 9999;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                    animation: slideUp 0.3s ease;
+                `;
+                toast.textContent = message;
+                document.body.appendChild(toast);
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transition = 'opacity 0.3s';
+                    setTimeout(() => toast.remove(), 300);
+                }, 2500);
+            }
+
+            // --- Load restaurants from Firestore ---
+            async function loadRestaurants() {
+                try {
+                    const snapshot = await db.collection('restaurants').get();
+                    if (snapshot.empty) {
+                        // Fallback sample data
+                        allRestaurants = [
+                            { id: '1', name: 'Hello Tomato', cuisine: 'Pizza & Pasta', rating: '4.6', deliveryTime: '20-30', price: '65.00', image: '' },
+                            { id: '2', name: 'Bento', cuisine: 'Asian Fusion', rating: '4.7', deliveryTime: '25-35', price: '80.00', image: '' },
+                            { id: '3', name: 'Afrikoa', cuisine: 'African Cuisine', rating: '4.5', deliveryTime: '30-45', price: '90.00', image: '' },
+                            { id: '4', name: 'Cinnabon', cuisine: 'Bakery & Sweets', rating: '4.6', deliveryTime: '20-30', price: '65.00', image: '' },
+                            { id: '5', name: 'Braai Republic', cuisine: 'Traditional Braai', rating: '4.8', deliveryTime: '40-55', price: '110.00', image: '' },
+                            { id: '6', name: 'Cape Malay', cuisine: 'Malay Cuisine', rating: '4.4', deliveryTime: '30-45', price: '90.00', image: '' },
+                        ];
+                    } else {
+                        allRestaurants = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    }
+                    renderRestaurants();
+                } catch (err) {
+                    console.error('Error loading restaurants:', err);
+                    // Fallback sample data
+                    allRestaurants = [
+                        { id: '1', name: 'Hello Tomato', cuisine: 'Pizza & Pasta', rating: '4.6', deliveryTime: '20-30', price: '65.00', image: '' },
+                        { id: '2', name: 'Bento', cuisine: 'Asian Fusion', rating: '4.7', deliveryTime: '25-35', price: '80.00', image: '' },
+                        { id: '3', name: 'Afrikoa', cuisine: 'African Cuisine', rating: '4.5', deliveryTime: '30-45', price: '90.00', image: '' },
+                        { id: '4', name: 'Cinnabon', cuisine: 'Bakery & Sweets', rating: '4.6', deliveryTime: '20-30', price: '65.00', image: '' },
+                        { id: '5', name: 'Braai Republic', cuisine: 'Traditional Braai', rating: '4.8', deliveryTime: '40-55', price: '110.00', image: '' },
+                        { id: '6', name: 'Cape Malay', cuisine: 'Malay Cuisine', rating: '4.4', deliveryTime: '30-45', price: '90.00', image: '' },
+                    ];
+                    renderRestaurants();
+                }
+            }
+
+            // --- Search events ---
+            searchInput.addEventListener('input', function() {
+                currentSearch = this.value;
+                if (this.value.length > 0) {
+                    clearBtn.classList.add('visible');
+                } else {
+                    clearBtn.classList.remove('visible');
+                }
+                renderRestaurants();
+            });
+
+            clearBtn.addEventListener('click', function() {
+                searchInput.value = '';
+                currentSearch = '';
+                this.classList.remove('visible');
+                renderRestaurants();
+            });
+
+            // --- Filter tabs ---
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.dataset.filter;
+                    renderRestaurants();
+                });
+            });
+
+            // --- Global toggleCart (for header button) ---
+            window.toggleCart = function() {
+                const sidebar = document.getElementById('cartSidebar');
+                const overlay = document.getElementById('overlay');
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
+            };
+
+            // --- Login placeholder ---
+            window.openLogin = function() {
+                alert('Sign in functionality coming soon!');
+            };
+
+            // --- Dark mode toggle (optional) ---
+            const darkToggle = document.getElementById('darkModeToggle');
+            if (darkToggle) {
+                darkToggle.addEventListener('click', function() {
+                    document.body.classList.toggle('dark-mode');
+                    this.querySelector('i').classList.toggle('fa-moon');
+                    this.querySelector('i').classList.toggle('fa-sun');
+                });
+            }
+
+            // --- Init ---
+            updateCartUI();
+            loadRestaurants();
+
+            // --- Cart count update from sidebar (sync) ---
+            // Also handle if cart is updated from other pages
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'culturei_cart') {
+                    cart = JSON.parse(e.newValue || '[]');
+                    updateCartUI();
+                }
+                if (e.key === 'culturei_favorites') {
+                    favorites = JSON.parse(e.newValue || '[]');
+                    renderRestaurants();
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
