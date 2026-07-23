@@ -40,47 +40,39 @@
             flex-wrap: wrap;
         }
 
-        /* ===== NEW CTA SECTION ===== */
+        /* ===== CLEAN CTA SECTION (matches your screenshot) ===== */
         .cta-section {
-            background: #1a1a2e;
-            color: white;
             text-align: center;
-            padding: 3.5rem 2rem;
-            margin: 2rem 0;
-            border-radius: 1.5rem;
+            padding: 2.5rem 1rem;
+            max-width: 700px;
+            margin: 0 auto;
         }
         .cta-section h1 {
             font-size: 2.8rem;
+            font-weight: 700;
+            color: #1a1a2e;
             margin-bottom: 0.5rem;
         }
-        .cta-section h1 i {
-            color: #d35400;
-        }
         .cta-section p {
-            font-size: 1.2rem;
-            color: #ccc;
-            max-width: 700px;
-            margin: 0.5rem auto 1.8rem;
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 1.5rem;
         }
         .cta-section .btn-cta {
             background: #d35400;
-            color: white;
-            padding: 0.8rem 2.5rem;
+            color: #fff;
+            padding: 0.7rem 2.5rem;
             border-radius: 50px;
             text-decoration: none;
-            font-weight: 700;
+            font-weight: 600;
             display: inline-block;
-            transition: background 0.3s, transform 0.2s;
-            border: none;
             font-size: 1rem;
+            transition: background 0.3s;
+            border: none;
             cursor: pointer;
         }
         .cta-section .btn-cta:hover {
             background: #e67e22;
-            transform: scale(1.05);
-        }
-        .cta-section .btn-cta i {
-            margin-left: 8px;
         }
     </style>
 </head>
@@ -144,15 +136,11 @@
         </div>
     </section>
 
-    <!-- ====== NEW CTA SECTION (Hungry? Order Now!) ====== -->
+    <!-- ====== CLEAN CTA SECTION (Hungry? Order Now!) ====== -->
     <section class="cta-section">
-        <div class="container">
-            <h1><i class="fas fa-utensils"></i> Hungry? Order Now!</h1>
-            <p>Choose from 12,000+ local restaurants. Fresh food, delivered fast across Mzansi.</p>
-            <a href="restaurants.html" class="btn-cta">
-                Start Ordering <i class="fas fa-arrow-right"></i>
-            </a>
-        </div>
+        <h1>Hungry? Order Now!</h1>
+        <p>Choose from 12,000+ local restaurants. Fresh food, delivered fast across Mzansi.</p>
+        <a href="restaurants.html" class="btn-cta">Start Ordering →</a>
     </section>
 
     <!-- ====== FEATURES SECTION - ANIMATED ====== -->
