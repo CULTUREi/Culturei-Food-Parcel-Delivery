@@ -1637,3 +1637,86 @@ body.light-mode .legal-card p,
 body.light-mode .legal-card li {
     color: #4a4a4a;
 }
+
+/* ==========================================
+   PREMIUM CTA SECTION
+========================================== */
+
+.cta-section {
+    padding: 4rem 0;
+}
+
+.cta-box {
+    background: #1c1c1c;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 30px;
+    padding: 4rem 2rem;
+    text-align: center;
+    transition: 0.3s ease;
+}
+
+.cta-box:hover {
+    border-color: var(--accent-orange);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.35);
+}
+
+.cta-box h2 {
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.cta-icon {
+    color: var(--accent-orange);
+    margin-right: 10px;
+}
+
+.cta-text {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    line-height: 1.8;
+    font-weight: 400;
+}
+
+.cta-btn {
+    display: inline-block;
+    background: var(--accent-orange);
+    color: #000;
+    padding: 18px 48px;
+    border-radius: 60px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    transition: 0.3s ease;
+    box-shadow: 0 8px 25px rgba(232,122,32,0.35);
+}
+
+.cta-btn:hover {
+    background: var(--accent-orange-light);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(232,122,32,0.45);
+}
+
+/* Mobile */
+
+@media (max-width:768px){
+
+.cta-box{
+padding:3rem 1.5rem;
+}
+
+.cta-box h2{
+font-size:2rem;
+}
+
+.cta-text{
+font-size:1rem;
+}
+
+.cta-btn{
+width:100%;
+max-width:300px;
+}
+}
