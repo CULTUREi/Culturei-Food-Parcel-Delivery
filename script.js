@@ -421,7 +421,7 @@ function processCheckout(event) {
     payText.textContent = 'Processing...';
 
     const handler = PaystackPop.setup({
-        key: 'pk_test_YOUR_PUBLIC_KEY_HERE',
+        key: 'pk_test_5803b8971f3bc493f538b5cc203de8cf3d606e14',
         email: email,
         amount: Math.round(total * 100),
         currency: 'ZAR',
