@@ -404,44 +404,74 @@ function closeCheckout() {
     document.getElementById('checkoutModal').classList.remove('open');
     document.getElementById('checkoutOverlay').classList.remove('active');
 }
-
 function processCheckout(event) {
     event.preventDefault();
+
     const spinner = document.getElementById('spinner');
     const payText = document.getElementById('payText');
-    
+
+    const total = cart.reduce(
+        (sum, item) => sum + (item.price * item.quantity),
+        0
+    );
+
+    const email = document.getElementById('email')?.value;
+
     spinner.style.display = 'inline-block';
     payText.textContent = 'Processing...';
 
-    setTimeout(() => {
-        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const order = {
-            id: Date.now(),
-            date: new Date().toLocaleString(),
-            items: cart.map(item => ({
-                name: item.name,
-                quantity: item.quantity,
-                price: item.price
-            })),
-            total: total,
-            deliveryType: document.getElementById('deliveryType').value,
-            address: document.getElementById('deliveryAddress').value
-        };
+    const handler = PaystackPop.setup({
+        key: 'pk_test_YOUR_PUBLIC_KEY_HERE',
+        email: email,
+        amount: Math.round(total * 100),
+        currency: 'ZAR',
 
-        orderHistory.unshift(order);
-        localStorage.setItem('culturei_orders', JSON.stringify(orderHistory));
-        
-        cart = [];
-        updateCartUI();
-        renderOrderHistory();
-        updateStats();
-        
-        spinner.style.display = 'none';
-        payText.textContent = 'Pay Now';
-        closeCheckout();
-        showNotification(`✅ Order placed! Total: R${total.toFixed(2)}`);
-        document.getElementById('checkoutForm').reset();
-    }, 2000);
+        callback: function(response) {
+            const order = {
+                id: Date.now(),
+                date: new Date().toLocaleString(),
+                items: cart.map(item => ({
+                    name: item.name,
+                    quantity: item.quantity,
+                    price: item.price
+                })),
+                total: total,
+                deliveryType: document.getElementById('deliveryType').value,
+                address: document.getElementById('deliveryAddress').value,
+                paymentReference: response.reference,
+                paymentStatus: 'Paid'
+            };
+
+            orderHistory.unshift(order);
+            localStorage.setItem(
+                'culturei_orders',
+                JSON.stringify(orderHistory)
+            );
+
+            cart = [];
+            updateCartUI();
+            renderOrderHistory();
+            updateStats();
+
+            spinner.style.display = 'none';
+            payText.textContent = 'Pay Now';
+            closeCheckout();
+
+            showNotification(
+                `✅ Payment successful! Order total: R${total.toFixed(2)}`
+            );
+
+            document.getElementById('checkoutForm').reset();
+        },
+
+        onClose: function() {
+            spinner.style.display = 'none';
+            payText.textContent = 'Pay Now';
+            showNotification('❌ Payment cancelled.');
+        }
+    });
+
+    handler.openIframe();
 }
 
 // ===== RENDER ORDER HISTORY =====
