@@ -390,20 +390,6 @@ function toggleCart() {
     }
 }
 
-// ===== CHECKOUT =====
-function openCheckout() {
-    if (cart.length === 0) {
-        showNotification('Your cart is empty! 🛒');
-        return;
-    }
-    document.getElementById('checkoutModal').classList.add('open');
-    document.getElementById('checkoutOverlay').classList.add('active');
-}
-
-function closeCheckout() {
-    document.getElementById('checkoutModal').classList.remove('open');
-    document.getElementById('checkoutOverlay').classList.remove('active');
-}
 function processCheckout(event) {
     event.preventDefault();
 
@@ -417,44 +403,62 @@ function processCheckout(event) {
 
     const email = document.getElementById('email')?.value;
 
+    if (!email) {
+        showNotification('Please enter your email address.');
+        return;
+    }
+
     spinner.style.display = 'inline-block';
     payText.textContent = 'Processing...';
 
-    const handler = PaystackPop.setup({
+    const popup = new PaystackPop();
+
+    popup.newTransaction({
         key: 'pk_test_5803b8971f3bc493f538b5cc203de8cf3d606e14',
         email: email,
         amount: Math.round(total * 100),
         currency: 'ZAR',
 
-        callback: function(response) {
+        onSuccess: function(transaction) {
+
             const order = {
                 id: Date.now(),
                 date: new Date().toLocaleString(),
+
                 items: cart.map(item => ({
                     name: item.name,
                     quantity: item.quantity,
                     price: item.price
                 })),
+
                 total: total,
-                deliveryType: document.getElementById('deliveryType').value,
-                address: document.getElementById('deliveryAddress').value,
-                paymentReference: response.reference,
+
+                deliveryType:
+                    document.getElementById('deliveryType')?.value || '',
+
+                address:
+                    document.getElementById('deliveryAddress')?.value || '',
+
+                paymentReference: transaction.reference,
                 paymentStatus: 'Paid'
             };
 
             orderHistory.unshift(order);
+
             localStorage.setItem(
                 'culturei_orders',
                 JSON.stringify(orderHistory)
             );
 
             cart = [];
+
             updateCartUI();
             renderOrderHistory();
             updateStats();
 
             spinner.style.display = 'none';
             payText.textContent = 'Pay Now';
+
             closeCheckout();
 
             showNotification(
@@ -464,16 +468,25 @@ function processCheckout(event) {
             document.getElementById('checkoutForm').reset();
         },
 
-        onClose: function() {
+        onCancel: function() {
             spinner.style.display = 'none';
             payText.textContent = 'Pay Now';
+
             showNotification('❌ Payment cancelled.');
+        },
+
+        onError: function(error) {
+            spinner.style.display = 'none';
+            payText.textContent = 'Pay Now';
+
+            console.error('Paystack Error:', error);
+
+            showNotification(
+                '❌ Payment could not be started. Please try again.'
+            );
         }
     });
-
-    handler.openIframe();
 }
-
 // ===== RENDER ORDER HISTORY =====
 function renderOrderHistory() {
     const historyList = document.getElementById('orderHistoryList');
