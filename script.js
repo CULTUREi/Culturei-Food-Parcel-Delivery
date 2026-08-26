@@ -1,13 +1,14 @@
 // ===== FIREBASE AUTH =====
 const auth = firebase.auth();
+const db = firebase.firestore();
 
-// ===== RESTAURANTS DATA =====
+// ===== RESTAURANTS DATA WITH IMAGES =====
 const restaurants = [
     {
         id: 1,
         name: "Hello Tomato",
         cuisine: "Pizza & Pasta",
-        icon: "fa-pizza-slice",
+        image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop",
         price: 85.00,
         rating: 4.5,
         deliveryTime: "30-45 min",
@@ -17,7 +18,7 @@ const restaurants = [
         id: 2,
         name: "Bento",
         cuisine: "Asian Fusion",
-        icon: "fa-fish",
+        image: "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&h=300&fit=crop",
         price: 95.00,
         rating: 4.7,
         deliveryTime: "25-40 min",
@@ -27,7 +28,7 @@ const restaurants = [
         id: 3,
         name: "Afrikoa",
         cuisine: "African Cuisine",
-        icon: "fa-drumstick-bite",
+        image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop",
         price: 75.00,
         rating: 4.3,
         deliveryTime: "35-50 min",
@@ -37,7 +38,7 @@ const restaurants = [
         id: 4,
         name: "Cinnabon",
         cuisine: "Bakery & Sweets",
-        icon: "fa-cookie-bite",
+        image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400&h=300&fit=crop",
         price: 65.00,
         rating: 4.6,
         deliveryTime: "20-30 min",
@@ -47,7 +48,7 @@ const restaurants = [
         id: 5,
         name: "Braai Republic",
         cuisine: "Traditional Braai",
-        icon: "fa-fire",
+        image: "https://images.unsplash.com/photo-1529042410759-befb1204b468?w=400&h=300&fit=crop",
         price: 110.00,
         rating: 4.8,
         deliveryTime: "40-55 min",
@@ -57,7 +58,7 @@ const restaurants = [
         id: 6,
         name: "Cape Malay",
         cuisine: "Malay Cuisine",
-        icon: "fa-pepper-hot",
+        image: "https://images.unsplash.com/photo-1588286840104-8957b019727f?w=400&h=300&fit=crop",
         price: 90.00,
         rating: 4.4,
         deliveryTime: "30-45 min",
@@ -67,7 +68,7 @@ const restaurants = [
         id: 7,
         name: "Sushi & Co",
         cuisine: "Japanese",
-        icon: "fa-utensils",
+        image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&h=300&fit=crop",
         price: 120.00,
         rating: 4.9,
         deliveryTime: "25-35 min",
@@ -77,7 +78,7 @@ const restaurants = [
         id: 8,
         name: "Curry House",
         cuisine: "Indian",
-        icon: "fa-pepper-hot",
+        image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&h=300&fit=crop",
         price: 80.00,
         rating: 4.2,
         deliveryTime: "35-50 min",
@@ -98,9 +99,75 @@ const cartCount = document.getElementById('cartCount');
 const cartItems = document.getElementById('cartItems');
 const cartTotal = document.getElementById('cartTotal');
 
-// ===== AUTHENTICATION FUNCTIONS =====
+// ============================================
+// PAYSTACK CDN LOADER (FIX #1)
+// ============================================
+function loadPaystack() {
+    if (typeof PaystackPop !== 'undefined') return;
+    const script = document.createElement('script');
+    script.src = 'https://js.paystack.co/v1/inline.js';
+    script.async = true;
+    document.head.appendChild(script);
+}
+
+// ============================================
+// GOOGLE SIGN-IN
+// ============================================
+
+function googleSignIn() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    
+    auth.signInWithPopup(provider)
+        .then((result) => {
+            const user = result.user;
+            currentUser = user;
+            showNotification(`✅ Welcome, ${user.displayName || user.email}!`);
+            
+            db.collection('users').doc(user.uid).set({
+                email: user.email,
+                name: user.displayName || 'User',
+                photoURL: user.photoURL || '',
+                lastLogin: new Date()
+            }, { merge: true });
+            
+            updateAuthUI();
+            
+            if (window.location.pathname.includes('signin.html')) {
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            }
+        })
+        .catch((error) => {
+            let message = '❌ Error: ' + error.message;
+            if (error.code === 'auth/popup-closed-by-user') {
+                message = '❌ Sign-in cancelled. Please try again.';
+            }
+            showNotification(message);
+        });
+}
+
+window.googleSignIn = googleSignIn;
+
+// ============================================
+// DRIVER OTP FUNCTIONS (ADDED)
+// ============================================
+
+// These functions are now in driver.html directly
+// They are kept here for compatibility if needed elsewhere
+
+// ============================================
+// AUTHENTICATION FUNCTIONS
+// ============================================
+
 function openLogin() {
-    // Show a login/signup prompt
+    const choice = confirm("Click OK for Email/Password or Cancel for Google Sign-In");
+    
+    if (!choice) {
+        googleSignIn();
+        return;
+    }
+    
     const email = prompt("Enter your email:");
     if (!email) return;
     
@@ -110,7 +177,6 @@ function openLogin() {
     const action = confirm("Click OK to Sign Up or Cancel to Sign In");
     
     if (action) {
-        // Sign Up
         auth.createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 currentUser = userCredential.user;
@@ -121,7 +187,6 @@ function openLogin() {
                 showNotification(`❌ Sign Up Error: ${error.message}`);
             });
     } else {
-        // Sign In
         auth.signInWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 currentUser = userCredential.user;
@@ -148,6 +213,8 @@ function signOut() {
 
 function updateAuthUI() {
     const signInBtn = document.querySelector('.btn-outline-light');
+    const googleBtn = document.getElementById('googleSignInBtn');
+    
     if (signInBtn) {
         if (currentUser) {
             signInBtn.innerHTML = `👤 ${currentUser.email}`;
@@ -157,27 +224,37 @@ function updateAuthUI() {
             signInBtn.onclick = openLogin;
         }
     }
+    
+    if (googleBtn) {
+        if (currentUser) {
+            googleBtn.innerHTML = `✅ ${currentUser.displayName || currentUser.email}`;
+            googleBtn.disabled = true;
+            googleBtn.style.opacity = '0.7';
+        } else {
+            googleBtn.innerHTML = '🔵 Sign in with Google';
+            googleBtn.disabled = false;
+            googleBtn.style.opacity = '1';
+        }
+    }
 }
 
-// Listen for auth state changes
 auth.onAuthStateChanged((user) => {
     if (user) {
         currentUser = user;
-        showNotification(`👋 Hello ${user.email || 'User'}!`);
+        showNotification(`👋 Hello ${user.displayName || user.email || 'User'}!`);
     } else {
         currentUser = null;
     }
     updateAuthUI();
 });
 
-// ===== RENDER RESTAURANTS =====
+// ===== RENDER RESTAURANTS WITH IMAGES =====
 function renderRestaurants() {
     const grid = document.getElementById('menuGrid') || document.getElementById('restaurantGrid');
     if (!grid) return;
 
     let filteredRestaurants = restaurants;
 
-    // Apply search filter
     if (searchQuery) {
         filteredRestaurants = filteredRestaurants.filter(r => 
             r.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -185,7 +262,6 @@ function renderRestaurants() {
         );
     }
 
-    // Apply favorites filter
     if (currentFilter === 'favorites') {
         filteredRestaurants = filteredRestaurants.filter(r => favorites.includes(r.id));
     }
@@ -202,23 +278,28 @@ function renderRestaurants() {
 
     grid.innerHTML = filteredRestaurants.map(restaurant => `
         <div class="restaurant-card" data-id="${restaurant.id}">
-            <div class="icon"><i class="fas ${restaurant.icon}"></i></div>
-            <h4>${restaurant.name}</h4>
-            <p>${restaurant.cuisine}</p>
-            <div class="restaurant-rating">
-                <i class="fas fa-star" style="color: #f5c542;"></i>
-                <span>${restaurant.rating}</span>
-                <span style="color: var(--text-muted); font-size: 0.8rem;">(${restaurant.deliveryTime})</span>
+            <div class="restaurant-image">
+                <img src="${restaurant.image}" alt="${restaurant.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x300/2d2d2d/ffffff?text=${restaurant.name}'" />
+                ${restaurant.featured ? '<span class="featured-badge">⭐ Featured</span>' : ''}
             </div>
-            <span class="price">R${restaurant.price.toFixed(2)}</span>
-            <div class="restaurant-actions">
-                <button class="btn-add" onclick="addToCart(${restaurant.id})">
-                    <i class="fas fa-plus"></i> Add
-                </button>
-                <button class="btn-favorite ${favorites.includes(restaurant.id) ? 'favorited' : ''}" 
-                        onclick="toggleFavorite(${restaurant.id})">
-                    ${favorites.includes(restaurant.id) ? '⭐' : '☆'}
-                </button>
+            <div class="restaurant-info">
+                <h4>${restaurant.name}</h4>
+                <p>${restaurant.cuisine}</p>
+                <div class="restaurant-rating">
+                    <i class="fas fa-star" style="color: #f5c542;"></i>
+                    <span>${restaurant.rating}</span>
+                    <span style="color: var(--text-muted); font-size: 0.8rem;">(${restaurant.deliveryTime})</span>
+                </div>
+                <span class="price">R${restaurant.price.toFixed(2)}</span>
+                <div class="restaurant-actions">
+                    <button class="btn-add" onclick="addToCart(${restaurant.id})">
+                        <i class="fas fa-plus"></i> Add to Cart
+                    </button>
+                    <button class="btn-favorite ${favorites.includes(restaurant.id) ? 'favorited' : ''}" 
+                            onclick="toggleFavorite(${restaurant.id})">
+                        ${favorites.includes(restaurant.id) ? '⭐' : '☆'}
+                    </button>
+                </div>
             </div>
         </div>
     `).join('');
@@ -241,7 +322,6 @@ function addToCart(restaurantId) {
     }
     
     updateCartUI();
-    updateFloatingCartBadge();
     showNotification(`${restaurant.name} added to cart! 🛒`);
 }
 
@@ -299,7 +379,6 @@ function updateQuantity(restaurantId, change) {
             removeFromCart(restaurantId);
         } else {
             updateCartUI();
-            updateFloatingCartBadge();
         }
     }
 }
@@ -308,7 +387,6 @@ function updateQuantity(restaurantId, change) {
 function removeFromCart(restaurantId) {
     cart = cart.filter(item => item.id !== restaurantId);
     updateCartUI();
-    updateFloatingCartBadge();
     showNotification('Item removed from cart');
 }
 
@@ -323,59 +401,145 @@ function toggleCart() {
     }
 }
 
-// ===== CHECKOUT =====
+// ===== OPEN / CLOSE CHECKOUT (FIX #2) =====
 function openCheckout() {
-    if (cart.length === 0) {
-        showNotification('Your cart is empty! 🛒');
-        return;
+    loadPaystack(); // Load Paystack if not loaded
+    const modal = document.getElementById('checkoutModal');
+    if (modal) {
+        modal.style.display = 'block';
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.width = '100%';
+        modal.style.height = '100%';
+        modal.style.backgroundColor = 'rgba(0,0,0,0.7)';
+        modal.style.zIndex = '9999';
+        modal.style.display = 'flex';
+        modal.style.alignItems = 'center';
+        modal.style.justifyContent = 'center';
     }
-    document.getElementById('checkoutModal').classList.add('open');
-    document.getElementById('checkoutOverlay').classList.add('active');
 }
 
 function closeCheckout() {
-    document.getElementById('checkoutModal').classList.remove('open');
-    document.getElementById('checkoutOverlay').classList.remove('active');
+    const modal = document.getElementById('checkoutModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
 }
 
+// ===== PROCESS CHECKOUT WITH VALIDATION (FIX #3) =====
 function processCheckout(event) {
     event.preventDefault();
+
+    // Validate email
+    const email = document.getElementById('email')?.value?.trim();
+    if (!email) {
+        showNotification('❌ Please enter your email address.');
+        return;
+    }
+    if (!email.includes('@') || !email.includes('.')) {
+        showNotification('❌ Please enter a valid email address.');
+        return;
+    }
+
+    // Validate address
+    const address = document.getElementById('deliveryAddress')?.value?.trim();
+    if (!address) {
+        showNotification('❌ Please enter your delivery address.');
+        return;
+    }
+
     const spinner = document.getElementById('spinner');
     const payText = document.getElementById('payText');
-    
+
+    const total = cart.reduce(
+        (sum, item) => sum + (item.price * item.quantity),
+        0
+    );
+
+    if (total <= 0) {
+        showNotification('❌ Your cart is empty. Add items before checkout.');
+        return;
+    }
+
     spinner.style.display = 'inline-block';
     payText.textContent = 'Processing...';
 
-    setTimeout(() => {
-        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const order = {
-            id: Date.now(),
-            date: new Date().toLocaleString(),
-            items: cart.map(item => ({
-                name: item.name,
-                quantity: item.quantity,
-                price: item.price
-            })),
-            total: total,
-            deliveryType: document.getElementById('deliveryType').value,
-            address: document.getElementById('deliveryAddress').value
-        };
+    const popup = new PaystackPop();
 
-        orderHistory.unshift(order);
-        localStorage.setItem('culturei_orders', JSON.stringify(orderHistory));
-        
-        cart = [];
-        updateCartUI();
-        updateFloatingCartBadge();
-        renderOrderHistory();
-        updateStats();
-        
-        spinner.style.display = 'none';
-        payText.textContent = 'Pay Now';
-        closeCheckout();
-        showNotification(`✅ Order placed! Total: R${total.toFixed(2)}`);
-        document.getElementById('checkoutForm').reset();
-    }, 2000);
+    popup.newTransaction({
+        key: 'pk_test_5803b8971f3bc493f538b5cc203de8cf3d606e14',
+        email: email,
+        amount: Math.round(total * 100),
+        currency: 'ZAR',
+
+        onSuccess: function(transaction) {
+
+            const order = {
+                id: Date.now(),
+                date: new Date().toLocaleString(),
+
+                items: cart.map(item => ({
+                    name: item.name,
+                    quantity: item.quantity,
+                    price: item.price
+                })),
+
+                total: total,
+
+                deliveryType:
+                    document.getElementById('deliveryType')?.value || '',
+
+                address:
+                    document.getElementById('deliveryAddress')?.value || '',
+
+                paymentReference: transaction.reference,
+                paymentStatus: 'Paid'
+            };
+
+            orderHistory.unshift(order);
+
+            localStorage.setItem(
+                'culturei_orders',
+                JSON.stringify(orderHistory)
+            );
+
+            cart = [];
+
+            updateCartUI();
+            renderOrderHistory();
+            updateStats();
+
+            spinner.style.display = 'none';
+            payText.textContent = 'Pay Now';
+
+            closeCheckout();
+
+            showNotification(
+                `✅ Payment successful! Order total: R${total.toFixed(2)}`
+            );
+
+            document.getElementById('checkoutForm')?.reset();
+        },
+
+        onCancel: function() {
+            spinner.style.display = 'none';
+            payText.textContent = 'Pay Now';
+
+            showNotification('❌ Payment cancelled.');
+        },
+
+        onError: function(error) {
+            spinner.style.display = 'none';
+            payText.textContent = 'Pay Now';
+
+            console.error('Paystack Error:', error);
+
+            showNotification(
+                '❌ Payment could not be started. Please try again.'
+            );
+        }
+    });
 }
 
 // ===== RENDER ORDER HISTORY =====
@@ -457,7 +621,6 @@ function setupDarkMode() {
     const toggle = document.getElementById('darkModeToggle');
     if (!toggle) return;
 
-    // Check saved preference
     if (localStorage.getItem('culturei_dark_mode') === 'true') {
         document.body.classList.add('light-mode');
         toggle.innerHTML = '<i class="fas fa-sun"></i>';
@@ -495,7 +658,6 @@ function showNotification(message) {
     `;
     document.body.appendChild(toast);
 
-    // Add animation style if not exists
     if (!document.getElementById('notification-style')) {
         const style = document.createElement('style');
         style.id = 'notification-style';
@@ -523,7 +685,6 @@ function initMap() {
     const mapElement = document.getElementById('map');
     if (!mapElement) return;
 
-    // South Africa center coordinates
     const southAfrica = { lat: -28.4793, lng: 24.6722 };
     
     const map = new google.maps.Map(mapElement, {
@@ -548,7 +709,6 @@ function initMap() {
         ]
     });
 
-    // Add markers for major cities
     const cities = [
         { lat: -33.9249, lng: 18.4241, name: "Cape Town" },
         { lat: -26.2041, lng: 28.0473, name: "Johannesburg" },
@@ -605,8 +765,6 @@ function processDriverApplication(event) {
     const vehicle = document.getElementById('vehicleType')?.value;
 
     showNotification(`✅ Application submitted, ${name}! We'll contact you at ${phone}.`);
-
-    // Reset form
     document.getElementById('driverForm')?.reset();
 }
 
@@ -627,32 +785,6 @@ function openPartner() {
     showNotification('🤝 Partnership opportunities coming soon!');
 }
 
-// ==========================================
-// FLOATING CART - BOTTOM CENTER
-// ==========================================
-
-function createFloatingCart() {
-    if (document.querySelector('.floating-cart')) return;
-    const count = document.getElementById('cartCount')?.textContent || '0';
-    const btn = document.createElement('button');
-    btn.className = 'floating-cart pulse';
-    btn.innerHTML = `
-        <i class="fas fa-shopping-bag"></i>
-        Cart
-        <span class="cart-badge">${count}</span>
-    `;
-    btn.onclick = function() { toggleCart(); };
-    document.body.appendChild(btn);
-}
-
-function updateFloatingCartBadge() {
-    const badge = document.querySelector('.floating-cart .cart-badge');
-    const count = document.getElementById('cartCount')?.textContent || '0';
-    if (badge) badge.textContent = count;
-}
-
-// ==========================================
-
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', function() {
     renderRestaurants();
@@ -663,9 +795,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupFilters();
     setupDarkMode();
     updateAuthUI();
-    createFloatingCart();
+    loadPaystack(); // Load Paystack on page load
 
-    // Set active nav link
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     document.querySelectorAll('nav ul li a').forEach(link => {
         if (link.getAttribute('href') === currentPage || 
@@ -693,5 +824,4 @@ window.openPartner = openPartner;
 window.initMap = initMap;
 window.trackOrder = trackOrder;
 window.signOut = signOut;
-window.createFloatingCart = createFloatingCart;
-window.updateFloatingCartBadge = updateFloatingCartBadge;
+window.googleSignIn = googleSignIn;
