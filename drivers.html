@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Culturei - Drivers Dashboard</title>
+    <link rel="stylesheet" href="/style.css" />
+    <style>
+        /* ===== DRIVER PAGE EXTRA STYLES ===== */
+        .driver-login-section {
+            padding: 4rem 0;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .driver-login-card {
+            background: var(--bg-card);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .driver-login-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .driver-login-card h2 span {
+            color: var(--accent-orange);
+        }
+
+        .driver-login-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .driver-login-card .form-group {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .driver-login-card .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: var(--text-primary);
+        }
+
+        .driver-login-card .form-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 60px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color var(--transition);
+        }
+
+        .driver-login-card .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+        }
+
+        .driver-dashboard {
+            display: none;
+        }
+
+        .driver-dashboard.active {
+            display: block;
+        }
+
+        .driver-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .driver-stat-card {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .driver-stat-card .number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent-orange);
+            display: block;
+        }
+
+        .driver-stat-card .label {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .orders-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .orders-section h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .orders-section h3 span {
+            color: var(--accent-orange);
+        }
+
+        .order-card-driver {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-orange);
+            transition: var(--transition);
+        }
+
+        .order-card-driver:hover {
+            border-color: var(--accent-orange);
+        }
+
+        .order-card-driver .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+
+        .order-card-driver .order-id {
+            font-weight: 700;
+            color: var(--accent-orange);
+        }
+
+        .order-card-driver .order-time {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .order-card-driver .order-items {
+            color: var(--text-secondary);
+            margin-bottom: 0.3rem;
+        }
+
+        .order-card-driver .order-total {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--accent-orange);
+            margin-bottom: 0.5rem;
+        }
+
+        .order-card-driver .order-address {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .order-card-driver .order-address i {
+            color: var(--accent-orange);
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-accept {
+            background: var(--accent-orange);
+            color: var(--primary-black);
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 60px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-accept:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(232, 122, 32, 0.4);
+        }
+
+        .btn-pickup {
+            background: #2d8a4e;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 60px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-pickup:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-deliver {
+            background: #1a6fb5;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 60px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-deliver:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-logout {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1.5px solid var(--border-color);
+            padding: 0.5rem 1.5rem;
+            border-radius: 60px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-logout:hover {
+            border-color: #e74c3c;
+            color: #e74c3c;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: rgba(232, 122, 32, 0.2);
+            color: var(--accent-orange);
+        }
+
+        .status-accepted {
+            background: rgba(45, 138, 78, 0.2);
+            color: #2d8a4e;
+        }
+
+        .status-picked {
+            background: rgba(26, 111, 181, 0.2);
+            color: #1a6fb5;
+        }
+
+        .status-delivered {
+            background: rgba(45, 138, 78, 0.3);
+            color: #1a6b3a;
+        }
+
+        .no-orders {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .no-orders .icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* WhatsApp icon style */
+        .whatsapp-icon {
+            display: inline-block;
+            margin-left: 10px;
+            font-size: 1.2rem;
+            transition: transform 0.2s ease;
+            text-decoration: none;
+        }
+
+        .whatsapp-icon:hover {
+            transform: scale(1.2);
+        }
+
+        /* OTP section styles */
+        #otpSection {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .otp-timer {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .btn-verify {
+            background: #2d8a4e !important;
+            width: 100%;
+        }
+
+        .btn-verify:hover {
+            background: #1a6b3a !important;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .driver-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .order-card-driver .order-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.3rem;
+            }
+
+            .order-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .order-actions button {
+                width: 100%;
+            }
+
+            .driver-login-card {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .driver-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER (EXACTLY LIKE YOUR SITE) ===== -->
+    <header>
+        <div class="container header-container">
+            <a href="/index.html" class="logo">
+                Culturei
+                <span class="tagline">Delivery Across Mzansi</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/restaurants.html">Restaurants</a></li>
+                    <li><a href="/drivers.html" class="active">Drivers</a></li>
+                    <li><a href="/about.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="/signin.html" class="btn-outline-light">Sign In</a>
+                <button class="dark-mode-toggle" id="darkModeToggle" aria-label="Toggle dark mode">🌙</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================ -->
+    <!-- DRIVER LOGIN SECTION WITH OTP                -->
+    <!-- ============================================ -->
+    <section class="container driver-login-section" id="loginSection">
+        <div class="driver-login-card">
+            <h2>🚗 Driver <span>Dashboard</span></h2>
+            <p>Sign in to view and accept delivery orders</p>
+            
+            <!-- Google Sign-In Button -->
+            <button class="google-btn" onclick="googleDriverSignIn()" style="margin-bottom:1rem;">
+                <svg width="20" height="20" viewBox="0 0 48 48">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                </svg>
+                Sign in with Google
+            </button>
+
+            <div style="display:flex; align-items:center; gap:1rem; margin:1rem 0; color:var(--text-secondary);">
+                <hr style="flex:1; border-color:var(--border-color);" />
+                <span>or</span>
+                <hr style="flex:1; border-color:var(--border-color);" />
+            </div>
+
+            <!-- PHONE NUMBER FIELD -->
+            <div class="form-group">
+                <label for="driverPhone">📱 Phone Number</label>
+                <input type="tel" id="driverPhone" placeholder="e.g. 0712345678" />
+            </div>
+            
+            <!-- SEND OTP BUTTON -->
+            <button class="btn-primary" onclick="sendOTP()" id="sendOtpBtn" style="width:100%;">
+                📨 Send OTP
+            </button>
+
+            <!-- OTP SECTION (Hidden initially) -->
+            <div id="otpSection" style="display:none;">
+                <div class="form-group" style="margin-top:1rem;">
+                    <label for="otpCode">🔐 Enter OTP Code</label>
+                    <input type="text" id="otpCode" placeholder="e.g. 123456" maxlength="6" />
+                </div>
+                <button class="btn-primary btn-verify" onclick="verifyOTP()" style="width:100%;">
+                    ✅ Verify & Login
+                </button>
+                <div class="otp-timer">
+                    ⏳ OTP expires in 5 minutes
+                    <span style="display:block; font-size:0.75rem; margin-top:0.3rem;">
+                        <a href="#" onclick="resendOTP(); return false;" style="color:var(--accent-orange);">Resend OTP</a>
+                    </span>
+                </div>
+            </div>
+
+            <p style="margin-top:1rem; font-size:0.85rem; color:var(--text-secondary);">
+                ⚡ Orders appear in real-time once you're logged in
+            </p>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- DRIVER DASHBOARD (HIDDEN UNTIL LOGIN)       -->
+    <!-- ============================================ -->
+    <section class="container driver-dashboard" id="dashboardSection">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:1.5rem;">
+            <h1 style="font-size:2rem;">
+                🚗 Welcome, <span id="driverNameDisplay" style="color:var(--accent-orange);">Driver</span>
+            </h1>
+            <button class="btn-logout" onclick="logoutDriver()">🚪 Logout</button>
+        </div>
+
+        <!-- Stats -->
+        <div class="driver-stats">
+            <div class="driver-stat-card">
+                <span class="number" id="statAvailable">0</span>
+                <span class="label">📦 Available Orders</span>
+            </div>
+            <div class="driver-stat-card">
+                <span class="number" id="statMyOrders">0</span>
+                <span class="label">🚚 My Deliveries</span>
+            </div>
+            <div class="driver-stat-card">
+                <span class="number" id="statCompleted">0</span>
+                <span class="label">✅ Completed</span>
+            </div>
+            <div class="driver-stat-card">
+                <span class="number" id="statEarnings">R0</span>
+                <span class="label">💰 Today's Earnings</span>
+            </div>
+        </div>
+
+        <!-- Available Orders -->
+        <div class="orders-section">
+            <h3>📦 Available <span>Orders</span></h3>
+            <div id="availableOrders">
+                <div class="no-orders">
+                    <span class="icon">🎯</span>
+                    No orders available right now<br />
+                    <span style="font-size:0.9rem;">Check back in a moment</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- My Deliveries -->
+        <div class="orders-section">
+            <h3>🚚 My <span>Deliveries</span></h3>
+            <div id="myDeliveries">
+                <div class="no-orders">
+                    <span class="icon">🛵</span>
+                    You haven't accepted any deliveries yet
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER (EXACTLY LIKE YOUR SITE) ===== -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid" style="display:grid; grid-template-columns:2fr 1fr 1fr; gap:2rem; margin-bottom:2rem;">
+                <div>
+                    <h3 style="font-size:1.5rem; color:var(--accent-orange);">Culturei</h3>
+                    <p style="color:var(--text-secondary);">Delivery Across Mzansi</p>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; margin-top:0.5rem;">
+                        Connecting restaurants, drivers, and customers across South Africa.
+                    </p>
+                </div>
+                <div>
+                    <h4 style="color:var(--text-white);">Quick Links</h4>
+                    <ul style="color:var(--text-secondary);">
+                        <li><a href="/index.html" style="color:var(--text-secondary);">Home</a></li>
+                        <li><a href="/restaurants.html" style="color:var(--text-secondary);">Restaurants</a></li>
+                        <li><a href="/drivers.html" style="color:var(--text-secondary);">Drivers</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color:var(--text-white);">Contact</h4>
+                    <p style="color:var(--text-secondary);"><a href="mailto:culturesonox@gmail.com" style="color:var(--text-secondary); text-decoration:none;">📧 culturesonox@gmail.com</a></p>
+                    <p style="color:var(--text-secondary);">
+                        <a href="tel:+27679100022" style="color:var(--text-secondary); text-decoration:none;">📞 +27 67 910 0022</a>
+                        <a href="https://wa.me/27679100022" target="_blank" class="whatsapp-icon" title="Chat on WhatsApp">💬</a>
+                    </p>
+                    <p style="color:var(--text-secondary);">
+                        <a href="tel:+27736226645" style="color:var(--text-secondary); text-decoration:none;">📞 +27 73 622 6645</a>
+                        <a href="https://wa.me/27736226645" target="_blank" class="whatsapp-icon" title="Chat on WhatsApp">💬</a>
+                    </p>
+                </div>
+            </div>
+            <hr style="border-color:var(--border-color);" />
+            <p style="text-align:center; color:var(--text-secondary); font-size:0.85rem; padding-top:1.5rem;">
+                &copy; 2026 Culturei. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ===== FIREBASE LIBRARIES ===== -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- ===== FIREBASE CONFIG ===== -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyACwmaTgi075VasbpyAVNt_jzPDwvmqMc4",
+            authDomain: "culturei-food-parcel-del-6a5cb.firebaseapp.com",
+            projectId: "culturei-food-parcel-del-6a5cb",
+            storageBucket: "culturei-food-parcel-del-6a5cb.firebasestorage.app",
+            messagingSenderId: "1045902648656",
+            appId: "1:1045902648656:web:5c582e4e3831b67e2fb855",
+            measurementId: "G-91BSVDGQ92"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <!-- ===== DRIVER JAVASCRIPT WITH OTP ===== -->
+    <script>
+        // ============================================
+        // DRIVER APP - OTP + GOOGLE SIGN-IN
+        // ============================================
+
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        let currentDriver = null;
+        let unsubscribeOrders = null;
+        let currentUserEmail = '';
+        let storedPhone = '';
+        let generatedOTP = '';
+        let otpTimer = null;
+
+        // ----- SEND OTP -----
+        function sendOTP() {
+            const phoneInput = document.getElementById('driverPhone');
+            const phone = phoneInput.value.trim();
+
+            if (!phone || phone.length < 10) {
+                alert('📱 Please enter a valid phone number (e.g. 0712345678)');
+                phoneInput.focus();
+                return;
+            }
+
+            storedPhone = phone;
+            generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            // Show OTP section
+            document.getElementById('otpSection').style.display = 'block';
+            document.getElementById('sendOtpBtn').textContent = '📨 OTP Sent!';
+            document.getElementById('sendOtpBtn').style.background = '#2d8a4e';
+            document.getElementById('sendOtpBtn').disabled = true;
+            
+            // Auto-focus OTP input
+            document.getElementById('otpCode').focus();
+
+            // Log OTP (in production, send via SMS)
+            console.log(`🔐 OTP for ${phone}: ${generatedOTP}`);
+            alert(`📨 OTP sent to ${phone}!\n\nYour OTP is: ${generatedOTP}\n(Replace with SMS in production)`);
+
+            // Auto-expire after 5 min
+            if (otpTimer) clearTimeout(otpTimer);
+            otpTimer = setTimeout(() => {
+                if (document.getElementById('otpSection').style.display !== 'none') {
+                    alert('⏳ OTP expired. Please request a new one.');
+                    resetOTP();
+                }
+            }, 300000);
+        }
+
+        // ----- RESEND OTP -----
+        function resendOTP() {
+            resetOTP();
+            sendOTP();
+        }
+
+        // ----- RESET OTP STATE -----
+        function resetOTP() {
+            document.getElementById('otpSection').style.display = 'none';
+            document.getElementById('sendOtpBtn').textContent = '📨 Send OTP';
+            document.getElementById('sendOtpBtn').style.background = '';
+            document.getElementById('sendOtpBtn').disabled = false;
+            document.getElementById('otpCode').value = '';
+            if (otpTimer) {
+                clearTimeout(otpTimer);
+                otpTimer = null;
+            }
+        }
+
+        // ----- VERIFY OTP -----
+        function verifyOTP() {
+            const otpInput = document.getElementById('otpCode');
+            const enteredOTP = otpInput.value.trim();
+
+            if (!enteredOTP) {
+                alert('Please enter the OTP code sent to your phone.');
+                otpInput.focus();
+                return;
+            }
+
+            if (enteredOTP !== generatedOTP) {
+                alert('❌ Invalid OTP. Please try again.');
+                otpInput.value = '';
+                otpInput.focus();
+                return;
+            }
+
+            // OTP verified - fetch or create driver
+            db.collection('drivers')
+                .where('phone', '==', storedPhone)
+                .limit(1)
+                .get()
+                .then((snapshot) => {
+                    let driverName = 'Driver';
+                    
+                    if (!snapshot.empty) {
+                        // Existing driver - use saved name
+                        driverName = snapshot.docs[0].data().name || 'Driver';
+                        loginDriverWithName(driverName, storedPhone);
+                    } else {
+                        // New driver - ask for name
+                        driverName = prompt('👋 Welcome! Enter your full name:', 'Thabo Mokoena');
+                        if (!driverName || driverName.trim() === '') {
+                            alert('Name is required to continue.');
+                            return;
+                        }
+                        // Save new driver
+                        db.collection('drivers').add({
+                            name: driverName.trim(),
+                            phone: storedPhone,
+                            createdAt: new Date(),
+                            status: 'online'
+                        }).then(() => {
+                            loginDriverWithName(driverName.trim(), storedPhone);
+                        }).catch((err) => {
+                            alert('❌ Error saving driver: ' + err.message);
+                        });
+                    }
+                })
+                .catch((error) => {
+                    alert('❌ Error verifying: ' + error.message);
+                });
+        }
+
+        // ----- GOOGLE SIGN-IN -----
+        function googleDriverSignIn() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    const user = result.user;
+                    currentUserEmail = user.email || user.displayName || 'Driver';
+                    const name = user.displayName || user.email || 'Driver';
+                    loginDriverWithName(name, user.phoneNumber || 'google-user');
+                })
+                .catch((error) => {
+                    let message = '❌ Error: ' + error.message;
+                    if (error.code === 'auth/popup-closed-by-user') {
+                        message = '❌ Sign-in cancelled. Please try again.';
+                    }
+                    alert(message);
+                });
+        }
+
+        // ----- LOGIN WITH NAME -----
+        function loginDriverWithName(name, phone) {
+            currentDriver = name;
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('dashboardSection').classList.add('active');
+            document.getElementById('driverNameDisplay').textContent = name;
+
+            startListening();
+
+            // Log login
+            db.collection('drivers').add({
+                name: name,
+                phone: phone || 'unknown',
+                email: currentUserEmail || 'manual',
+                loginTime: new Date(),
+                status: 'online'
+            }).catch(err => console.log('Driver login saved:', err));
+
+            console.log(`✅ ${name} logged in!`);
+        }
+
+        // ----- LOGOUT -----
+        function logoutDriver() {
+            if (unsubscribeOrders) {
+                unsubscribeOrders();
+                unsubscribeOrders = null;
+            }
+
+            if (currentDriver) {
+                db.collection('drivers').add({
+                    name: currentDriver,
+                    logoutTime: new Date(),
+                    status: 'offline'
+                }).catch(err => console.log('Logout saved:', err));
+            }
+
+            if (auth.currentUser) {
+                auth.signOut().catch(err => console.log('Auth signout:', err));
+            }
+
+            currentDriver = null;
+            currentUserEmail = '';
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('dashboardSection').classList.remove('active');
+            document.getElementById('driverPhone').value = '';
+            resetOTP();
+            console.log('👋 Logged out');
+        }
+
+        // ----- START LISTENING FOR ORDERS -----
+        function startListening() {
+            if (unsubscribeOrders) {
+                unsubscribeOrders();
+            }
+
+            unsubscribeOrders = db.collection('orders')
+                .orderBy('timestamp', 'desc')
+                .onSnapshot((snapshot) => {
+                    const available = [];
+                    const myOrders = [];
+                    const completed = [];
+
+                    snapshot.forEach((doc) => {
+                        const order = doc.data();
+                        order.id = doc.id;
+
+                        if (order.timestamp && order.timestamp.toDate) {
+                            order.timestamp = order.timestamp.toDate();
+                        }
+
+                        if (order.status === 'pending') {
+                            available.push(order);
+                        } else if (order.status === 'accepted' && order.driverAssigned === currentDriver) {
+                            myOrders.push(order);
+                        } else if (order.status === 'picked_up' && order.driverAssigned === currentDriver) {
+                            myOrders.push(order);
+                        } else if (order.status === 'delivered' && order.driverAssigned === currentDriver) {
+                            completed.push(order);
+                        }
+                    });
+
+                    displayAvailableOrders(available);
+                    displayMyOrders(myOrders);
+                    updateStats(available.length, myOrders.length, completed.length);
+                }, (error) => {
+                    console.error('❌ Firestore error:', error);
+                    alert('Error loading orders. Check your internet.');
+                });
+        }
+
+        // ----- DISPLAY AVAILABLE ORDERS -----
+        function displayAvailableOrders(orders) {
+            const div = document.getElementById('availableOrders');
+
+            if (orders.length === 0) {
+                div.innerHTML = `
+                    <div class="no-orders">
+                        <span class="icon">🎯</span>
+                        No orders available right now<br />
+                        <span style="font-size:0.9rem;">Check back in a moment</span>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            orders.forEach((order) => {
+                const items = order.items ? order.items.map(i => i.name).join(', ') : 'Unknown items';
+                const total = order.total ? order.total.toFixed(2) : '0.00';
+                const city = order.city || 'Unknown';
+                const time = order.timestamp ? order.timestamp.toLocaleTimeString() : 'Just now';
+
+                html += `
+                    <div class="order-card-driver">
+                        <div class="order-header">
+                            <span class="order-id">#${order.id.slice(0, 8)}</span>
+                            <span class="order-time">🕐 ${time}</span>
+                            <span class="status-badge status-pending">Pending</span>
+                        </div>
+                        <div class="order-items">📦 ${items}</div>
+                        <div class="order-total">💰 R${total}</div>
+                        <div class="order-address">📍 ${city}</div>
+                        <div class="order-actions">
+                            <button class="btn-accept" onclick="acceptOrder('${order.id}')">
+                                ✅ Accept Order
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            div.innerHTML = html;
+        }
+
+        // ----- DISPLAY MY ORDERS -----
+        function displayMyOrders(orders) {
+            const div = document.getElementById('myDeliveries');
+
+            if (orders.length === 0) {
+                div.innerHTML = `
+                    <div class="no-orders">
+                        <span class="icon">🛵</span>
+                        You haven't accepted any deliveries yet
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            orders.forEach((order) => {
+                const items = order.items ? order.items.map(i => i.name).join(', ') : 'Unknown items';
+                const total = order.total ? order.total.toFixed(2) : '0.00';
+                const city = order.city || 'Unknown';
+                const status = order.status || 'unknown';
+
+                let statusBadge = '';
+                if (status === 'accepted') statusBadge = '<span class="status-badge status-accepted">Accepted</span>';
+                else if (status === 'picked_up') statusBadge = '<span class="status-badge status-picked">Picked Up</span>';
+                else if (status === 'delivered') statusBadge = '<span class="status-badge status-delivered">Delivered</span>';
+                else statusBadge = `<span class="status-badge">${status}</span>`;
+
+                let actions = '';
+                if (status === 'accepted') {
+                    actions = `
+                        <button class="btn-pickup" onclick="updateOrder('${order.id}', 'picked_up')">
+                            📦 Picked Up
+                        </button>
+                    `;
+                } else if (status === 'picked_up') {
+                    actions = `
+                        <button class="btn-deliver" onclick="updateOrder('${order.id}', 'delivered')">
+                            ✅ Delivered
+                        </button>
+                    `;
+                } else if (status === 'delivered') {
+                    actions = `<span style="color:var(--text-secondary);">✅ Completed</span>`;
+                }
+
+                html += `
+                    <div class="order-card-driver">
+                        <div class="order-header">
+                            <span class="order-id">#${order.id.slice(0, 8)}</span>
+                            ${statusBadge}
+                        </div>
+                        <div class="order-items">📦 ${items}</div>
+                        <div class="order-total">💰 R${total}</div>
+                        <div class="order-address">📍 ${city}</div>
+                        <div class="order-actions">
+                            ${actions}
+                        </div>
+                    </div>
+                `;
+            });
+
+            div.innerHTML = html;
+        }
+
+        // ----- ACCEPT ORDER -----
+        function acceptOrder(orderId) {
+            if (!confirm('Accept this order? 🚗')) return;
+
+            db.collection('orders').doc(orderId).update({
+                status: 'accepted',
+                driverAssigned: currentDriver,
+                driverEmail: currentUserEmail || 'manual',
+                acceptedAt: new Date()
+            })
+                .then(() => {
+                    alert('✅ Order accepted! Go pick it up! 🚗');
+                })
+                .catch((error) => {
+                    alert('❌ Error: ' + error.message);
+                });
+        }
+
+        // ----- UPDATE ORDER STATUS -----
+        function updateOrder(orderId, status) {
+            const statusMap = {
+                'picked_up': 'Picked up! 📦',
+                'delivered': 'Delivered! ✅'
+            };
+
+            if (!confirm(`Mark as ${statusMap[status] || status}?`)) return;
+
+            db.collection('orders').doc(orderId).update({
+                status: status,
+                updatedAt: new Date()
+            })
+                .then(() => {
+                    alert(`✅ Order ${statusMap[status] || status}`);
+                })
+                .catch((error) => {
+                    alert('❌ Error: ' + error.message);
+                });
+        }
+
+        // ----- UPDATE STATS -----
+        function updateStats(available, myOrders, completed) {
+            document.getElementById('statAvailable').textContent = available;
+            document.getElementById('statMyOrders').textContent = myOrders;
+            document.getElementById('statCompleted').textContent = completed;
+
+            const earnings = completed * 50;
+            document.getElementById('statEarnings').textContent = `R${earnings}`;
+        }
+
+        // ----- ENTER KEY HANDLING -----
+        document.addEventListener('DOMContentLoaded', function() {
+            const phoneInput = document.getElementById('driverPhone');
+            if (phoneInput) {
+                phoneInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendOTP();
+                    }
+                });
+                phoneInput.focus();
+            }
+
+            const otpInput = document.getElementById('otpCode');
+            if (otpInput) {
+                otpInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        verifyOTP();
+                    }
+                });
+            }
+
+            const toggleBtn = document.getElementById('darkModeToggle');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function() {
+                    document.body.classList.toggle('light-mode');
+                    this.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
+                });
+            }
+        });
+
+        // Expose functions globally
+        window.sendOTP = sendOTP;
+        window.resendOTP = resendOTP;
+        window.verifyOTP = verifyOTP;
+        window.googleDriverSignIn = googleDriverSignIn;
+        window.logoutDriver = logoutDriver;
+        window.acceptOrder = acceptOrder;
+        window.updateOrder = updateOrder;
+
+        console.log('🚗 Driver app loaded with OTP + Google Sign-In!');
+    </script>
+
+</body>
+</html>
