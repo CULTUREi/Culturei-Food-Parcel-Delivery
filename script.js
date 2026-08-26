@@ -100,6 +100,17 @@ const cartItems = document.getElementById('cartItems');
 const cartTotal = document.getElementById('cartTotal');
 
 // ============================================
+// PAYSTACK CDN LOADER (FIX #1)
+// ============================================
+function loadPaystack() {
+    if (typeof PaystackPop !== 'undefined') return;
+    const script = document.createElement('script');
+    script.src = 'https://js.paystack.co/v1/inline.js';
+    script.async = true;
+    document.head.appendChild(script);
+}
+
+// ============================================
 // GOOGLE SIGN-IN
 // ============================================
 
@@ -390,8 +401,53 @@ function toggleCart() {
     }
 }
 
+// ===== OPEN / CLOSE CHECKOUT (FIX #2) =====
+function openCheckout() {
+    loadPaystack(); // Load Paystack if not loaded
+    const modal = document.getElementById('checkoutModal');
+    if (modal) {
+        modal.style.display = 'block';
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.width = '100%';
+        modal.style.height = '100%';
+        modal.style.backgroundColor = 'rgba(0,0,0,0.7)';
+        modal.style.zIndex = '9999';
+        modal.style.display = 'flex';
+        modal.style.alignItems = 'center';
+        modal.style.justifyContent = 'center';
+    }
+}
+
+function closeCheckout() {
+    const modal = document.getElementById('checkoutModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// ===== PROCESS CHECKOUT WITH VALIDATION (FIX #3) =====
 function processCheckout(event) {
     event.preventDefault();
+
+    // Validate email
+    const email = document.getElementById('email')?.value?.trim();
+    if (!email) {
+        showNotification('❌ Please enter your email address.');
+        return;
+    }
+    if (!email.includes('@') || !email.includes('.')) {
+        showNotification('❌ Please enter a valid email address.');
+        return;
+    }
+
+    // Validate address
+    const address = document.getElementById('deliveryAddress')?.value?.trim();
+    if (!address) {
+        showNotification('❌ Please enter your delivery address.');
+        return;
+    }
 
     const spinner = document.getElementById('spinner');
     const payText = document.getElementById('payText');
@@ -401,10 +457,8 @@ function processCheckout(event) {
         0
     );
 
-    const email = document.getElementById('email')?.value;
-
-    if (!email) {
-        showNotification('Please enter your email address.');
+    if (total <= 0) {
+        showNotification('❌ Your cart is empty. Add items before checkout.');
         return;
     }
 
@@ -465,7 +519,7 @@ function processCheckout(event) {
                 `✅ Payment successful! Order total: R${total.toFixed(2)}`
             );
 
-            document.getElementById('checkoutForm').reset();
+            document.getElementById('checkoutForm')?.reset();
         },
 
         onCancel: function() {
@@ -487,6 +541,7 @@ function processCheckout(event) {
         }
     });
 }
+
 // ===== RENDER ORDER HISTORY =====
 function renderOrderHistory() {
     const historyList = document.getElementById('orderHistoryList');
@@ -740,6 +795,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupFilters();
     setupDarkMode();
     updateAuthUI();
+    loadPaystack(); // Load Paystack on page load
 
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     document.querySelectorAll('nav ul li a').forEach(link => {
