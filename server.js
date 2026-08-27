@@ -24,7 +24,10 @@ app.post('/verify-payment', async (req, res) => {
 });
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    const filePath = path.join(__dirname, req.path === '/' ? 'index.html' : req.path);
+    res.sendFile(filePath, (err) => {
+        if (err) res.sendFile(path.join(__dirname, 'index.html'));
+    });
 });
 
 app.listen(3000, () => console.log('Server running on port 3000'));
