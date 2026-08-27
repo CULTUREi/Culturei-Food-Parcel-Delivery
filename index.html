@@ -2104,33 +2104,6 @@
         </div>
     </section>
 
-    <!-- ====== RESTAURANTS SECTION ====== -->
-    <section class="restaurants-page">
-        <div class="container">
-            <h2 class="section-title">Our <span>Restaurants</span></h2>
-            <p class="menu-subtitle">Discover the best food in your area</p>
-            
-            <div class="search-container">
-                <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="Search restaurants or cuisine..." />
-                    <button class="clear-search" id="clearSearch" aria-label="Clear search">✕</button>
-                </div>
-                <div class="filter-tabs">
-                    <button class="filter-tab active" data-filter="all">All</button>
-                    <button class="filter-tab" data-filter="favorites">⭐ Favorites</button>
-                </div>
-            </div>
-
-            <div class="restaurant-grid" id="restaurantGrid">
-                <!-- Restaurants will be loaded here by JavaScript -->
-                <div class="loading-message" style="text-align:center; padding:3rem; color:var(--text-muted);">
-                    <i class="fas fa-spinner fa-spin" style="font-size:2rem; color:var(--accent-orange);"></i>
-                    <p style="margin-top:1rem;">Loading restaurants...</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- ====== ORDER HISTORY SECTION ====== -->
     <section class="order-history-section">
         <div class="container">
@@ -3026,12 +2999,16 @@
 
     // ===== INITIALIZATION =====
     document.addEventListener('DOMContentLoaded', function() {
-        renderRestaurants();
+        // Only render restaurants if we're on the restaurants page
+        if (document.getElementById('restaurantGrid')) {
+            renderRestaurants();
+            setupSearch();
+            setupFilters();
+        }
+        
         renderOrderHistory();
         updateStats();
         updateCartUI();
-        setupSearch();
-        setupFilters();
         setupDarkMode();
         updateAuthUI();
         loadPaystack();
