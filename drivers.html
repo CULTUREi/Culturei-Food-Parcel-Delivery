@@ -63,6 +63,14 @@
             border-color: var(--accent-orange);
         }
 
+        .driver-login-card .helper-text {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.3rem;
+            display: block;
+            text-align: left;
+        }
+
         .driver-dashboard {
             display: none;
         }
@@ -395,7 +403,8 @@
             <!-- PHONE NUMBER FIELD -->
             <div class="form-group">
                 <label for="driverPhone">📱 Phone Number</label>
-                <input type="tel" id="driverPhone" placeholder="e.g. +27712345678" />
+                <input type="tel" id="driverPhone" placeholder="+27712345678" />
+                <span class="helper-text">Use +27 (e.g., +27712345678)</span>
             </div>
             
             <!-- SEND OTP BUTTON -->
@@ -557,10 +566,19 @@
         let generatedOTP = '';
         let otpTimer = null;
 
+        // ----- PHONE FORMATTER -----
+        function formatPhone(phone) {
+            let cleaned = phone.replace(/\s/g, '').replace(/[^0-9+]/g, '');
+            if (cleaned.startsWith('0') && cleaned.length === 10) {
+                cleaned = '+27' + cleaned.slice(1);
+            }
+            return cleaned;
+        }
+
         // ----- SEND OTP -----
         async function sendOTP() {
             const phoneInput = document.getElementById('driverPhone');
-            const phone = phoneInput.value.trim();
+            const phone = formatPhone(phoneInput.value.trim());
             const messageEl = document.getElementById('otp-message') || document.createElement('div');
             messageEl.id = 'otp-message';
 
@@ -569,6 +587,9 @@
                 phoneInput.focus();
                 return;
             }
+
+            // Update input with formatted number
+            phoneInput.value = phone;
 
             storedPhone = phone;
 
