@@ -395,7 +395,7 @@
             <!-- PHONE NUMBER FIELD -->
             <div class="form-group">
                 <label for="driverPhone">📱 Phone Number</label>
-                <input type="tel" id="driverPhone" placeholder="e.g. 0712345678" />
+                <input type="tel" id="driverPhone" placeholder="e.g. +27712345678" />
             </div>
             
             <!-- SEND OTP BUTTON -->
@@ -540,11 +540,13 @@
         firebase.initializeApp(firebaseConfig);
     </script>
 
-    <!-- ===== DRIVER JAVASCRIPT WITH OTP ===== -->
+    <!-- ===== DRIVER JAVASCRIPT WITH OTP (UPDATED URL) ===== -->
     <script>
         // ============================================
         // DRIVER APP - OTP + GOOGLE SIGN-IN
         // ============================================
+
+        const RENDER_URL = 'https://culturei-backend.onrender.com';
 
         const auth = firebase.auth();
         const db = firebase.firestore();
@@ -556,40 +558,56 @@
         let otpTimer = null;
 
         // ----- SEND OTP -----
-        function sendOTP() {
+        async function sendOTP() {
             const phoneInput = document.getElementById('driverPhone');
             const phone = phoneInput.value.trim();
+            const messageEl = document.getElementById('otp-message') || document.createElement('div');
+            messageEl.id = 'otp-message';
 
             if (!phone || phone.length < 10) {
-                alert('📱 Please enter a valid phone number (e.g. 0712345678)');
+                alert('📱 Please enter a valid phone number (e.g. +27712345678)');
                 phoneInput.focus();
                 return;
             }
 
             storedPhone = phone;
-            generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
-            
+
             // Show OTP section
             document.getElementById('otpSection').style.display = 'block';
-            document.getElementById('sendOtpBtn').textContent = '📨 OTP Sent!';
-            document.getElementById('sendOtpBtn').style.background = '#2d8a4e';
+            document.getElementById('sendOtpBtn').textContent = '⏳ Sending...';
             document.getElementById('sendOtpBtn').disabled = true;
-            
-            // Auto-focus OTP input
-            document.getElementById('otpCode').focus();
 
-            // Log OTP (in production, send via SMS)
-            console.log(`🔐 OTP for ${phone}: ${generatedOTP}`);
-            alert(`📨 OTP sent to ${phone}!\n\nYour OTP is: ${generatedOTP}\n(Replace with SMS in production)`);
+            try {
+                const response = await fetch(`${RENDER_URL}/send-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone, role: 'driver' })
+                });
+                const data = await response.json();
 
-            // Auto-expire after 5 min
-            if (otpTimer) clearTimeout(otpTimer);
-            otpTimer = setTimeout(() => {
-                if (document.getElementById('otpSection').style.display !== 'none') {
-                    alert('⏳ OTP expired. Please request a new one.');
+                if (data.success) {
+                    alert('✅ OTP sent! Check your phone.');
+                    document.getElementById('otpCode').focus();
+                    // Start expiry timer
+                    if (otpTimer) clearTimeout(otpTimer);
+                    otpTimer = setTimeout(() => {
+                        if (document.getElementById('otpSection').style.display !== 'none') {
+                            alert('⏳ OTP expired. Request a new one.');
+                            resetOTP();
+                        }
+                    }, 300000);
+                } else {
+                    alert('❌ Error: ' + (data.error || 'Failed to send OTP'));
                     resetOTP();
                 }
-            }, 300000);
+            } catch (error) {
+                alert('❌ Server error. Is your backend running?');
+                console.error('Send OTP error:', error);
+                resetOTP();
+            }
+
+            document.getElementById('sendOtpBtn').textContent = '📨 Send OTP';
+            document.getElementById('sendOtpBtn').disabled = false;
         }
 
         // ----- RESEND OTP -----
@@ -602,7 +620,6 @@
         function resetOTP() {
             document.getElementById('otpSection').style.display = 'none';
             document.getElementById('sendOtpBtn').textContent = '📨 Send OTP';
-            document.getElementById('sendOtpBtn').style.background = '';
             document.getElementById('sendOtpBtn').disabled = false;
             document.getElementById('otpCode').value = '';
             if (otpTimer) {
@@ -612,58 +629,63 @@
         }
 
         // ----- VERIFY OTP -----
-        function verifyOTP() {
+        async function verifyOTP() {
             const otpInput = document.getElementById('otpCode');
-            const enteredOTP = otpInput.value.trim();
+            const code = otpInput.value.trim();
 
-            if (!enteredOTP) {
+            if (!code) {
                 alert('Please enter the OTP code sent to your phone.');
                 otpInput.focus();
                 return;
             }
 
-            if (enteredOTP !== generatedOTP) {
-                alert('❌ Invalid OTP. Please try again.');
-                otpInput.value = '';
-                otpInput.focus();
-                return;
-            }
-
-            // OTP verified - fetch or create driver
-            db.collection('drivers')
-                .where('phone', '==', storedPhone)
-                .limit(1)
-                .get()
-                .then((snapshot) => {
-                    let driverName = 'Driver';
-                    
-                    if (!snapshot.empty) {
-                        // Existing driver - use saved name
-                        driverName = snapshot.docs[0].data().name || 'Driver';
-                        loginDriverWithName(driverName, storedPhone);
-                    } else {
-                        // New driver - ask for name
-                        driverName = prompt('👋 Welcome! Enter your full name:', 'Thabo Mokoena');
-                        if (!driverName || driverName.trim() === '') {
-                            alert('Name is required to continue.');
-                            return;
-                        }
-                        // Save new driver
-                        db.collection('drivers').add({
-                            name: driverName.trim(),
-                            phone: storedPhone,
-                            createdAt: new Date(),
-                            status: 'online'
-                        }).then(() => {
-                            loginDriverWithName(driverName.trim(), storedPhone);
-                        }).catch((err) => {
-                            alert('❌ Error saving driver: ' + err.message);
-                        });
-                    }
-                })
-                .catch((error) => {
-                    alert('❌ Error verifying: ' + error.message);
+            try {
+                const response = await fetch(`${RENDER_URL}/verify-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone: storedPhone, code })
                 });
+                const data = await response.json();
+
+                if (data.success) {
+                    // OTP verified – fetch or create driver
+                    db.collection('drivers')
+                        .where('phone', '==', storedPhone)
+                        .limit(1)
+                        .get()
+                        .then((snapshot) => {
+                            let driverName = 'Driver';
+                            if (!snapshot.empty) {
+                                driverName = snapshot.docs[0].data().name || 'Driver';
+                                loginDriverWithName(driverName, storedPhone);
+                            } else {
+                                driverName = prompt('👋 Welcome! Enter your full name:', 'Thabo Mokoena');
+                                if (!driverName || driverName.trim() === '') {
+                                    alert('Name is required to continue.');
+                                    return;
+                                }
+                                db.collection('drivers').add({
+                                    name: driverName.trim(),
+                                    phone: storedPhone,
+                                    createdAt: new Date(),
+                                    status: 'online'
+                                }).then(() => {
+                                    loginDriverWithName(driverName.trim(), storedPhone);
+                                }).catch((err) => {
+                                    alert('❌ Error saving driver: ' + err.message);
+                                });
+                            }
+                        })
+                        .catch((error) => {
+                            alert('❌ Error verifying: ' + error.message);
+                        });
+                } else {
+                    alert('❌ ' + (data.error || 'Invalid OTP'));
+                }
+            } catch (error) {
+                alert('❌ Server error. Is your backend running?');
+                console.error('Verify OTP error:', error);
+            }
         }
 
         // ----- GOOGLE SIGN-IN -----
@@ -695,7 +717,6 @@
 
             startListening();
 
-            // Log login
             db.collection('drivers').add({
                 name: name,
                 phone: phone || 'unknown',
