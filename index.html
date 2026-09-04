@@ -2482,8 +2482,10 @@
     const cartTotal = document.getElementById('cartTotal');
 
     // ============================================
-    // OTP FUNCTIONS
+    // OTP FUNCTIONS (UPDATED WITH RENDER BACKEND URL)
     // ============================================
+    const RENDER_URL = 'https://culturei-backend.onrender.com';
+
     let otpRole = 'customer';
 
     async function sendOTP(role = 'customer') {
@@ -2499,14 +2501,13 @@
             return;
         }
 
-        // Disable buttons
         sendBtn.disabled = true;
         if (driverBtn) driverBtn.disabled = true;
         message.textContent = '⏳ Sending OTP...';
         message.style.color = 'var(--text-secondary)';
 
         try {
-            const response = await fetch('http://localhost:3000/send-otp', {
+            const response = await fetch(`${RENDER_URL}/send-otp`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ phone, role })
@@ -2527,7 +2528,6 @@
             console.error('Send OTP error:', error);
         }
 
-        // Re-enable buttons
         sendBtn.disabled = false;
         if (driverBtn) driverBtn.disabled = false;
     }
@@ -2547,7 +2547,7 @@
         message.style.color = 'var(--text-secondary)';
 
         try {
-            const response = await fetch('http://localhost:3000/verify-otp', {
+            const response = await fetch(`${RENDER_URL}/verify-otp`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ phone, code })
@@ -2557,7 +2557,6 @@
             if (data.success) {
                 message.textContent = '✅ Login successful! Welcome ' + (data.role || 'user') + '! 🎉';
                 message.style.color = '#27ae60';
-                // Redirect based on role
                 setTimeout(() => {
                     window.location.href = data.role === 'driver' ? '/drivers.html' : '/restaurants.html';
                 }, 1500);
@@ -3174,7 +3173,6 @@
 
     // ===== INITIALIZATION =====
     document.addEventListener('DOMContentLoaded', function() {
-        // Only render restaurants if we're on the restaurants page
         if (document.getElementById('restaurantGrid')) {
             renderRestaurants();
             setupSearch();
