@@ -3,6 +3,7 @@ const axios = require('axios');
 const path = require('path');
 const twilio = require('twilio');
 const admin = require('firebase-admin');
+const cors = require('cors'); // <-- ADDED
 
 // Initialize Firebase Admin SDK with error handling
 let serviceAccount;
@@ -28,7 +29,7 @@ admin.initializeApp({
 const db = admin.firestore();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Twilio client – with fallback for missing env vars
 const client = twilio(
@@ -37,6 +38,8 @@ const client = twilio(
 );
 const VERIFY_SID = process.env.VERIFY_SERVICE_SID || 'missing_verify_sid';
 
+// ===== CORS MIDDLEWARE =====
+app.use(cors()); // <-- ADDED
 app.use(express.json());
 app.use(express.static(__dirname));
 
@@ -156,6 +159,6 @@ app.use((req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.listen(PORT, () => {
-    console.log(`✅ Server running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`✅ Server running on port ${PORT}`);
 });
