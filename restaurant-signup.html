@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Culturei · Restaurant Sign Up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="/style.css" />
+    <style>
+        .signup-container {
+            max-width: 600px;
+            margin: 4rem auto;
+            padding: 2rem;
+            background: var(--bg-card);
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+        .signup-container h2 {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        .signup-container .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background: var(--accent-orange);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+        .btn-submit:hover {
+            transform: scale(1.02);
+            opacity: 0.9;
+        }
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-muted);
+        }
+        .login-link a {
+            color: var(--accent-orange);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        .error-msg {
+            color: #ff4444;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+        .success-msg {
+            color: #44bb44;
+            font-size: 0.95rem;
+            text-align: center;
+            padding: 1rem;
+            background: rgba(68, 187, 68, 0.15);
+            border-radius: 8px;
+            display: none;
+        }
+        .password-requirements {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+        @media (max-width: 768px) {
+            .signup-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="/index.html" style="text-decoration:none; color:inherit;">Culture<span>i</span></a>
+                <span class="tagline">Delivery · Across Mzansi</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/restaurants.html">Restaurants</a></li>
+                    <li><a href="/drivers.html">Drivers</a></li>
+                    <li><a href="/#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== SIGNUP FORM ===== -->
+    <section class="signup-container">
+        <h2>🍽️ Partner With Us</h2>
+        <p class="subtitle">Register your restaurant and start accepting orders on Culturei.</p>
+
+        <div id="successMessage" class="success-msg">
+            ✅ Restaurant registered successfully! Check your email to set up your dashboard.
+        </div>
+
+        <form id="signupForm">
+            <div class="form-group">
+                <label for="restaurantName">Restaurant Name *</label>
+                <input type="text" id="restaurantName" required placeholder="e.g. Hello Tomato" />
+            </div>
+
+            <div class="form-group">
+                <label for="ownerName">Owner Name *</label>
+                <input type="text" id="ownerName" required placeholder="e.g. John Doe" />
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" required placeholder="restaurant@example.com" />
+                <div class="error-msg" id="emailError">Please enter a valid email.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number *</label>
+                <input type="tel" id="phone" required placeholder="+27 67 910 0022" />
+            </div>
+
+            <div class="form-group">
+                <label for="cuisine">Cuisine Type *</label>
+                <select id="cuisine" required>
+                    <option value="">Select cuisine...</option>
+                    <option value="African">African</option>
+                    <option value="Asian">Asian</option>
+                    <option value="Bakery">Bakery</option>
+                    <option value="Braai">Braai</option>
+                    <option value="Cape Malay">Cape Malay</option>
+                    <option value="Fast Food">Fast Food</option>
+                    <option value="Indian">Indian</option>
+                    <option value="Italian">Italian</option>
+                    <option value="Japanese">Japanese</option>
+                    <option value="Pizza & Pasta">Pizza & Pasta</option>
+                    <option value="Seafood">Seafood</option>
+                    <option value="Traditional">Traditional</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Restaurant Address *</label>
+                <input type="text" id="address" required placeholder="e.g. 123 Main St, Cape Town" />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Dashboard Password * (min 6 characters)</label>
+                <input type="password" id="password" required minlength="6" placeholder="Create a password" />
+                <div class="password-requirements">Minimum 6 characters. Use a mix of letters and numbers.</div>
+                <div class="error-msg" id="passwordError">Password must be at least 6 characters.</div>
+            </div>
+
+            <button type="submit" class="btn-submit" id="submitBtn">
+                <i class="fas fa-spinner fa-spin" style="display:none;" id="loadingSpinner"></i>
+                <span id="btnText">Register Restaurant</span>
+            </button>
+        </form>
+
+        <div class="login-link">
+            Already registered? <a href="restaurant-dashboard.html">Sign in to your dashboard</a>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>Culture<span>i</span></h3>
+                    <p>Food &amp; Parcel Delivery · Across Mzansi</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/index.html">Home</a></li>
+                        <li><a href="/restaurants.html">Restaurants</a></li>
+                        <li><a href="/drivers.html">Drivers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> culturesonox@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> +27 67 910 0022</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Culturei. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== FIREBASE ===== -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // ===== FIREBASE CONFIG =====
+        const firebaseConfig = {
+            apiKey: "AIzaSyACwmaTgi075VasbpyAVNt_jzPDwvmqMc4",
+            authDomain: "culturei-food-parcel-del-6a5cb.firebaseapp.com",
+            projectId: "culturei-food-parcel-del-6a5cb",
+            storageBucket: "culturei-food-parcel-del-6a5cb.firebasestorage.app",
+            messagingSenderId: "1045902648656",
+            appId: "1:1045902648656:web:5c582e4e3831b67e2fb855",
+            measurementId: "G-91BSVDGQ92"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // ===== DARK MODE =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggle = document.getElementById('darkModeToggle');
+            if (localStorage.getItem('culturei_dark_mode') === 'true') {
+                document.body.classList.add('light-mode');
+                toggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+            toggle.addEventListener('click', function() {
+                document.body.classList.toggle('light-mode');
+                const isLight = document.body.classList.contains('light-mode');
+                localStorage.setItem('culturei_dark_mode', isLight);
+                this.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            });
+        });
+
+        // ===== SIGNUP FORM =====
+        document.getElementById('signupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('restaurantName').value.trim();
+            const owner = document.getElementById('ownerName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const cuisine = document.getElementById('cuisine').value;
+            const address = document.getElementById('address').value.trim();
+            const password = document.getElementById('password').value;
+
+            const submitBtn = document.getElementById('submitBtn');
+            const spinner = document.getElementById('loadingSpinner');
+            const btnText = document.getElementById('btnText');
+            const successMsg = document.getElementById('successMessage');
+
+            // Validation
+            if (!email.includes('@') || !email.includes('.')) {
+                document.getElementById('emailError').style.display = 'block';
+                return;
+            } else {
+                document.getElementById('emailError').style.display = 'none';
+            }
+
+            if (password.length < 6) {
+                document.getElementById('passwordError').style.display = 'block';
+                return;
+            } else {
+                document.getElementById('passwordError').style.display = 'none';
+            }
+
+            // Show loading
+            submitBtn.disabled = true;
+            spinner.style.display = 'inline-block';
+            btnText.textContent = 'Registering...';
+
+            try {
+                // 1. Create Firebase Auth account
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const uid = userCredential.user.uid;
+
+                // 2. Save restaurant data to Firestore
+                await db.collection('restaurants').doc(uid).set({
+                    uid: uid,
+                    name: name,
+                    owner: owner,
+                    email: email,
+                    phone: phone,
+                    cuisine: cuisine,
+                    address: address,
+                    createdAt: new Date().toISOString(),
+                    status: 'pending', // admin approval later
+                    rating: 0,
+                    totalOrders: 0,
+                    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop'
+                });
+
+                // 3. Send verification email
+                await userCredential.user.sendEmailVerification();
+
+                // Success
+                successMsg.style.display = 'block';
+                submitBtn.disabled = false;
+                spinner.style.display = 'none';
+                btnText.textContent = '✅ Registered!';
+                this.reset();
+
+                // Redirect after 3 seconds
+                setTimeout(() => {
+                    window.location.href = 'restaurant-dashboard.html';
+                }, 3000);
+
+            } catch (error) {
+                console.error('Signup error:', error);
+                let msg = error.message;
+                if (error.code === 'auth/email-already-in-use') {
+                    msg = '❌ This email is already registered. Please sign in.';
+                } else if (error.code === 'auth/weak-password') {
+                    msg = '❌ Password is too weak. Use at least 6 characters.';
+                }
+                showNotification(msg);
+                submitBtn.disabled = false;
+                spinner.style.display = 'none';
+                btnText.textContent = 'Register Restaurant';
+            }
+        });
+
+        // ===== NOTIFICATION =====
+        function showNotification(message) {
+            const existing = document.querySelector('.notification-toast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.className = 'notification-toast';
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 100px;
+                right: 20px;
+                background: var(--accent-orange);
+                color: var(--primary-black);
+                padding: 1rem 2rem;
+                border-radius: 12px;
+                font-weight: 600;
+                z-index: 9999;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                max-width: 400px;
+                animation: slideUp 0.3s ease;
+            `;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideDown 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // Add animation styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+            @keyframes slideDown { from { opacity:1; transform:translateY(0); } to { opacity:0; transform:translateY(20px); } }
+        `;
+        document.head.appendChild(style);
+    </script>
+
+</body>
+</html>
