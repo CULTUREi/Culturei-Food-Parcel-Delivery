@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Culturei · Restaurant Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="/style.css" />
+    <style>
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .dashboard-header h1 {
+            font-size: 2rem;
+        }
+        .dashboard-header h1 span {
+            color: var(--accent-orange);
+        }
+        .dashboard-tabs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+        .dashboard-tab {
+            padding: 0.6rem 1.5rem;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+        .dashboard-tab.active {
+            color: var(--accent-orange);
+            background: rgba(232, 122, 32, 0.1);
+            border-bottom: 3px solid var(--accent-orange);
+        }
+        .dashboard-tab:hover {
+            color: var(--text-primary);
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .profile-card .field {
+            margin-bottom: 0.8rem;
+        }
+        .profile-card .field strong {
+            display: inline-block;
+            width: 140px;
+            color: var(--text-muted);
+        }
+
+        /* Menu Form */
+        .menu-form {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .menu-form h3 {
+            margin-bottom: 1.5rem;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .form-row .full-width {
+            grid-column: 1 / -1;
+        }
+        .menu-form .form-group {
+            margin-bottom: 1rem;
+        }
+        .menu-form .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+        .menu-form .form-group input,
+        .menu-form .form-group select,
+        .menu-form .form-group textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+        .menu-form .form-group input:focus,
+        .menu-form .form-group select:focus,
+        .menu-form .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+        }
+        .menu-form .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        .btn-primary {
+            padding: 0.7rem 2rem;
+            background: var(--accent-orange);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+        .btn-primary:hover {
+            transform: scale(1.02);
+            opacity: 0.9;
+        }
+        .btn-danger {
+            padding: 0.4rem 1rem;
+            background: #ff4444;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .btn-danger:hover {
+            opacity: 0.8;
+        }
+        .btn-edit {
+            padding: 0.4rem 1rem;
+            background: #44aaff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-right: 0.3rem;
+        }
+        .btn-edit:hover {
+            opacity: 0.8;
+        }
+
+        /* Menu Items List */
+        .menu-items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .menu-item-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        .menu-item-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+        }
+        .menu-item-card h4 {
+            margin-bottom: 0.3rem;
+        }
+        .menu-item-card .item-price {
+            color: var(--accent-orange);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        .menu-item-card .item-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            flex-grow: 1;
+            margin: 0.3rem 0;
+        }
+        .menu-item-card .item-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+            justify-content: flex-end;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            max-width: 450px;
+            margin: 4rem auto;
+            padding: 2.5rem;
+            background: var(--bg-card);
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+        .login-screen h2 {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        .login-screen p {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+        .login-screen .form-group {
+            margin-bottom: 1.2rem;
+        }
+        .login-screen .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        .login-screen .form-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+        .login-screen .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+        }
+        .login-screen .btn-submit {
+            width: 100%;
+            padding: 0.9rem;
+        }
+        .login-screen .signup-link {
+            text-align: center;
+            margin-top: 1.2rem;
+            color: var(--text-muted);
+        }
+        .login-screen .signup-link a {
+            color: var(--accent-orange);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .dashboard-header h1 {
+                font-size: 1.5rem;
+            }
+            .profile-card .field strong {
+                width: 100%;
+                display: block;
+            }
+            .dashboard-tabs {
+                gap: 0.2rem;
+            }
+            .dashboard-tab {
+                padding: 0.4rem 1rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="/index.html" style="text-decoration:none; color:inherit;">Culture<span>i</span></a>
+                <span class="tagline">Delivery · Across Mzansi</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/restaurants.html">Restaurants</a></li>
+                    <li><a href="/drivers.html">Drivers</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="btn-outline-light" id="logoutBtn" style="display:none;" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== DASHBOARD (hidden until login) ===== -->
+    <div id="dashboardContent" style="display:none;">
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h1>🍽️ <span>Dashboard</span></h1>
+                <div>
+                    <span id="restaurantNameDisplay" style="font-weight:600; color:var(--accent-orange);"></span>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="dashboard-tabs">
+                <button class="dashboard-tab active" data-tab="profile">📋 Profile</button>
+                <button class="dashboard-tab" data-tab="menu">📝 Menu</button>
+                <button class="dashboard-tab" data-tab="orders">📦 Orders</button>
+            </div>
+
+            <!-- TAB 1: Profile -->
+            <div class="tab-content active" id="tab-profile">
+                <div class="profile-card" id="profileCard">
+                    <h3>Restaurant Profile</h3>
+                    <div id="profileDetails">
+                        <div class="field"><strong>Name:</strong> <span id="pName">-</span></div>
+                        <div class="field"><strong>Owner:</strong> <span id="pOwner">-</span></div>
+                        <div class="field"><strong>Email:</strong> <span id="pEmail">-</span></div>
+                        <div class="field"><strong>Phone:</strong> <span id="pPhone">-</span></div>
+                        <div class="field"><strong>Cuisine:</strong> <span id="pCuisine">-</span></div>
+                        <div class="field"><strong>Address:</strong> <span id="pAddress">-</span></div>
+                        <div class="field"><strong>Status:</strong> <span id="pStatus">-</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: Menu -->
+            <div class="tab-content" id="tab-menu">
+                <!-- Add Menu Item Form -->
+                <div class="menu-form">
+                    <h3>➕ Add Menu Item</h3>
+                    <form id="menuForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="itemName">Item Name *</label>
+                                <input type="text" id="itemName" required placeholder="e.g. Chicken Burger" />
+                            </div>
+                            <div class="form-group">
+                                <label for="itemPrice">Price (R) *</label>
+                                <input type="number" id="itemPrice" required step="0.01" placeholder="e.g. 85.00" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="itemCategory">Category</label>
+                                <select id="itemCategory">
+                                    <option value="Main">Main</option>
+                                    <option value="Starter">Starter</option>
+                                    <option value="Dessert">Dessert</option>
+                                    <option value="Drink">Drink</option>
+                                    <option value="Side">Side</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="itemImage">Image URL</label>
+                                <input type="url" id="itemImage" placeholder="https://... (optional)" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemDesc">Description</label>
+                            <textarea id="itemDesc" placeholder="Brief description of the dish..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary" id="addMenuItemBtn">
+                            <i class="fas fa-plus"></i> Add to Menu
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Menu Items List -->
+                <h3>📋 Your Menu</h3>
+                <div id="menuItemsList">
+                    <div class="empty-state">
+                        <i class="fas fa-utensils"></i>
+                        <p>No menu items yet. Add your first dish above!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: Orders -->
+            <div class="tab-content" id="tab-orders">
+                <h3>📦 Orders</h3>
+                <div id="ordersList">
+                    <div class="empty-state">
+                        <i class="fas fa-box-open"></i>
+                        <p>No orders yet. When customers order, they'll appear here.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== LOGIN SCREEN ===== -->
+    <div id="loginScreen" class="login-screen">
+        <h2>🔐 Restaurant Login</h2>
+        <p>Sign in to manage your menu and orders.</p>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" required placeholder="restaurant@example.com" />
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" required placeholder="Your password" />
+            </div>
+            <button type="submit" class="btn-submit btn-primary" id="loginBtn">
+                <i class="fas fa-spinner fa-spin" style="display:none;" id="loginSpinner"></i>
+                <span id="loginBtnText">Sign In</span>
+            </button>
+        </form>
+        <div class="signup-link">
+            Not registered? <a href="restaurant-signup.html">Create your restaurant account</a>
+        </div>
+        <div class="signup-link" style="margin-top:0.5rem;">
+            <a href="restaurants.html">← Back to restaurants</a>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>Culture<span>i</span></h3>
+                    <p>Food &amp; Parcel Delivery · Across Mzansi</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/index.html">Home</a></li>
+                        <li><a href="/restaurants.html">Restaurants</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> culturesonox@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> +27 67 910 0022</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Culturei. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== FIREBASE ===== -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // ===== FIREBASE CONFIG =====
+        const firebaseConfig = {
+            apiKey: "AIzaSyACwmaTgi075VasbpyAVNt_jzPDwvmqMc4",
+            authDomain: "culturei-food-parcel-del-6a5cb.firebaseapp.com",
+            projectId: "culturei-food-parcel-del-6a5cb",
+            storageBucket: "culturei-food-parcel-del-6a5cb.firebasestorage.app",
+            messagingSenderId: "1045902648656",
+            appId: "1:1045902648656:web:5c582e4e3831b67e2fb855",
+            measurementId: "G-91BSVDGQ92"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // ===== STATE =====
+        let currentRestaurant = null;
+        let menuItems = [];
+
+        // ===== DOM REFS =====
+        const loginScreen = document.getElementById('loginScreen');
+        const dashboardContent = document.getElementById('dashboardContent');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // ===== DARK MODE =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggle = document.getElementById('darkModeToggle');
+            if (localStorage.getItem('culturei_dark_mode') === 'true') {
+                document.body.classList.add('light-mode');
+                toggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+            toggle.addEventListener('click', function() {
+                document.body.classList.toggle('light-mode');
+                const isLight = document.body.classList.contains('light-mode');
+                localStorage.setItem('culturei_dark_mode', isLight);
+                this.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            });
+        });
+
+        // ===== AUTH STATE =====
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                // Check if this user is a restaurant
+                const doc = await db.collection('restaurants').doc(user.uid).get();
+                if (doc.exists) {
+                    currentRestaurant = { id: user.uid, ...doc.data() };
+                    showDashboard();
+                    loadMenuItems();
+                    loadProfile();
+                    loadOrders();
+                } else {
+                    // User exists but not a restaurant
+                    auth.signOut();
+                    showNotification('❌ This account is not registered as a restaurant.');
+                }
+            } else {
+                showLogin();
+            }
+        });
+
+        // ===== LOGIN =====
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const btn = document.getElementById('loginBtn');
+            const spinner = document.getElementById('loginSpinner');
+            const btnText = document.getElementById('loginBtnText');
+
+            btn.disabled = true;
+            spinner.style.display = 'inline-block';
+            btnText.textContent = 'Signing in...';
+
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                // onAuthStateChanged handles the rest
+            } catch (error) {
+                showNotification('❌ ' + error.message);
+                btn.disabled = false;
+                spinner.style.display = 'none';
+                btnText.textContent = 'Sign In';
+            }
+        });
+
+        // ===== LOGOUT =====
+        function logout() {
+            auth.signOut();
+            showNotification('👋 Logged out');
+        }
+        window.logout = logout;
+
+        // ===== SHOW/HIDE =====
+        function showDashboard() {
+            loginScreen.style.display = 'none';
+            dashboardContent.style.display = 'block';
+            logoutBtn.style.display = 'inline-block';
+            document.getElementById('restaurantNameDisplay').textContent = currentRestaurant?.name || '';
+        }
+
+        function showLogin() {
+            loginScreen.style.display = 'block';
+            dashboardContent.style.display = 'none';
+            logoutBtn.style.display = 'none';
+            currentRestaurant = null;
+        }
+
+        // ===== LOAD PROFILE =====
+        function loadProfile() {
+            if (!currentRestaurant) return;
+            document.getElementById('pName').textContent = currentRestaurant.name || '-';
+            document.getElementById('pOwner').textContent = currentRestaurant.owner || '-';
+            document.getElementById('pEmail').textContent = currentRestaurant.email || '-';
+            document.getElementById('pPhone').textContent = currentRestaurant.phone || '-';
+            document.getElementById('pCuisine').textContent = currentRestaurant.cuisine || '-';
+            document.getElementById('pAddress').textContent = currentRestaurant.address || '-';
+            document.getElementById('pStatus').textContent = currentRestaurant.status || 'pending';
+        }
+
+        // ===== LOAD MENU ITEMS =====
+        async function loadMenuItems() {
+            if (!currentRestaurant) return;
+            const list = document.getElementById('menuItemsList');
+
+            try {
+                const snapshot = await db.collection('restaurants')
+                    .doc(currentRestaurant.id)
+                    .collection('menuItems')
+                    .orderBy('createdAt', 'desc')
+                    .get();
+
+                menuItems = [];
+                snapshot.forEach(doc => {
+                    menuItems.push({ id: doc.id, ...doc.data() });
+                });
+
+                renderMenuItems();
+            } catch (error) {
+                console.error('Error loading menu:', error);
+                showNotification('❌ Error loading menu items');
+            }
+        }
+
+        function renderMenuItems() {
+            const list = document.getElementById('menuItemsList');
+            if (menuItems.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-utensils"></i>
+                        <p>No menu items yet. Add your first dish above!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = `
+                <div class="menu-items-grid">
+                    ${menuItems.map(item => `
+                        <div class="menu-item-card">
+                            <img src="${item.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop'}" 
+                                 alt="${item.name}" 
+                                 onerror="this.src='https://via.placeholder.com/400x300/2d2d2d/ffffff?text=${item.name}'" />
+                            <h4>${item.name}</h4>
+                            <div class="item-price">R${item.price.toFixed(2)}</div>
+                            <div class="item-desc">${item.description || 'No description'}</div>
+                            <div style="font-size:0.8rem; color:var(--text-muted);">${item.category || 'Main'}</div>
+                            <div class="item-actions">
+                                <button class="btn-edit" onclick="editMenuItem('${item.id}')">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn-danger" onclick="deleteMenuItem('${item.id}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // ===== ADD MENU ITEM =====
+        document.getElementById('menuForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            if (!currentRestaurant) return;
+
+            const name = document.getElementById('itemName').value.trim();
+            const price = parseFloat(document.getElementById('itemPrice').value);
+            const category = document.getElementById('itemCategory').value;
+            const image = document.getElementById('itemImage').value.trim() || null;
+            const description = document.getElementById('itemDesc').value.trim() || '';
+
+            if (!name || isNaN(price) || price <= 0) {
+                showNotification('❌ Please enter a valid name and price.');
+                return;
+            }
+
+            const btn = document.getElementById('addMenuItemBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+
+            try {
+                await db.collection('restaurants')
+                    .doc(currentRestaurant.id)
+                    .collection('menuItems')
+                    .add({
+                        name,
+                        price,
+                        category,
+                        image,
+                        description,
+                        createdAt: new Date().toISOString()
+                    });
+
+                showNotification('✅ Menu item added!');
+                this.reset();
+                await loadMenuItems();
+            } catch (error) {
+                console.error('Error adding menu item:', error);
+                showNotification('❌ Error: ' + error.message);
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-plus"></i> Add to Menu';
+        });
+
+        // ===== DELETE MENU ITEM =====
+        async function deleteMenuItem(itemId) {
+            if (!confirm('Delete this menu item permanently?')) return;
+            if (!currentRestaurant) return;
+
+            try {
+                await db.collection('restaurants')
+                    .doc(currentRestaurant.id)
+                    .collection('menuItems')
+                    .doc(itemId)
+                    .delete();
+
+                showNotification('🗑️ Menu item deleted');
+                await loadMenuItems();
+            } catch (error) {
+                showNotification('❌ Error deleting: ' + error.message);
+            }
+        }
+        window.deleteMenuItem = deleteMenuItem;
+
+        // ===== EDIT MENU ITEM (simplified - quick edit via prompt) =====
+        async function editMenuItem(itemId) {
+            const item = menuItems.find(i => i.id === itemId);
+            if (!item) return;
+
+            const newName = prompt('Edit name:', item.name);
+            if (newName === null) return;
+            const newPrice = prompt('Edit price (R):', item.price);
+            if (newPrice === null) return;
+            const newDesc = prompt('Edit description:', item.description || '');
+            if (newDesc === null) return;
+
+            try {
+                await db.collection('restaurants')
+                    .doc(currentRestaurant.id)
+                    .collection('menuItems')
+                    .doc(itemId)
+                    .update({
+                        name: newName.trim(),
+                        price: parseFloat(newPrice),
+                        description: newDesc.trim()
+                    });
+
+                showNotification('✅ Menu item updated');
+                await loadMenuItems();
+            } catch (error) {
+                showNotification('❌ Error updating: ' + error.message);
+            }
+        }
+        window.editMenuItem = editMenuItem;
+
+        // ===== LOAD ORDERS =====
+        async function loadOrders() {
+            if (!currentRestaurant) return;
+            const list = document.getElementById('ordersList');
+
+            try {
+                // We'll store orders in a separate collection with restaurantId reference
+                const snapshot = await db.collection('orders')
+                    .where('restaurantId', '==', currentRestaurant.id)
+                    .orderBy('createdAt', 'desc')
+                    .limit(50)
+                    .get();
+
+                if (snapshot.empty) {
+                    list.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-box-open"></i>
+                            <p>No orders yet. When customers order, they'll appear here.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let ordersHtml = '<div style="display:grid;gap:1rem;">';
+                snapshot.forEach(doc => {
+                    const o = doc.data();
+                    ordersHtml += `
+                        <div style="background:var(--bg-card);padding:1.2rem;border-radius:12px;border-left:4px solid var(--accent-orange);">
+                            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;">
+                                <strong>#${o.orderId || 'N/A'}</strong>
+                                <span style="color:var(--text-muted);">${o.date || 'Unknown date'}</span>
+                            </div>
+                            <div style="margin:0.5rem 0;">${o.items ? o.items.map(i => i.name).join(' • ') : 'Items not available'}</div>
+                            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;align-items:center;">
+                                <span style="font-weight:700;color:var(--accent-orange);">R${o.total ? o.total.toFixed(2) : '0.00'}</span>
+                                <span style="background:${o.status === 'delivered' ? '#44bb44' : '#ffaa44'};padding:0.2rem 0.8rem;border-radius:20px;font-size:0.8rem;font-weight:600;">
+                                    ${o.status || 'pending'}
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                });
+                ordersHtml += '</div>';
+                list.innerHTML = ordersHtml;
+
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                list.innerHTML = `<div class="empty-state"><p>Error loading orders. Please refresh.</p></div>`;
+            }
+        }
+
+        // ===== TAB SWITCHING =====
+        document.querySelectorAll('.dashboard-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.dashboard-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+            });
+        });
+
+        // ===== NOTIFICATION =====
+        function showNotification(message) {
+            const existing = document.querySelector('.notification-toast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.className = 'notification-toast';
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 100px;
+                right: 20px;
+                background: var(--accent-orange);
+                color: var(--primary-black);
+                padding: 1rem 2rem;
+                border-radius: 12px;
+                font-weight: 600;
+                z-index: 9999;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                max-width: 400px;
+                animation: slideUp 0.3s ease;
+            `;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideDown 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // Animation styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+            @keyframes slideDown { from { opacity:1; transform:translateY(0); } to { opacity:0; transform:translateY(20px); } }
+        `;
+        document.head.appendChild(style);
+
+        // ===== EXPOSE FUNCTIONS =====
+        window.showNotification = showNotification;
+        window.loadMenuItems = loadMenuItems;
+        window.loadOrders = loadOrders;
+    </script>
+
+</body>
+</html>
