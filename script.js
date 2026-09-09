@@ -2,91 +2,8 @@
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// ===== RESTAURANTS DATA WITH IMAGES =====
-const restaurants = [
-    {
-        id: 1,
-        name: "Hello Tomato",
-        cuisine: "Pizza & Pasta",
-        image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop",
-        price: 85.00,
-        rating: 4.5,
-        deliveryTime: "30-45 min",
-        featured: true
-    },
-    {
-        id: 2,
-        name: "Bento",
-        cuisine: "Asian Fusion",
-        image: "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&h=300&fit=crop",
-        price: 95.00,
-        rating: 4.7,
-        deliveryTime: "25-40 min",
-        featured: true
-    },
-    {
-        id: 3,
-        name: "Afrikoa",
-        cuisine: "African Cuisine",
-        image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop",
-        price: 75.00,
-        rating: 4.3,
-        deliveryTime: "35-50 min",
-        featured: true
-    },
-    {
-        id: 4,
-        name: "Cinnabon",
-        cuisine: "Bakery & Sweets",
-        image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400&h=300&fit=crop",
-        price: 65.00,
-        rating: 4.6,
-        deliveryTime: "20-30 min",
-        featured: true
-    },
-    {
-        id: 5,
-        name: "Braai Republic",
-        cuisine: "Traditional Braai",
-        image: "https://images.unsplash.com/photo-1529042410759-befb1204b468?w=400&h=300&fit=crop",
-        price: 110.00,
-        rating: 4.8,
-        deliveryTime: "40-55 min",
-        featured: true
-    },
-    {
-        id: 6,
-        name: "Cape Malay",
-        cuisine: "Malay Cuisine",
-        image: "https://images.unsplash.com/photo-1588286840104-8957b019727f?w=400&h=300&fit=crop",
-        price: 90.00,
-        rating: 4.4,
-        deliveryTime: "30-45 min",
-        featured: true
-    },
-    {
-        id: 7,
-        name: "Sushi & Co",
-        cuisine: "Japanese",
-        image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&h=300&fit=crop",
-        price: 120.00,
-        rating: 4.9,
-        deliveryTime: "25-35 min",
-        featured: false
-    },
-    {
-        id: 8,
-        name: "Curry House",
-        cuisine: "Indian",
-        image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&h=300&fit=crop",
-        price: 80.00,
-        rating: 4.2,
-        deliveryTime: "35-50 min",
-        featured: false
-    }
-];
-
 // ===== STATE MANAGEMENT =====
+let allRestaurants = []; // NOW LOADS FROM FIRESTORE
 let cart = [];
 let favorites = JSON.parse(localStorage.getItem('culturei_favorites')) || [];
 let orderHistory = JSON.parse(localStorage.getItem('culturei_orders')) || [];
@@ -100,7 +17,7 @@ const cartItems = document.getElementById('cartItems');
 const cartTotal = document.getElementById('cartTotal');
 
 // ============================================
-// PAYSTACK CDN LOADER (FIX #1)
+// PAYSTACK CDN LOADER
 // ============================================
 function loadPaystack() {
     if (typeof PaystackPop !== 'undefined') return;
@@ -113,7 +30,6 @@ function loadPaystack() {
 // ============================================
 // GOOGLE SIGN-IN
 // ============================================
-
 function googleSignIn() {
     const provider = new firebase.auth.GoogleAuthProvider();
     
@@ -146,20 +62,11 @@ function googleSignIn() {
             showNotification(message);
         });
 }
-
 window.googleSignIn = googleSignIn;
-
-// ============================================
-// DRIVER OTP FUNCTIONS (ADDED)
-// ============================================
-
-// These functions are now in driver.html directly
-// They are kept here for compatibility if needed elsewhere
 
 // ============================================
 // AUTHENTICATION FUNCTIONS
 // ============================================
-
 function openLogin() {
     const choice = confirm("Click OK for Email/Password or Cancel for Google Sign-In");
     
@@ -248,12 +155,71 @@ auth.onAuthStateChanged((user) => {
     updateAuthUI();
 });
 
-// ===== RENDER RESTAURANTS WITH IMAGES =====
-function renderRestaurants() {
-    const grid = document.getElementById('menuGrid') || document.getElementById('restaurantGrid');
+// ============================================
+// LOAD RESTAURANTS FROM FIRESTORE (NEW)
+// ============================================
+async function loadRestaurantsFromFirestore() {
+    const grid = document.getElementById('restaurantGrid') || document.getElementById('menuGrid');
     if (!grid) return;
 
-    let filteredRestaurants = restaurants;
+    grid.innerHTML = `
+        <div class="loading-message" style="text-align:center;padding:3rem;color:var(--text-muted);">
+            <i class="fas fa-spinner fa-spin" style="font-size:2rem;"></i>
+            <p>Loading restaurants...</p>
+        </div>
+    `;
+
+    try {
+        const snapshot = await db.collection('restaurants')
+            .where('status', '==', 'approved')
+            .get();
+
+        allRestaurants = [];
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            allRestaurants.push({
+                id: doc.id, // Use Firestore document ID
+                name: data.name || 'Unnamed Restaurant',
+                cuisine: data.cuisine || 'Various',
+                image: data.image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop',
+                price: 0, // Will be updated from menu later
+                rating: data.rating || 0,
+                deliveryTime: '30-45 min',
+                featured: false,
+                owner: data.owner || '',
+                address: data.address || ''
+            });
+        });
+
+        if (allRestaurants.length === 0) {
+            grid.innerHTML = `
+                <div class="empty-state" style="grid-column:1/-1;text-align:center;padding:3rem;">
+                    <i class="fas fa-utensils" style="font-size:3rem;color:var(--text-muted);"></i>
+                    <p style="color:var(--text-muted);margin-top:1rem;">No restaurants registered yet. <br> Be the first to <a href="/restaurant-signup.html" style="color:var(--accent-orange);">partner with us</a>!</p>
+                </div>
+            `;
+            return;
+        }
+
+        renderRestaurants();
+
+    } catch (error) {
+        console.error('Error loading restaurants:', error);
+        grid.innerHTML = `
+            <div class="empty-state" style="grid-column:1/-1;text-align:center;padding:3rem;">
+                <i class="fas fa-exclamation-triangle" style="font-size:3rem;color:var(--accent-orange);"></i>
+                <p style="color:var(--text-muted);margin-top:1rem;">Error loading restaurants. Please refresh.</p>
+            </div>
+        `;
+    }
+}
+
+// ===== RENDER RESTAURANTS (UPDATED to use allRestaurants) =====
+function renderRestaurants() {
+    const grid = document.getElementById('restaurantGrid') || document.getElementById('menuGrid');
+    if (!grid) return;
+
+    let filteredRestaurants = [...allRestaurants]; // Use Firestore data
 
     if (searchQuery) {
         filteredRestaurants = filteredRestaurants.filter(r => 
@@ -287,16 +253,16 @@ function renderRestaurants() {
                 <p>${restaurant.cuisine}</p>
                 <div class="restaurant-rating">
                     <i class="fas fa-star" style="color: #f5c542;"></i>
-                    <span>${restaurant.rating}</span>
-                    <span style="color: var(--text-muted); font-size: 0.8rem;">(${restaurant.deliveryTime})</span>
+                    <span>${restaurant.rating || 'New'}</span>
+                    <span style="color: var(--text-muted); font-size: 0.8rem;">(${restaurant.deliveryTime || '30-45 min'})</span>
                 </div>
-                <span class="price">R${restaurant.price.toFixed(2)}</span>
+                <span class="price">R${restaurant.price ? restaurant.price.toFixed(2) : '0.00'}</span>
                 <div class="restaurant-actions">
-                    <button class="btn-add" onclick="addToCart(${restaurant.id})">
+                    <button class="btn-add" onclick="addToCart('${restaurant.id}')">
                         <i class="fas fa-plus"></i> Add to Cart
                     </button>
                     <button class="btn-favorite ${favorites.includes(restaurant.id) ? 'favorited' : ''}" 
-                            onclick="toggleFavorite(${restaurant.id})">
+                            onclick="toggleFavorite('${restaurant.id}')">
                         ${favorites.includes(restaurant.id) ? '⭐' : '☆'}
                     </button>
                 </div>
@@ -305,10 +271,13 @@ function renderRestaurants() {
     `).join('');
 }
 
-// ===== ADD TO CART =====
+// ===== ADD TO CART (UPDATED to use allRestaurants) =====
 function addToCart(restaurantId) {
-    const restaurant = restaurants.find(r => r.id === restaurantId);
-    if (!restaurant) return;
+    const restaurant = allRestaurants.find(r => r.id === restaurantId);
+    if (!restaurant) {
+        showNotification('❌ Restaurant not found');
+        return;
+    }
 
     const existingItem = cart.find(item => item.id === restaurantId);
     
@@ -316,8 +285,11 @@ function addToCart(restaurantId) {
         existingItem.quantity += 1;
     } else {
         cart.push({
-            ...restaurant,
-            quantity: 1
+            id: restaurant.id,
+            name: restaurant.name,
+            price: restaurant.price || 0,
+            quantity: 1,
+            image: restaurant.image
         });
     }
     
@@ -325,7 +297,7 @@ function addToCart(restaurantId) {
     showNotification(`${restaurant.name} added to cart! 🛒`);
 }
 
-// ===== TOGGLE FAVORITE =====
+// ===== TOGGLE FAVORITE (UPDATED to handle string IDs) =====
 function toggleFavorite(restaurantId) {
     const index = favorites.indexOf(restaurantId);
     if (index > -1) {
@@ -359,10 +331,10 @@ function updateCartUI() {
                         <p>R${item.price.toFixed(2)} × ${item.quantity}</p>
                     </div>
                     <div class="cart-item-controls">
-                        <button onclick="updateQuantity(${item.id}, -1)">−</button>
+                        <button onclick="updateQuantity('${item.id}', -1)">−</button>
                         <span>${item.quantity}</span>
-                        <button onclick="updateQuantity(${item.id}, 1)">+</button>
-                        <button class="cart-item-remove" onclick="removeFromCart(${item.id})">✕</button>
+                        <button onclick="updateQuantity('${item.id}', 1)">+</button>
+                        <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">✕</button>
                     </div>
                 </div>
             `).join('');
@@ -401,9 +373,9 @@ function toggleCart() {
     }
 }
 
-// ===== OPEN / CLOSE CHECKOUT (FIX #2) =====
+// ===== OPEN / CLOSE CHECKOUT =====
 function openCheckout() {
-    loadPaystack(); // Load Paystack if not loaded
+    loadPaystack();
     const modal = document.getElementById('checkoutModal');
     if (modal) {
         modal.style.display = 'block';
@@ -427,11 +399,10 @@ function closeCheckout() {
     }
 }
 
-// ===== PROCESS CHECKOUT WITH VALIDATION (FIX #3) =====
+// ===== PROCESS CHECKOUT =====
 function processCheckout(event) {
     event.preventDefault();
 
-    // Validate email
     const email = document.getElementById('email')?.value?.trim();
     if (!email) {
         showNotification('❌ Please enter your email address.');
@@ -442,7 +413,6 @@ function processCheckout(event) {
         return;
     }
 
-    // Validate address
     const address = document.getElementById('deliveryAddress')?.value?.trim();
     if (!address) {
         showNotification('❌ Please enter your delivery address.');
@@ -452,10 +422,7 @@ function processCheckout(event) {
     const spinner = document.getElementById('spinner');
     const payText = document.getElementById('payText');
 
-    const total = cart.reduce(
-        (sum, item) => sum + (item.price * item.quantity),
-        0
-    );
+    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
     if (total <= 0) {
         showNotification('❌ Your cart is empty. Add items before checkout.');
@@ -474,70 +441,46 @@ function processCheckout(event) {
         currency: 'ZAR',
 
         onSuccess: function(transaction) {
-
             const order = {
                 id: Date.now(),
                 date: new Date().toLocaleString(),
-
                 items: cart.map(item => ({
                     name: item.name,
                     quantity: item.quantity,
                     price: item.price
                 })),
-
                 total: total,
-
-                deliveryType:
-                    document.getElementById('deliveryType')?.value || '',
-
-                address:
-                    document.getElementById('deliveryAddress')?.value || '',
-
+                deliveryType: document.getElementById('deliveryType')?.value || '',
+                address: document.getElementById('deliveryAddress')?.value || '',
                 paymentReference: transaction.reference,
                 paymentStatus: 'Paid'
             };
 
             orderHistory.unshift(order);
-
-            localStorage.setItem(
-                'culturei_orders',
-                JSON.stringify(orderHistory)
-            );
-
+            localStorage.setItem('culturei_orders', JSON.stringify(orderHistory));
             cart = [];
-
             updateCartUI();
             renderOrderHistory();
             updateStats();
 
             spinner.style.display = 'none';
             payText.textContent = 'Pay Now';
-
             closeCheckout();
-
-            showNotification(
-                `✅ Payment successful! Order total: R${total.toFixed(2)}`
-            );
-
+            showNotification(`✅ Payment successful! Order total: R${total.toFixed(2)}`);
             document.getElementById('checkoutForm')?.reset();
         },
 
         onCancel: function() {
             spinner.style.display = 'none';
             payText.textContent = 'Pay Now';
-
             showNotification('❌ Payment cancelled.');
         },
 
         onError: function(error) {
             spinner.style.display = 'none';
             payText.textContent = 'Pay Now';
-
             console.error('Paystack Error:', error);
-
-            showNotification(
-                '❌ Payment could not be started. Please try again.'
-            );
+            showNotification('❌ Payment could not be started. Please try again.');
         }
     });
 }
@@ -785,9 +728,11 @@ function openPartner() {
     showNotification('🤝 Partnership opportunities coming soon!');
 }
 
-// ===== INITIALIZATION =====
+// ===== INITIALIZATION (UPDATED) =====
 document.addEventListener('DOMContentLoaded', function() {
-    renderRestaurants();
+    // Load restaurants from Firestore instead of static array
+    loadRestaurantsFromFirestore();
+    
     renderOrderHistory();
     updateStats();
     updateCartUI();
@@ -795,7 +740,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupFilters();
     setupDarkMode();
     updateAuthUI();
-    loadPaystack(); // Load Paystack on page load
+    loadPaystack();
 
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     document.querySelectorAll('nav ul li a').forEach(link => {
