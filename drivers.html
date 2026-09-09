@@ -680,7 +680,7 @@
                                 driverName = snapshot.docs[0].data().name || 'Driver';
                                 loginDriverWithName(driverName, storedPhone);
                             } else {
-                                driverName = prompt('👋 Welcome! Enter your full name:', 'Thabo Mokoena');
+                                driverName = prompt('👋 Welcome! Enter your full name:');
                                 if (!driverName || driverName.trim() === '') {
                                     alert('Name is required to continue.');
                                     return;
