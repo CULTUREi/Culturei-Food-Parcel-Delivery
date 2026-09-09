@@ -1740,91 +1740,6 @@
             box-shadow: 0 12px 35px rgba(232,122,32,0.45);
         }
 
-        /* OTP Login Box */
-        .otp-login-box {
-            max-width: 420px;
-            margin: 2rem auto 0;
-            background: var(--bg-card);
-            padding: 1.8rem;
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-            text-align: left;
-        }
-
-        .otp-login-box h4 {
-            font-size: 1.1rem;
-            margin-bottom: 0.3rem;
-            color: var(--accent-orange);
-        }
-
-        .otp-login-box p.sub {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-        }
-
-        .otp-login-box input {
-            width: 100%;
-            padding: 0.7rem 1rem;
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            font-size: 1rem;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            transition: border-color var(--transition);
-            margin-bottom: 0.5rem;
-        }
-
-        .otp-login-box input:focus {
-            outline: none;
-            border-color: var(--accent-orange);
-        }
-
-        .otp-login-box .otp-row {
-            display: flex;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-        }
-
-        .otp-login-box .otp-row button {
-            flex: 1;
-            padding: 0.7rem 1rem;
-            border: none;
-            border-radius: 60px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-            background: var(--accent-orange);
-            color: var(--primary-black);
-        }
-
-        .otp-login-box .otp-row button:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 15px rgba(232,122,32,0.3);
-        }
-
-        .otp-login-box .otp-row button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .otp-login-box .otp-message {
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-            min-height: 1.5rem;
-        }
-
-        .otp-login-box .helper-text {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-top: 0.3rem;
-            display: block;
-        }
-
-        #otp-section {
-            margin-top: 0.8rem;
-        }
-
         /* Mobile */
         @media (max-width:768px){
             .cta-box{
@@ -1839,10 +1754,6 @@
             .cta-btn{
                 width:100%;
                 max-width:300px;
-            }
-            .otp-login-box {
-                margin: 1.5rem auto 0;
-                padding: 1.2rem;
             }
         }
 
@@ -2173,23 +2084,6 @@
                 <a href="restaurants.html" class="cta-btn">
                     Start Ordering →
                 </a>
-
-                <!-- ===== OTP LOGIN BOX (BELOW ORDER BUTTON) ===== -->
-                <div class="otp-login-box">
-                    <h4>🔐 Login with Phone</h4>
-                    <p class="sub">Get a 6-digit OTP via SMS to sign in as a customer or driver.</p>
-                    <input type="text" id="phone-input" placeholder="+27721234567" />
-                    <span class="helper-text">Use +27 (e.g., +27721234567)</span>
-                    <div class="otp-row">
-                        <button onclick="sendOTP()" id="sendOtpBtn">Send OTP</button>
-                        <button onclick="sendOTP('driver')" id="sendOtpDriverBtn" style="background:transparent; border:2px solid var(--accent-orange); color:var(--accent-orange);">I'm a Driver</button>
-                    </div>
-                    <div id="otp-section" style="display:none;">
-                        <input type="text" id="otp-input" placeholder="Enter 6-digit code" />
-                        <button onclick="verifyOTP()" id="verifyOtpBtn" style="width:100%; padding:0.7rem; border:none; border-radius:60px; font-weight:700; cursor:pointer; background:var(--accent-orange); color:var(--primary-black);">Verify OTP</button>
-                    </div>
-                    <div id="otp-message" class="otp-message"></div>
-                </div>
             </div>
         </div>
     </section>
