@@ -1133,6 +1133,25 @@
             color: var(--accent-orange);
         }
 
+        /* ===== NEW: PARTNER LINKS UNDER SOCIAL ICONS ===== */
+        .partner-links {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .partner-links a {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .partner-links a:hover {
+            color: var(--accent-orange);
+        }
+
         .footer-links h4,
         .footer-contact h4 {
             font-size: 1.1rem;
@@ -2251,6 +2270,11 @@
                         <a href="#"><i class="fab fa-instagram"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
                         <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                    <!-- ===== PARTNER LINKS (UNDER SOCIAL ICONS) ===== -->
+                    <div class="partner-links">
+                        <a href="restaurant-signup.html">🍽️ Partner With Us (Sign Up)</a>
+                        <a href="restaurant-dashboard.html">🔐 Restaurant Dashboard (Login)</a>
                     </div>
                 </div>
                 <div class="footer-links">
