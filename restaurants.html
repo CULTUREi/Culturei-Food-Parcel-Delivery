@@ -7,9 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="/style.css" />
     <style>
-        /* === (keep your existing styles — they're fine) === */
-        /* Just add this small addition for the "Partner" button */
-
         .partner-cta {
             text-align: center;
             margin: 2rem 0 1rem;
@@ -18,9 +15,7 @@
             border-radius: 16px;
             color: #fff;
         }
-        .partner-cta h3 {
-            margin-bottom: 0.5rem;
-        }
+        .partner-cta h3 { margin-bottom: 0.5rem; }
         .partner-cta .btn-partner {
             display: inline-block;
             padding: 0.8rem 2.5rem;
@@ -31,21 +26,104 @@
             text-decoration: none;
             transition: transform 0.2s;
         }
-        .partner-cta .btn-partner:hover {
-            transform: scale(1.05);
+        .partner-cta .btn-partner:hover { transform: scale(1.05); }
+
+        /* === MENU MODAL === */
+        .menu-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .menu-modal-overlay.open { display: flex; }
+        .menu-modal {
+            background: var(--secondary-black, #1a1a1a);
+            color: var(--text-light, #fff);
+            border-radius: 20px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+            position: relative;
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .menu-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 1rem;
+        }
+        .menu-modal-header h3 { margin: 0; font-size: 1.4rem; }
+        .menu-modal-close {
+            background: none;
+            border: none;
+            color: inherit;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .menu-item {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.04);
+            margin-bottom: 0.75rem;
+        }
+        .menu-item img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+        .menu-item-info { flex: 1; }
+        .menu-item-info h4 { margin: 0 0 0.25rem; font-size: 1rem; }
+        .menu-item-info p { margin: 0; font-size: 0.8rem; color: var(--text-muted, #aaa); }
+        .menu-item-price { font-weight: 700; color: var(--accent-orange, #f5a623); margin-top: 0.25rem; }
+        .menu-item .btn-order {
+            background: var(--accent-orange, #f5a623);
+            color: #111;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: transform 0.15s;
+        }
+        .menu-item .btn-order:hover { transform: scale(1.06); }
+        .menu-loading, .menu-empty {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted, #aaa);
         }
 
-        /* Mobile bottom nav — keep your existing */
         .mobile-bottom-nav { display: none; }
         @media (display-mode: standalone) and (max-width: 768px) {
             .mobile-bottom-nav { display: flex !important; }
-            /* keep all your existing PWA styles */
+        }
+        @media (max-width: 600px) {
+            .menu-item img { width: 55px; height: 55px; }
+            .menu-item .btn-order { padding: 0.5rem 0.9rem; font-size: 0.85rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== HEADER ===== (keep your existing) -->
+    <!-- ===== HEADER ===== -->
     <header>
         <div class="container header-container">
             <div class="logo">
@@ -61,7 +139,7 @@
                 </ul>
             </nav>
             <div class="header-actions">
-                <div class="cart-icon" onclick="toggleCart()">
+                <div class="cart-icon" onclick="toggleCart()" style="cursor:pointer;">
                     <i class="fas fa-shopping-bag"></i>
                     <span class="cart-count" id="cartCount">0</span>
                 </div>
@@ -79,7 +157,6 @@
             <h2 class="section-title">Our <span>Restaurants</span></h2>
             <p class="menu-subtitle">Discover authentic cultural cuisine from around South Africa.</p>
 
-            <!-- Search Bar -->
             <div class="search-container">
                 <div class="search-box">
                     <input type="text" id="searchInput" placeholder="🔍 Search restaurants or cuisine..." />
@@ -91,7 +168,6 @@
                 </div>
             </div>
 
-            <!-- ✅ RESTAURANT GRID — now loads from Firestore -->
             <div class="restaurant-grid" id="restaurantGrid">
                 <div class="loading-message" style="text-align:center;padding:3rem;color:var(--text-muted);">
                     <i class="fas fa-spinner fa-spin" style="font-size:2rem;"></i>
@@ -99,7 +175,6 @@
                 </div>
             </div>
 
-            <!-- ===== PARTNER CTA ===== -->
             <div class="partner-cta">
                 <h3>🍽️ Own a restaurant?</h3>
                 <p>Partner with Culturei and reach thousands of hungry customers daily.</p>
@@ -108,7 +183,7 @@
         </div>
     </section>
 
-    <!-- ===== ORDER HISTORY ===== (keep existing) -->
+    <!-- ===== ORDER HISTORY ===== -->
     <section class="order-history-section">
         <div class="container">
             <h2 class="section-title">📜 Your <span>Order History</span></h2>
@@ -118,7 +193,7 @@
         </div>
     </section>
 
-    <!-- ===== FOOTER ===== (keep existing) -->
+    <!-- ===== FOOTER ===== -->
     <footer id="contact">
         <div class="container">
             <div class="footer-grid">
@@ -161,7 +236,20 @@
         </div>
     </footer>
 
-    <!-- ===== CART SIDEBAR ===== (keep existing) -->
+    <!-- ===== MENU MODAL ===== -->
+    <div class="menu-modal-overlay" id="menuModalOverlay" onclick="if(event.target===this) closeMenuModal()">
+        <div class="menu-modal">
+            <div class="menu-modal-header">
+                <h3 id="menuModalTitle">Menu</h3>
+                <button class="menu-modal-close" onclick="closeMenuModal()">&times;</button>
+            </div>
+            <div id="menuModalBody">
+                <div class="menu-loading"><i class="fas fa-spinner fa-spin"></i> Loading menu...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CART SIDEBAR ===== -->
     <div class="overlay" id="overlay" onclick="toggleCart()"></div>
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
@@ -176,28 +264,16 @@
                 <span>Total:</span>
                 <span id="cartTotal">R 0.00</span>
             </div>
-            <a href="https://paystack.shop/pay/0sam0qbqp4" class="btn-checkout">Proceed to Checkout</a>
+            <button class="btn-checkout" onclick="checkout()">Proceed to Checkout</button>
         </div>
     </div>
 
-    <!-- ===== MOBILE BOTTOM NAV ===== (keep existing) -->
+    <!-- ===== MOBILE BOTTOM NAV ===== -->
     <div class="mobile-bottom-nav">
-        <a href="/index.html" class="active">
-            <i class="fas fa-home"></i>
-            <span>Home</span>
-        </a>
-        <a href="/restaurants.html">
-            <i class="fas fa-utensils"></i>
-            <span>Orders</span>
-        </a>
-        <a href="#">
-            <i class="fas fa-wallet"></i>
-            <span>Wallet</span>
-        </a>
-        <a href="#">
-            <i class="fas fa-user"></i>
-            <span>Profile</span>
-        </a>
+        <a href="/index.html"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="/restaurants.html" class="active"><i class="fas fa-utensils"></i><span>Orders</span></a>
+        <a href="#"><i class="fas fa-wallet"></i><span>Wallet</span></a>
+        <a href="#"><i class="fas fa-user"></i><span>Profile</span></a>
     </div>
 
     <!-- ===== FIREBASE ===== -->
@@ -224,20 +300,20 @@
         const db = firebase.firestore();
 
         // ===== STATE =====
-        let cart = [];
+        let cart = JSON.parse(localStorage.getItem('culturei_cart')) || [];
         let favorites = JSON.parse(localStorage.getItem('culturei_favorites')) || [];
         let orderHistory = JSON.parse(localStorage.getItem('culturei_orders')) || [];
         let currentFilter = 'all';
         let searchQuery = '';
         let currentUser = null;
-        let allRestaurants = []; // Will hold Firestore data
+        let allRestaurants = [];
 
         // ===== DOM REFS =====
         const cartCount = document.getElementById('cartCount');
         const cartItems = document.getElementById('cartItems');
         const cartTotal = document.getElementById('cartTotal');
 
-        // ===== LOAD RESTAURANTS FROM FIRESTORE =====
+        // ===== LOAD RESTAURANTS =====
         async function loadRestaurantsFromFirestore() {
             const grid = document.getElementById('restaurantGrid');
             if (!grid) return;
@@ -251,7 +327,7 @@
 
             try {
                 const snapshot = await db.collection('restaurants')
-                    .where('status', '==', 'approved') // Only show approved restaurants
+                    .where('status', '==', 'approved')
                     .get();
 
                 allRestaurants = [];
@@ -262,7 +338,6 @@
                         name: data.name || 'Unnamed Restaurant',
                         cuisine: data.cuisine || 'Various',
                         image: data.image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop',
-                        price: 0, // Will be calculated from menu
                         rating: data.rating || 0,
                         deliveryTime: '30-45 min',
                         featured: false,
@@ -271,7 +346,6 @@
                     });
                 });
 
-                // If no restaurants, show empty state
                 if (allRestaurants.length === 0) {
                     grid.innerHTML = `
                         <div class="empty-state" style="grid-column:1/-1;text-align:center;padding:3rem;">
@@ -302,7 +376,6 @@
 
             let filtered = [...allRestaurants];
 
-            // Apply search
             if (searchQuery) {
                 filtered = filtered.filter(r =>
                     r.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -310,7 +383,6 @@
                 );
             }
 
-            // Apply favorite filter
             if (currentFilter === 'favorites') {
                 filtered = filtered.filter(r => favorites.includes(r.id));
             }
@@ -328,8 +400,7 @@
             grid.innerHTML = filtered.map(restaurant => `
                 <div class="restaurant-card" data-id="${restaurant.id}">
                     <div class="restaurant-image">
-                        <img src="${restaurant.image}" alt="${restaurant.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x300/2d2d2d/ffffff?text=${restaurant.name}'" />
-                        ${restaurant.featured ? '<span class="featured-badge">⭐ Featured</span>' : ''}
+                        <img src="${restaurant.image}" alt="${restaurant.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x300/2d2d2d/ffffff?text=${encodeURIComponent(restaurant.name)}'" />
                     </div>
                     <div class="restaurant-info">
                         <h4>${restaurant.name}</h4>
@@ -337,14 +408,13 @@
                         <div class="restaurant-rating">
                             <i class="fas fa-star" style="color: #f5c542;"></i>
                             <span>${restaurant.rating || 'New'}</span>
-                            <span style="color: var(--text-muted); font-size: 0.8rem;">(${restaurant.deliveryTime || '30-45 min'})</span>
+                            <span style="color: var(--text-muted); font-size: 0.8rem;">(${restaurant.deliveryTime})</span>
                         </div>
-                        <span class="price">R${restaurant.price ? restaurant.price.toFixed(2) : '0.00'}</span>
                         <div class="restaurant-actions">
                             <button class="btn-add" onclick="viewMenu('${restaurant.id}')">
                                 <i class="fas fa-eye"></i> View Menu
                             </button>
-                            <button class="btn-favorite ${favorites.includes(restaurant.id) ? 'favorited' : ''}" 
+                            <button class="btn-favorite ${favorites.includes(restaurant.id) ? 'favorited' : ''}"
                                     onclick="toggleFavorite('${restaurant.id}')">
                                 ${favorites.includes(restaurant.id) ? '⭐' : '☆'}
                             </button>
@@ -354,64 +424,108 @@
             `).join('');
         }
 
-        // ===== VIEW MENU (placeholder — can expand later) =====
-        function viewMenu(restaurantId) {
+        // ===== VIEW MENU (REAL) =====
+        async function viewMenu(restaurantId) {
             const restaurant = allRestaurants.find(r => r.id === restaurantId);
             if (!restaurant) {
                 showNotification('❌ Restaurant not found');
                 return;
             }
-            // For now, show a notification with the restaurant name
-            showNotification(`🍽️ Viewing menu for ${restaurant.name} — Coming soon!`);
-            // In the future, you can open a modal or navigate to a menu page
+
+            const overlay = document.getElementById('menuModalOverlay');
+            const title = document.getElementById('menuModalTitle');
+            const body = document.getElementById('menuModalBody');
+
+            title.textContent = restaurant.name + ' — Menu';
+            body.innerHTML = '<div class="menu-loading"><i class="fas fa-spinner fa-spin"></i> Loading menu...</div>';
+            overlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+
+            try {
+                const snap = await db.collection('restaurants')
+                    .doc(restaurantId)
+                    .collection('menu')
+                    .get();
+
+                let items = [];
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    items.push({
+                        id: doc.id,
+                        name: d.name || 'Unnamed item',
+                        price: Number(d.price) || 0,
+                        image: d.image || 'https://via.placeholder.com/100x100/2d2d2d/ffffff?text=Food',
+                        description: d.description || ''
+                    });
+                });
+
+                // Fallback demo items if no menu in Firestore
+                if (items.length === 0) {
+                    items = [
+                        { id: 'demo1', name: 'Beef Burger', price: 65, image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200&h=200&fit=crop', description: 'Juicy beef patty, cheese, lettuce' },
+                        { id: 'demo2', name: 'Chicken Wings', price: 55, image: 'https://images.unsplash.com/photo-1608039755401-742074f0548d?w=200&h=200&fit=crop', description: 'Spicy grilled wings' },
+                        { id: 'demo3', name: 'Chips', price: 30, image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=200&h=200&fit=crop', description: 'Crispy golden fries' }
+                    ];
+                }
+
+                body.innerHTML = items.map(item => `
+                    <div class="menu-item">
+                        <img src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/100x100/2d2d2d/ffffff?text=Food'" />
+                        <div class="menu-item-info">
+                            <h4>${item.name}</h4>
+                            <p>${item.description || restaurant.name}</p>
+                            <div class="menu-item-price">R${item.price.toFixed(2)}</div>
+                        </div>
+                        <button class="btn-order" onclick="addMenuItemToCart('${item.id}','${item.name.replace(/'/g,"\\'")}',${item.price},'${item.image}','${restaurant.name.replace(/'/g,"\\'")}')">
+                            <i class="fas fa-plus"></i> Order
+                        </button>
+                    </div>
+                `).join('');
+
+            } catch (err) {
+                console.error('Menu load error:', err);
+                body.innerHTML = '<div class="menu-empty">Could not load menu. Please try again.</div>';
+            }
         }
         window.viewMenu = viewMenu;
 
-        // ===== TOGGLE FAVORITE =====
-        function toggleFavorite(restaurantId) {
-            const index = favorites.indexOf(restaurantId);
-            if (index > -1) {
-                favorites.splice(index, 1);
-                showNotification('Removed from favorites 💔');
-            } else {
-                favorites.push(restaurantId);
-                showNotification('Added to favorites ⭐');
-            }
-            localStorage.setItem('culturei_favorites', JSON.stringify(favorites));
-            renderRestaurants();
-            updateStats();
+        function closeMenuModal() {
+            document.getElementById('menuModalOverlay').classList.remove('open');
+            document.body.style.overflow = '';
         }
-        window.toggleFavorite = toggleFavorite;
+        window.closeMenuModal = closeMenuModal;
 
-        // ===== CART FUNCTIONS (keep your existing) =====
-        // (copy your existing cart functions from script.js if they're not already here)
-        // For brevity, I'll include them but you can keep your existing ones.
-
-        function addToCart(restaurantId) {
-            const restaurant = allRestaurants.find(r => r.id === restaurantId);
-            if (!restaurant) return;
-            const existingItem = cart.find(item => item.id === restaurantId);
-            if (existingItem) {
-                existingItem.quantity += 1;
+        // ===== ADD MENU ITEM TO CART =====
+        function addMenuItemToCart(id, name, price, image, restaurantName) {
+            const existing = cart.find(i => i.id === id);
+            if (existing) {
+                existing.quantity += 1;
             } else {
                 cart.push({
-                    id: restaurantId,
-                    name: restaurant.name,
-                    price: restaurant.price || 0,
+                    id: id,
+                    name: name,
+                    price: Number(price),
                     quantity: 1,
-                    image: restaurant.image
+                    image: image,
+                    restaurant: restaurantName
                 });
             }
+            saveCart();
             updateCartUI();
-            showNotification(`${restaurant.name} added to cart! 🛒`);
+            showNotification(`${name} added to cart! 🛒`);
         }
-        window.addToCart = addToCart;
+        window.addMenuItemToCart = addMenuItemToCart;
+
+        // ===== CART FUNCTIONS =====
+        function saveCart() {
+            localStorage.setItem('culturei_cart', JSON.stringify(cart));
+        }
 
         function updateCartUI() {
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             if (cartCount) cartCount.textContent = totalItems;
-            if (cartTotal) cartTotal.textContent = `R${totalPrice.toFixed(2)}`;
+            if (cartTotal) cartTotal.textContent = `R ${totalPrice.toFixed(2)}`;
             if (cartItems) {
                 if (cart.length === 0) {
                     cartItems.innerHTML = '<p class="empty-cart">Your cart is empty.</p>';
@@ -420,7 +534,7 @@
                         <div class="cart-item">
                             <div class="cart-item-info">
                                 <h4>${item.name}</h4>
-                                <p>R${item.price.toFixed(2)} × ${item.quantity}</p>
+                                <p>${item.restaurant ? item.restaurant + ' · ' : ''}R${item.price.toFixed(2)} × ${item.quantity}</p>
                             </div>
                             <div class="cart-item-controls">
                                 <button onclick="updateQuantity('${item.id}', -1)">−</button>
@@ -434,21 +548,19 @@
             }
         }
 
-        function updateQuantity(restaurantId, change) {
-            const item = cart.find(item => item.id === restaurantId);
+        function updateQuantity(id, change) {
+            const item = cart.find(i => i.id === id);
             if (item) {
                 item.quantity += change;
-                if (item.quantity <= 0) {
-                    removeFromCart(restaurantId);
-                } else {
-                    updateCartUI();
-                }
+                if (item.quantity <= 0) removeFromCart(id);
+                else { saveCart(); updateCartUI(); }
             }
         }
         window.updateQuantity = updateQuantity;
 
-        function removeFromCart(restaurantId) {
-            cart = cart.filter(item => item.id !== restaurantId);
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            saveCart();
             updateCartUI();
             showNotification('Item removed from cart');
         }
@@ -464,6 +576,52 @@
             }
         }
         window.toggleCart = toggleCart;
+
+        // ===== CHECKOUT (Paystack) =====
+        function checkout() {
+            if (cart.length === 0) {
+                showNotification('🛒 Your cart is empty!');
+                return;
+            }
+            const total = cart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+            const itemsSummary = cart.map(i => `${i.quantity}x ${i.name}`).join(', ');
+            // Save order to history
+            const order = {
+                id: 'ORD' + Date.now(),
+                items: cart,
+                total: total,
+                date: new Date().toISOString(),
+                status: 'pending'
+            };
+            orderHistory.push(order);
+            localStorage.setItem('culturei_orders', JSON.stringify(orderHistory));
+            renderOrderHistory();
+
+            // Redirect to Paystack (your existing link)
+            const paystackUrl = `https://paystack.shop/pay/0sam0qbqp4?amount=${Math.round(total * 100)}&metadata=${encodeURIComponent(itemsSummary)}`;
+            window.location.href = paystackUrl;
+        }
+        window.checkout = checkout;
+
+        // ===== ORDER HISTORY =====
+        function renderOrderHistory() {
+            const list = document.getElementById('orderHistoryList');
+            if (!list) return;
+            if (orderHistory.length === 0) {
+                list.innerHTML = '<p class="empty-orders">No orders yet. Start exploring!</p>';
+                return;
+            }
+            list.innerHTML = orderHistory.slice().reverse().map(o => `
+                <div class="order-history-item" style="padding:1rem;border-radius:12px;background:rgba(255,255,255,0.05);margin-bottom:0.75rem;">
+                    <div style="display:flex;justify-content:space-between;">
+                        <strong>${o.id}</strong>
+                        <span style="color:var(--accent-orange);font-weight:700;">R${o.total.toFixed(2)}</span>
+                    </div>
+                    <p style="font-size:0.85rem;color:var(--text-muted);margin:0.3rem 0;">${o.items.map(i=>`${i.quantity}× ${i.name}`).join(', ')}</p>
+                    <small style="color:var(--text-muted);">${new Date(o.date).toLocaleString()}</small>
+                </div>
+            `).join('');
+        }
 
         // ===== SEARCH & FILTER =====
         function setupSearch() {
@@ -496,11 +654,6 @@
             });
         }
 
-        // ===== UPDATE STATS =====
-        function updateStats() {
-            // Optional: update any stats on the page
-        }
-
         // ===== NOTIFICATION =====
         function showNotification(message) {
             const existing = document.querySelector('.notification-toast');
@@ -510,22 +663,21 @@
             toast.textContent = message;
             toast.style.cssText = `
                 position: fixed; bottom: 100px; right: 20px;
-                background: var(--accent-orange); color: var(--primary-black);
+                background: var(--accent-orange, #f5a623); color: #111;
                 padding: 1rem 2rem; border-radius: 12px; font-weight: 600;
-                z-index: 9999; box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                z-index: 99999; box-shadow: 0 4px 20px rgba(0,0,0,0.3);
                 max-width: 400px; animation: slideUp 0.3s ease;
             `;
             document.body.appendChild(toast);
             setTimeout(() => {
                 toast.style.animation = 'slideDown 0.3s ease forwards';
                 setTimeout(() => toast.remove(), 300);
-            }, 3000);
+            }, 2500);
         }
         window.showNotification = showNotification;
 
         // ===== AUTH =====
         function openLogin() {
-            // Your existing login logic
             window.location.href = 'signin.html';
         }
         window.openLogin = openLogin;
@@ -550,6 +702,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadRestaurantsFromFirestore();
             updateCartUI();
+            renderOrderHistory();
             setupSearch();
             setupFilters();
             setupDarkMode();
@@ -560,6 +713,11 @@
                 @keyframes slideDown { from { opacity:1; transform:translateY(0); } to { opacity:0; transform:translateY(20px); } }
             `;
             document.head.appendChild(style);
+
+            // Close modal on Escape
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape') closeMenuModal();
+            });
         });
     </script>
 
