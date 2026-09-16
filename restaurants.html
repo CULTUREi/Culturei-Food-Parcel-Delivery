@@ -333,6 +333,7 @@
                 allRestaurants = [];
                 snapshot.forEach(doc => {
                     const data = doc.data();
+                    // ✅ ONLY public fields loaded
                     allRestaurants.push({
                         id: doc.id,
                         name: data.name || 'Unnamed Restaurant',
@@ -340,9 +341,7 @@
                         image: data.image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop',
                         rating: data.rating || 0,
                         deliveryTime: '30-45 min',
-                        featured: false,
-                        owner: data.owner || '',
-                        address: data.address || ''
+                        featured: false
                     });
                 });
 
@@ -424,7 +423,22 @@
             `).join('');
         }
 
-        // ===== VIEW MENU (REAL) =====
+        // ===== TOGGLE FAVORITE (restored) =====
+        function toggleFavorite(restaurantId) {
+            const index = favorites.indexOf(restaurantId);
+            if (index > -1) {
+                favorites.splice(index, 1);
+                showNotification('Removed from favorites 💔');
+            } else {
+                favorites.push(restaurantId);
+                showNotification('Added to favorites ⭐');
+            }
+            localStorage.setItem('culturei_favorites', JSON.stringify(favorites));
+            renderRestaurants();
+        }
+        window.toggleFavorite = toggleFavorite;
+
+        // ===== VIEW MENU =====
         async function viewMenu(restaurantId) {
             const restaurant = allRestaurants.find(r => r.id === restaurantId);
             if (!restaurant) {
@@ -459,13 +473,9 @@
                     });
                 });
 
-                // Fallback demo items if no menu in Firestore
                 if (items.length === 0) {
-                    items = [
-                        { id: 'demo1', name: 'Beef Burger', price: 65, image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200&h=200&fit=crop', description: 'Juicy beef patty, cheese, lettuce' },
-                        { id: 'demo2', name: 'Chicken Wings', price: 55, image: 'https://images.unsplash.com/photo-1608039755401-742074f0548d?w=200&h=200&fit=crop', description: 'Spicy grilled wings' },
-                        { id: 'demo3', name: 'Chips', price: 30, image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=200&h=200&fit=crop', description: 'Crispy golden fries' }
-                    ];
+                    body.innerHTML = '<div class="menu-empty">No menu items yet.</div>';
+                    return;
                 }
 
                 body.innerHTML = items.map(item => `
@@ -516,7 +526,7 @@
         }
         window.addMenuItemToCart = addMenuItemToCart;
 
-        // ===== CART FUNCTIONS =====
+        // ===== CART =====
         function saveCart() {
             localStorage.setItem('culturei_cart', JSON.stringify(cart));
         }
@@ -577,7 +587,7 @@
         }
         window.toggleCart = toggleCart;
 
-        // ===== CHECKOUT (Paystack) =====
+        // ===== CHECKOUT =====
         function checkout() {
             if (cart.length === 0) {
                 showNotification('🛒 Your cart is empty!');
@@ -585,7 +595,6 @@
             }
             const total = cart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
             const itemsSummary = cart.map(i => `${i.quantity}x ${i.name}`).join(', ');
-            // Save order to history
             const order = {
                 id: 'ORD' + Date.now(),
                 items: cart,
@@ -597,7 +606,6 @@
             localStorage.setItem('culturei_orders', JSON.stringify(orderHistory));
             renderOrderHistory();
 
-            // Redirect to Paystack (your existing link)
             const paystackUrl = `https://paystack.shop/pay/0sam0qbqp4?amount=${Math.round(total * 100)}&metadata=${encodeURIComponent(itemsSummary)}`;
             window.location.href = paystackUrl;
         }
@@ -714,7 +722,6 @@
             `;
             document.head.appendChild(style);
 
-            // Close modal on Escape
             document.addEventListener('keydown', e => {
                 if (e.key === 'Escape') closeMenuModal();
             });
